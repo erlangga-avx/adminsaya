@@ -43,12 +43,25 @@ require 'cek.php';
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php
+                                        $ambilsemuadatastok = mysqli_query($conn, "select * from stok");
+                                        $i = 1;
+                                        while($data=mysqli_fetch_array($ambilsemuadatastok)){
+                                            $namabarang = $data['namabarang'];
+                                            $deskripsi = $data['deskripsi'];
+                                            $stok = $data['stok'];
+                                        ?>
                                         <tr>
-                                            <td>Tiger Nixon</td>
-                                            <td>System Architect</td>
-                                            <td>Edinburgh</td>
-                                            <td>61</td>
+                                            <td><?=$i++;?></td>
+                                            <td><?=$namabarang;?></td>
+                                            <td><?=$deskripsi;?></td>
+                                            <td><?=$stok;?></td>
                                         </tr>
+                                        <?php
+                                        };
+
+                                        ?>
+
                                     </tbody>
                                 </table>
                                 </div>

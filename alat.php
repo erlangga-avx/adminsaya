@@ -36,19 +36,31 @@ require 'cek.php';
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>No</th>
+                                            <th>Tanggal</th>
                                             <th>Nama Alat</th>
                                             <th>Deskripsi Kerusakan Alat</th>
                                             <th>Status Perbaikan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    <?php
+                                        $ambilsemuadataalat = mysqli_query($conn, "select * from alat");
+                                        while($data=mysqli_fetch_array($ambilsemuadataalat)){
+                                            $tanggal = $data['tanggal'];
+                                            $namaalat = $data['namaalat'];
+                                            $deskalat = $data['deskalat'];
+                                            $status = $data['status']
+                                        ?>
                                         <tr>
-                                            <td>Tiger Nixon</td>
-                                            <td>System Architect</td>
-                                            <td>Edinburgh</td>
-                                            <td>61</td>
+                                            <td><?=$tanggal;?></td>
+                                            <td><?=$namaalat;?></td>
+                                            <td><?=$deskalat;?></td>
+                                            <td><?=$status;?></td>
                                         </tr>
+                                        <?php
+                                        };
+
+                                        ?>
                                     </tbody>
                                 </table>
                                 </div>

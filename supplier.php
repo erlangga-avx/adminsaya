@@ -43,12 +43,24 @@ require 'cek.php';
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    <?php
+                                        $ambilsemuadatasupplier = mysqli_query($conn, "select * from supplier");
+                                        $i = 1;
+                                        while($data=mysqli_fetch_array($ambilsemuadatasupplier)){
+                                            $namasupplier = $data['namasupplier'];
+                                            $nomorsupplier = $data['nomorsupplier'];
+                                            $alamat = $data['alamat'];
+                                        ?>
                                         <tr>
-                                            <td>Tiger Nixon</td>
-                                            <td>System Architect</td>
-                                            <td>Edinburgh</td>
-                                            <td>61</td>
+                                            <td><?=$i++;?></td>
+                                            <td><?=$namasupplier;?></td>
+                                            <td><?=$nomorsupplier;?></td>
+                                            <td><?=$alamat;?></td>
                                         </tr>
+                                        <?php
+                                        };
+
+                                        ?>
                                     </tbody>
                                 </table>
                                 </div>

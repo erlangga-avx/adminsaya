@@ -36,19 +36,31 @@ require 'cek.php';
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>No</th>
+                                            <th>Tanggal</th>
                                             <th>Nama Barang</th>
-                                            <th>Deskrpsi</th>
+                                            <th>Jumlah</th>
                                             <th>Stok</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    <?php
+                                        $ambilsemuadatastok = mysqli_query($conn, "select * from masuk m, stok s where s.idbarang = m.idbarang");
+                                        while($data=mysqli_fetch_array($ambilsemuadatastok)){
+                                            $tanggal = $data['tanggal'];
+                                            $namabarang = $data['namabarang'];
+                                            $qty = $data['qty'];
+                                            $penerima = $data['penerima'];
+                                        ?>
                                         <tr>
-                                            <td>Tiger Nixon</td>
-                                            <td>System Architect</td>
-                                            <td>Edinburgh</td>
-                                            <td>61</td>
+                                            <td><?=$tanggal;?></td>
+                                            <td><?=$namabarang;?></td>
+                                            <td><?=$qty;?></td>
+                                            <td><?=$penerima;?></td>
                                         </tr>
+                                        <?php
+                                        };
+
+                                        ?>
                                     </tbody>
                                 </table>
                                 </div>
