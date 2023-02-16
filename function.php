@@ -61,4 +61,34 @@ if(isset($_POST['addbarangkeluar'])){
         header('location:keluar.php');
     }
 }
+
+//menambah supplier
+if(isset($_POST['addsupplier'])){
+    $namasupplier = $_POST['namasupplier'];
+    $nomorsupplier = $_POST['nomorsupplier'];
+    $alamat = $_POST['alamat'];
+
+    $addtotable = mysqli_query($conn,"insert into supplier (namasupplier, nomorsupplier, alamat) values('$namasupplier', '$nomorsupplier', '$alamat')");
+    if($addtotable){
+        header('location:supplier.php');
+    } else {
+        echo 'Gagal';
+        header('location:supplier.php');
+    }
+}
+
+//menambah laporan alat
+if(isset($_POST['addalat'])){
+    $namaalat = $_POST['namaalat'];
+    $deskalat = $_POST['deskalat'];
+    $status = $_POST['status'];
+
+    $addtotable = mysqli_query($conn,"insert into alat (namaalat, deskalat, status) values('$namaalat', '$deskalat', '$status')");
+    if($addtotable){
+        header('location:alat.php');
+    } else {
+        echo 'Gagal';
+        header('location:alat.php');
+    }
+}
 ?>

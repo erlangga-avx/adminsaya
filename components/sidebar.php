@@ -14,11 +14,11 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Barang Keluar
                             </a>
-                            <a class="nav-link" href="index.html">
+                            <a class="nav-link" href="supplier.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Supplier
                             </a>
-                            <a class="nav-link" href="index.html">
+                            <a class="nav-link" href="alat.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Status Alat
                             </a>
