@@ -28,7 +28,7 @@ require 'cek.php';
                         <div class="card mb-4">
                             <div class="card-header">
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-                                Open modal
+                                Tambah Barang
                             </button>
                             </div>
                             <div class="card-body">
@@ -93,19 +93,14 @@ require 'cek.php';
         <!-- Modal body -->
         <form method="post">
         <div class="modal-body">
-        <input type="text" name="text" placeholder="Nama Barang" class="form-control">
+        <input type="text" name="namabarang" placeholder="Nama Barang" class="form-control" required>
         <br>
-        <input type="text" name="deskripsi" placeholder="Deskripsi Barang" class="form-control">
+        <input type="text" name="deskripsi" placeholder="Deskripsi Barang" class="form-control" required>
         <br>
-        <input type="number" name="stok" placeholder="stok" class="form-control">
+        <input type="number" name="stok" placeholder="stok" class="form-control" required>
         <br>
         <button type="submit" class="btn btn-primary" name="addnewbarang">Submit</button>
         </form>
-        </div>
-
-        <!-- Modal footer -->
-        <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
         </div>
 
         </div>
