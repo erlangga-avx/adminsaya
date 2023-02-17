@@ -40,6 +40,7 @@ require 'cek.php';
                                             <th>Nama Alat</th>
                                             <th>Deskripsi Kerusakan Alat</th>
                                             <th>Status Perbaikan</th>
+                                            <th>Pilihan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -49,14 +50,89 @@ require 'cek.php';
                                             $tanggal = $data['tanggal'];
                                             $namaalat = $data['namaalat'];
                                             $deskalat = $data['deskalat'];
-                                            $status = $data['status']
+                                            $status = $data['status'];
+                                            $ida = $data['idalat'];
                                         ?>
                                         <tr>
                                             <td><?=$tanggal;?></td>
                                             <td><?=$namaalat;?></td>
                                             <td><?=$deskalat;?></td>
                                             <td><?=$status;?></td>
+                                            <td>
+                                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?=$ida;?>">
+                                                    Edit
+                                                </button>
+                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete<?=$ida;?>">
+                                                    Delete
+                                                </button>
+                                            </td>
                                         </tr>
+
+                                            <!-- Edit Modal -->
+                                        <div class="modal fade" id="edit<?=$ida;?>">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Edit Laporan Alat</h4>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+
+                                            <!-- Modal body -->
+                                            <form method="post">
+                                            <div class="modal-body">
+                                            <input type="text" name="namaalat" value="<?=$namaalat;?>" class="form-control" required>
+                                            <br>
+                                            <input type="text" name="deskalat" value="<?=$deskalat;?>" class="form-control" required>
+                                            <br>
+                                            <input type="radio" name="status" value="Rusak" class="form-check-input" checked>
+                                            <label for="radio01" class="form-check-label"><span class="badge bg-danger">Rusak</span></label>
+                                            <br>
+                                            <br>
+                                            <input type="radio" name="status" value="Diperbaiki" class="form-check-input">
+                                            <label for="radio02" class="form-check-label"><span class="badge bg-warning">Diperbaiki</span></label>
+                                            <br>
+                                            <br>
+                                            <input type="radio" name="status" value="Harus Diganti" class="form-check-input">
+                                            <label for="radio03" class="form-check-label"><span class="badge bg-dark">Harus Diganti</span></label>
+                                            <br>
+                                            <br>
+                                            <input type="hidden" name="ida" value="<?=$ida;?>">
+                                            <button type="submit" class="btn btn-primary" name="updatealat">Submit</button>
+                                            </form>
+                                            </div>
+
+                                            </div>
+                                        </div>
+                                        </div>
+
+                                        <!-- Hapus Modal -->
+                                        <div class="modal fade" id="delete<?=$ida;?>">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Hapus Alat?</h4>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+
+                                            <!-- Modal body -->
+                                            <form method="post">
+                                            <div class="modal-body">
+                                            Apakah Anda yakin ingin menghapus <?=$namaalat;?>?
+                                            <input type="hidden" name="ida" value="<?=$ida;?>">
+                                            <br>
+                                            <br>
+                                            <button type="submit" class="btn btn-danger" name="hapusalat">Hapus</button>
+                                            </form>
+                                            </div>
+
+                                            </div>
+                                        </div>
+                                        </div>
+
                                         <?php
                                         };
 
@@ -111,7 +187,7 @@ require 'cek.php';
         <br>
         <h5><small>Status Perbaikan</small></h5>
         <input type="radio" name="status" value="Rusak" class="form-check-input" checked>
-        <label for="radio01" class="form-check-label">Rusak</label>
+        <label for="radio01" class="form-check-label"><span class="badge bg-danger">Rusak</span></label>
         <br>
         <!--
         <input type="radio" name="status" value="Diperbaiki" class="form-check-input">
@@ -119,8 +195,8 @@ require 'cek.php';
         <br>
         <input type="radio" name="status" value="Harus Diganti" class="form-check-input">
         <label for="radio03" class="form-check-label">Harus Diganti</label>
-        <br>
         -->
+        <br>
         <button type="submit" class="btn btn-primary" name="addalat">Submit</button>
         </form>
         </div>

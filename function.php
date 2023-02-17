@@ -272,4 +272,33 @@ if(isset($_POST['hapussupplier'])){
         header('location:supplier.php');
     }
 }
+
+//update info kerusakan alat
+if(isset($_POST['updatealat'])){
+    $ida = $_POST['ida'];
+    $namaalat = $_POST['namaalat'];
+    $deskalat = $_POST['deskalat'];
+    $status = $_POST['status'];
+
+    $update = mysqli_query($conn, "update alat set namaalat='$namaalat' , deskalat='$deskalat' , status='$status' where idalat='$ida'");
+    if($update){
+        header('location:alat.php');
+    } else {
+        echo 'Gagal';
+        header('location:alat.php');
+    }
+}
+
+//menghapus laporan alat
+if(isset($_POST['hapusalat'])){
+    $ida = $_POST['ida'];
+
+    $hapus = mysqli_query($conn, "delete from alat where idalat='$ida'");
+    if($hapus){
+        header('location:alat.php');
+    } else {
+        echo 'Gagal';
+        header('location:alat.php');
+    }
+}
 ?>
