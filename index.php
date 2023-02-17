@@ -38,8 +38,9 @@ require 'cek.php';
                                         <tr>
                                             <th>No</th>
                                             <th>Nama Barang</th>
-                                            <th>Deskrpsi</th>
+                                            <th>Kategori</th>
                                             <th>Stok</th>
+                                            <th>Pilihan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -48,15 +49,79 @@ require 'cek.php';
                                         $i = 1;
                                         while($data=mysqli_fetch_array($ambilsemuadatastok)){
                                             $namabarang = $data['namabarang'];
-                                            $deskripsi = $data['deskripsi'];
+                                            $kategori = $data['kategori'];
                                             $stok = $data['stok'];
+                                            $idb = $data['idbarang'];
                                         ?>
+
                                         <tr>
                                             <td><?=$i++;?></td>
                                             <td><?=$namabarang;?></td>
-                                            <td><?=$deskripsi;?></td>
+                                            <td><?=$kategori;?></td>
                                             <td><?=$stok;?></td>
+                                            <td>
+                                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?=$idb;?>">
+                                                    Edit
+                                                </button>
+                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete<?=$idb;?>">
+                                                    Delete
+                                                </button>
+                                            </td>
                                         </tr>
+
+                                        <!-- Edit Modal -->
+                                        <div class="modal fade" id="edit<?=$idb;?>">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Edit Barang</h4>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+
+                                            <!-- Modal body -->
+                                            <form method="post">
+                                            <div class="modal-body">
+                                            <input type="text" name="namabarang" value="<?=$namabarang;?>" class="form-control" required>
+                                            <br>
+                                            <input type="text" name="kategori" value="<?=$kategori;?>" class="form-control" required>
+                                            <br>
+                                            <input type="hidden" name="idb" value="<?=$idb;?>">
+                                            <button type="submit" class="btn btn-primary" name="updatebarang">Submit</button>
+                                            </form>
+                                            </div>
+
+                                            </div>
+                                        </div>
+                                        </div>
+
+                                        <!-- Hapus Modal -->
+                                        <div class="modal fade" id="delete<?=$idb;?>">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Hapus Barang?</h4>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+
+                                            <!-- Modal body -->
+                                            <form method="post">
+                                            <div class="modal-body">
+                                            Apakah Anda yakin ingin menghapus <?=$namabarang;?>?
+                                            <input type="hidden" name="idb" value="<?=$idb;?>">
+                                            <br>
+                                            <br>
+                                            <button type="submit" class="btn btn-danger" name="hapusbarang">Hapus</button>
+                                            </form>
+                                            </div>
+
+                                            </div>
+                                        </div>
+                                        </div>
+                                        
                                         <?php
                                         };
 
@@ -108,7 +173,7 @@ require 'cek.php';
         <div class="modal-body">
         <input type="text" name="namabarang" placeholder="Nama Barang" class="form-control" required>
         <br>
-        <input type="text" name="deskripsi" placeholder="Deskripsi Barang" class="form-control" required>
+        <input type="text" name="kategori" placeholder="Kategori Barang" class="form-control" required>
         <br>
         <input type="number" name="stok" placeholder="stok" class="form-control" required>
         <br>

@@ -6,10 +6,10 @@ $conn = mysqli_connect("localhost","root","","inventaris");
 //menambah barang baru
 if(isset($_POST['addnewbarang'])){
     $namabarang = $_POST['namabarang'];
-    $deskripsi = $_POST['deskripsi'];
+    $kategori = $_POST['kategori'];
     $stok = $_POST['stok'];
 
-    $addtotable = mysqli_query($conn,"insert into stok (namabarang, deskripsi, stok) values('$namabarang', '$deskripsi', '$stok')");
+    $addtotable = mysqli_query($conn,"insert into stok (namabarang, kategori, stok) values('$namabarang', '$kategori    ', '$stok')");
     if($addtotable){
         header('location:index.php');
     } else {
@@ -89,6 +89,21 @@ if(isset($_POST['addalat'])){
     } else {
         echo 'Gagal';
         header('location:alat.php');
+    }
+}
+
+//update info barang
+if(isset($_POST['updatebarang'])){
+    $idb = $_POST['idb'];
+    $namabarang = $_POST['namabarang'];
+    $kategori = $_POST['kategori'];
+
+    $update = mysqli_query($conn, "update stok set namabarang='$namabarang' , kategori='$kategori' where idbarang='$idb'");
+    if($update){
+        header('location:index.php');
+    } else {
+        echo 'Gagal';
+        header('location:index.php');
     }
 }
 ?>
