@@ -60,17 +60,17 @@ require 'cek.php';
                                             <td><?=$qty;?></td>
                                             <td><?=$penerima;?></td>
                                             <td>
-                                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?=$idb;?>">
+                                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?=$idm;?>">
                                                     Edit
                                                 </button>
-                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete<?=$idb;?>">
+                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete<?=$idm;?>">
                                                     Delete
                                                 </button>
                                             </td>
                                         </tr>
 
                                          <!-- Edit Modal -->
-                                         <div class="modal fade" id="edit<?=$idb;?>">
+                                         <div class="modal fade" id="edit<?=$idm;?>">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
 
@@ -98,7 +98,7 @@ require 'cek.php';
                                         </div>
 
                                         <!-- Hapus Modal -->
-                                        <div class="modal fade" id="delete<?=$idb;?>">
+                                        <div class="modal fade" id="delete<?=$idm;?>">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
 
