@@ -40,6 +40,7 @@ require 'cek.php';
                                             <th>Nama Supplier</th>
                                             <th>No. Telepon Supplier</th>
                                             <th>Alamat Supplier</th>
+                                            <th>Pilihan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -47,6 +48,7 @@ require 'cek.php';
                                         $ambilsemuadatasupplier = mysqli_query($conn, "select * from supplier");
                                         $i = 1;
                                         while($data=mysqli_fetch_array($ambilsemuadatasupplier)){
+                                            $ids = $data['idsupplier'];
                                             $namasupplier = $data['namasupplier'];
                                             $nomorsupplier = $data['nomorsupplier'];
                                             $alamat = $data['alamat'];
@@ -56,7 +58,71 @@ require 'cek.php';
                                             <td><?=$namasupplier;?></td>
                                             <td><?=$nomorsupplier;?></td>
                                             <td><?=$alamat;?></td>
+                                            <td>
+                                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?=$ids;?>">
+                                                    Edit
+                                                </button>
+                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete<?=$ids;?>">
+                                                    Delete
+                                                </button>
+                                            </td>
                                         </tr>
+
+                                            <!-- Edit Modal -->
+                                        <div class="modal fade" id="edit<?=$ids;?>">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Edit Supplier</h4>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+
+                                            <!-- Modal body -->
+                                            <form method="post">
+                                            <div class="modal-body">
+                                            <input type="text" name="namasupplier" value="<?=$namasupplier;?>" class="form-control" required>
+                                            <br>
+                                            <input type="text" name="nomorsupplier" value="<?=$nomorsupplier;?>" class="form-control" required>
+                                            <br>
+                                            <input type="text" name="alamat" value="<?=$alamat;?>" class="form-control" required>
+                                            <br>
+                                            <input type="hidden" name="ids" value="<?=$ids;?>">
+                                            <button type="submit" class="btn btn-primary" name="updatesupplier">Submit</button>
+                                            </form>
+                                            </div>
+
+                                            </div>
+                                        </div>
+                                        </div>
+
+                                        <!-- Hapus Modal -->
+                                        <div class="modal fade" id="delete<?=$ids;?>">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Hapus Supplier?</h4>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+
+                                            <!-- Modal body -->
+                                            <form method="post">
+                                            <div class="modal-body">
+                                            Apakah Anda yakin ingin menghapus <?=$namasupplier;?>?
+                                            <input type="hidden" name="ids" value="<?=$ids;?>">
+                                            <br>
+                                            <br>
+                                            <button type="submit" class="btn btn-danger" name="hapussupplier">Hapus</button>
+                                            </form>
+                                            </div>
+
+                                            </div>
+                                        </div>
+                                        </div>
+
                                         <?php
                                         };
 

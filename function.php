@@ -243,4 +243,33 @@ if(isset($_POST['hapusbarangkeluar'])){
         header('location:keluar.php');
     }
 }
+
+//update info supplier
+if(isset($_POST['updatesupplier'])){
+    $ids = $_POST['ids'];
+    $namasupplier = $_POST['namasupplier'];
+    $nomorsupplier = $_POST['nomorsupplier'];
+    $alamat = $_POST['alamat'];
+
+    $update = mysqli_query($conn, "update supplier set namasupplier='$namasupplier' , nomorsupplier='$nomorsupplier' , alamat='$alamat' where idsupplier='$ids'");
+    if($update){
+        header('location:supplier.php');
+    } else {
+        echo 'Gagal';
+        header('location:supplier.php');
+    }
+}
+
+//menghapus supplier
+if(isset($_POST['hapussupplier'])){
+    $ids = $_POST['ids'];
+
+    $hapus = mysqli_query($conn, "delete from supplier where idsupplier='$ids'");
+    if($hapus){
+        header('location:supplier.php');
+    } else {
+        echo 'Gagal';
+        header('location:supplier.php');
+    }
+}
 ?>
