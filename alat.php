@@ -87,15 +87,15 @@ require 'cek.php';
                                             <input type="text" name="deskalat" value="<?=$deskalat;?>" class="form-control" required>
                                             <br>
                                             <input type="radio" name="status" value="Rusak" class="form-check-input" checked>
-                                            <label for="radio01" class="form-check-label"><span class="badge bg-danger">Rusak</span></label>
+                                            <label for="radio01" class="form-check-label">Rusak</label>
                                             <br>
                                             <br>
                                             <input type="radio" name="status" value="Diperbaiki" class="form-check-input">
-                                            <label for="radio02" class="form-check-label"><span class="badge bg-warning">Diperbaiki</span></label>
+                                            <label for="radio02" class="form-check-label">Diperbaiki</label>
                                             <br>
                                             <br>
                                             <input type="radio" name="status" value="Harus Diganti" class="form-check-input">
-                                            <label for="radio03" class="form-check-label"><span class="badge bg-dark">Harus Diganti</span></label>
+                                            <label for="radio03" class="form-check-label">Harus Diganti</label>
                                             <br>
                                             <br>
                                             <input type="hidden" name="ida" value="<?=$ida;?>">
@@ -175,7 +175,7 @@ require 'cek.php';
         <br>
         <h5><small>Status Perbaikan</small></h5>
         <input type="radio" name="status" value="Rusak" class="form-check-input" checked>
-        <label for="radio01" class="form-check-label"><span class="badge bg-danger">Rusak</span></label>
+        <label for="radio01" class="form-check-label">Rusak</label>
         <br>
         <!--
         <input type="radio" name="status" value="Diperbaiki" class="form-check-input">
