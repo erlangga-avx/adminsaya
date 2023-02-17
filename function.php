@@ -106,4 +106,17 @@ if(isset($_POST['updatebarang'])){
         header('location:index.php');
     }
 }
+
+//menghapus barang dari stok
+if(isset($_POST['hapusbarang'])){
+    $idb = $_POST['idb'];
+
+    $hapus = mysqli_query($conn, "delete from stok where idbarang='$idb'");
+    if($hapus){
+        header('location:index.php');
+    } else {
+        echo 'Gagal';
+        header('location:index.php');
+    }
+}
 ?>
