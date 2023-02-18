@@ -32,9 +32,25 @@ require 'cek.php';
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
                                 Tambah Barang
                             </button>
-                            <a href="export.php" class="btn btn-success">Export Data</a>
+                            <a href="export.php" class="btn btn-success">Export Data</a>                            
                             </div>
                             <div class="card-body">
+
+                            <?php
+                                $ambildatastok= mysqli_query($conn, "select * from stok where stok < 5");
+
+                                while($fetch=mysqli_fetch_array($ambildatastok)){
+                                    $barang = $fetch['namabarang'];
+                                
+                            ?>
+                            <div class="alert alert-danger alert-dismissible">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                <strong>Peringatan!</strong> Stok <?=$barang;?> Telah Habis
+                            </div>
+                            <?php
+                                }
+                            ?>
+
                                 <div class="table-responsive">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
