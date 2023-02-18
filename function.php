@@ -40,7 +40,7 @@ if(isset($_POST['barangmasuk'])){
     }
 }
 
-//menambahbarangkeluar
+//menambah barang keluar
 if(isset($_POST['addbarangkeluar'])){
     $barangnya = $_POST['barangnya'];
     $keterangan = $_POST['keterangan'];
@@ -50,15 +50,27 @@ if(isset($_POST['addbarangkeluar'])){
     $ambildatanya = mysqli_fetch_array($cekstoksekarang);
     
     $stoksekarang = $ambildatanya['stok'];
-    $kurangkanstoksekarangdenganqty = $stoksekarang-$qty;
 
-    $addtokeluar = mysqli_query($conn, "insert into keluar (idbarang, keterangan, qty) values('$barangnya', '$keterangan', '$qty')");
-    $updatestokkeluar = mysqli_query($conn, "update stok set stok='$kurangkanstoksekarangdenganqty' where idbarang='$barangnya'");
-    if($addtokeluar&&$updatestokkeluar){
-        header('location:keluar.php');
+    if($stoksekarang >= $qty){
+        //kalau barang cukup
+        $kurangkanstoksekarangdenganqty = $stoksekarang-$qty;
+
+        $addtokeluar = mysqli_query($conn, "insert into keluar (idbarang, keterangan, qty) values('$barangnya', '$keterangan', '$qty')");
+        $updatestokkeluar = mysqli_query($conn, "update stok set stok='$kurangkanstoksekarangdenganqty' where idbarang='$barangnya'");
+        if($addtokeluar&&$updatestokkeluar){
+            header('location:keluar.php');
+        } else {
+            echo 'Gagal';
+            header('location:keluar.php');
+        }
     } else {
-        echo 'Gagal';
-        header('location:keluar.php');
+        //kalau barang tidak cukup
+        echo '
+        <script>
+            alert("stok saat ini tidak mencukupi");
+            windows.location.href="keluar.php";
+        </script>
+        ';
     }
 }
 
