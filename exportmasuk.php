@@ -19,7 +19,7 @@ require 'cek.php';
 <body>
 <div class="container">
 			<h2>GRAND Fotocopy Gambut</h2>
-			<h4>Stok Barang</h4>
+			<h4>Barang Masuk</h4>
 				<div class="data-tables datatable-dark">
 					
 					<!-- Masukkan table nya disini, dimulai dari tag TABLE -->
