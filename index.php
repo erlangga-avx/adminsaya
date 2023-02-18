@@ -30,6 +30,7 @@ require 'cek.php';
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
                                 Tambah Barang
                             </button>
+                            <a href="export.php" class="btn btn-success">Export Data</a>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
