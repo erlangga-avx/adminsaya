@@ -23,7 +23,7 @@ require 'cek.php';
 				<div class="data-tables datatable-dark">
 					
 					<!-- Masukkan table nya disini, dimulai dari tag TABLE -->
-                    <table class="table table-bordered" id="mauexport" width="100%" cellspacing="0">
+                    <table class="table table-striped" id="mauexport" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>Tanggal</th>
