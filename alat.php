@@ -33,6 +33,20 @@ require 'cek.php';
                                 Tambah Alat
                             </button>
                             <a href="exportalat.php" class="btn btn-success">Export Data</a>
+                            <br>
+                            <form method="post" class="mt-3">
+                                <div class="row">
+                                    <div class="col">
+                                        <input type="date" name="tgl_mulai" class="form-control">
+                                    </div>
+                                    <div class="col">
+                                        <input type="date" name="tgl_selesai" class="form-control">
+                                    </div>
+                                    <div class="col">
+                                        <button type="submit" name="filter_tgl" class="btn btn-info">Filter</button>
+                                    </div>
+                                </div>
+                            </form>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -48,7 +62,20 @@ require 'cek.php';
                                         </thead>
                                         <tbody>
                                         <?php
-                                            $ambilsemuadataalat = mysqli_query($conn, "select * from alat");
+
+                                            if(isset($_POST['filter_tgl'])){
+                                                $mulai = $_POST['tgl_mulai'];
+                                                $selesai = $_POST['tgl_selesai'];
+
+                                                if($mulai!=null || $selesai!=null){
+                                                    $ambilsemuadataalat = mysqli_query($conn, "select * from alat where idalat=idalat and tanggal BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY)");
+                                                } else {
+                                                    $ambilsemuadataalat = mysqli_query($conn, "select * from alat where idalat=idalat");
+                                                }
+                                            } else {
+                                                $ambilsemuadataalat = mysqli_query($conn, "select * from alat where idalat=idalat");
+                                            }
+
                                             while($data=mysqli_fetch_array($ambilsemuadataalat)){
                                                 $tanggal = $data['tanggal'];
                                                 $namaalat = $data['namaalat'];
