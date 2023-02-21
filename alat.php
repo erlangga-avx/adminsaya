@@ -136,7 +136,7 @@ require 'cek.php';
                                                 <br>
                                                 <input type="text" name="kategori" value="<?=$kategori;?>" class="form-control" required>
                                                 <br>
-                                                <input type="text" name="deskalat" value="<?=$deskalat;?>" class="form-control" required>
+                                                <input type="text" name="deskalat" value="<?=$deskalat;?>" class="form-control">
                                                 <br>
                                                 <input type="radio" name="status" value="Rusak" class="form-check-input" checked>
                                                 <label for="radio01" class="form-check-label">Rusak</label>
@@ -230,7 +230,7 @@ require 'cek.php';
         <br>
         <input type="text" name="kategori" placeholder="Kategori Alat" class="form-control" required>
         <br>
-        <input type="text" name="deskalat" placeholder="Deskripsi Kerusakan" class="form-control" required>
+        <input type="text" name="deskalat" placeholder="Deskripsi Kerusakan" class="form-control">
         <br>
         <h5><small>Status Perbaikan</small></h5>
         <input type="radio" name="status" value="Rusak" class="form-check-input" checked>
