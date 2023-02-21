@@ -92,10 +92,11 @@ if(isset($_POST['addsupplier'])){
 //menambah laporan alat
 if(isset($_POST['addalat'])){
     $namaalat = $_POST['namaalat'];
+    $kategori = $_POST['kategori'];
     $deskalat = $_POST['deskalat'];
     $status = $_POST['status'];
 
-    $addtotable = mysqli_query($conn,"insert into alat (namaalat, deskalat, status) values('$namaalat', '$deskalat', '$status')");
+    $addtotable = mysqli_query($conn,"insert into alat (namaalat, kategori, deskalat, status) values('$namaalat', '$kategori', '$deskalat', '$status')");
     if($addtotable){
         header('location:alat.php');
     } else {

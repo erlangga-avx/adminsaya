@@ -55,6 +55,7 @@ require 'cek.php';
                                             <tr>
                                                 <th>Tanggal</th>
                                                 <th>Nama Alat</th>
+                                                <th>Kategori</th>
                                                 <th>Deskripsi Kerusakan Alat</th>
                                                 <th>Status Perbaikan</th>
                                                 <th>Pilihan</th>
@@ -79,6 +80,7 @@ require 'cek.php';
                                             while($data=mysqli_fetch_array($ambilsemuadataalat)){
                                                 $tanggal = $data['tanggal'];
                                                 $namaalat = $data['namaalat'];
+                                                $kategori = $data['kategori'];
                                                 $deskalat = $data['deskalat'];
                                                 $status = $data['status'];
                                                 $ida = $data['idalat'];
@@ -86,6 +88,7 @@ require 'cek.php';
                                             <tr>
                                                 <td><?=$tanggal;?></td>
                                                 <td><?=$namaalat;?></td>
+                                                <td><?=$kategori;?></td>
                                                 <td><?=$deskalat;?></td>
                                                 <td><?=$status;?></td>
                                                 <td>
@@ -113,6 +116,8 @@ require 'cek.php';
                                                 <form method="post">
                                                 <div class="modal-body">
                                                 <input type="text" name="namaalat" value="<?=$namaalat;?>" class="form-control" required>
+                                                <br>
+                                                <input type="text" name="kategori" value="<?=$kategori;?>" class="form-control" required>
                                                 <br>
                                                 <input type="text" name="deskalat" value="<?=$deskalat;?>" class="form-control" required>
                                                 <br>
@@ -205,6 +210,8 @@ require 'cek.php';
         <form method="post">
         <div class="modal-body">
         <input type="text" name="namaalat" placeholder="Nama Alat" class="form-control" required>
+        <br>
+        <input type="text" name="kategori" placeholder="Kategori Alat" class="form-control" required>
         <br>
         <input type="text" name="deskalat" placeholder="Deskripsi Kerusakan" class="form-control" required>
         <br>
