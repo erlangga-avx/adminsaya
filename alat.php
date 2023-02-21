@@ -90,7 +90,24 @@ require 'cek.php';
                                                 <td><?=$namaalat;?></td>
                                                 <td><?=$kategori;?></td>
                                                 <td><?=$deskalat;?></td>
-                                                <td><?=$status;?></td>
+                                                <td>
+                                                    <?php
+                                                        $status = $data['status'];
+                                                        $badge_class = '';
+                                                        switch ($status) {
+                                                        case 'Rusak':
+                                                            $badge_class = 'badge bg-danger';
+                                                            break;
+                                                        case 'Diperbaiki':
+                                                            $badge_class = 'badge bg-warning';
+                                                            break;
+                                                        case 'Harus Diganti':
+                                                            $badge_class = 'badge bg-dark';
+                                                            break;
+                                                        }
+                                                    ?>
+                                                    <span class="badge <?=$badge_class;?>"><?=$status;?></span>
+                                                </td>
                                                 <td>
                                                     <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?=$ida;?>">
                                                         Edit
