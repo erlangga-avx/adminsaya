@@ -55,6 +55,7 @@ require 'cek.php';
                                             <tr>
                                                 <th>Tanggal</th>
                                                 <th>Nama Alat</th>
+                                                <th>Rekap</th>
                                                 <th>Kategori</th>
                                                 <th>Deskripsi Kerusakan Alat</th>
                                                 <th>Status Perbaikan</th>
@@ -88,6 +89,7 @@ require 'cek.php';
                                             <tr>
                                                 <td><?=$tanggal;?></td>
                                                 <td><?=$namaalat;?></td>
+                                                <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rekapmodal<?=$ida;?>"><i class="fas fa-cogs"></i></button></td>
                                                 <td><?=$kategori;?></td>
                                                 <td><?=$deskalat;?></td>
                                                 <td>
@@ -121,7 +123,7 @@ require 'cek.php';
                                                 </td>
                                             </tr>
 
-                                                <!-- Edit Modal -->
+                                        <!-- Edit Modal -->
                                             <div class="modal fade" id="edit<?=$ida;?>">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
@@ -150,7 +152,7 @@ require 'cek.php';
                                             </div>
                                             </div>
 
-                                            <!-- Hapus Modal -->
+                                        <!-- Hapus Modal -->
                                             <div class="modal fade" id="delete<?=$ida;?>">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
@@ -170,6 +172,56 @@ require 'cek.php';
                                                 <br>
                                                 <button type="submit" class="btn btn-danger" name="hapusalat">Hapus</button>
                                                 </form>
+                                                </div>
+
+                                                </div>
+                                            </div>
+                                            </div>
+
+                                        <!-- Modal Rekap -->
+                                            <div class="modal fade" id="rekapmodal<?=$ida;?>">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+
+                                                <!-- Modal Header -->
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title" id="rekapModalLabel">
+                                                        Rekap Perbaikan <?=$namaalat;?>
+                                                        <input type="hidden" name="ida" value="<?=$ida;?>">
+                                                    </h4>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                </div>
+
+                                                <!-- Modal body -->
+                                                <div class="modal-body">
+                                                    <?php
+                                                    // SQL query
+                                                    $sql = "SELECT a.idalat, a.deskalat, a.status, MAX(a.tanggal) as tanggal
+                                                    FROM alat a
+                                                    WHERE a.namaalat = '$namaalat'
+                                                    GROUP BY a.idalat, a.deskalat, a.status";
+
+                                                    // Execute query
+                                                    $result = $conn->query($sql);
+
+                                                    // Check if there are any results
+                                                    if ($result->num_rows > 0) {
+                                                    // Output data of each row
+                                                    while($row = $result->fetch_assoc()) {
+                                                        echo "<p><strong>Deskripsi:</strong> " . $row["deskalat"] . "</p>";
+                                                        echo "<p><strong>Status:</strong> " . $row["status"] . "</p>";
+                                                        echo "<p><strong>Tanggal:</strong> " . $row["tanggal"] . "</p>";
+                                                        echo "<hr>";
+                                                    }
+                                                    } else {
+                                                        echo "0 results";
+                                                    }
+                                                    ?>
+                                                </div>
+
+                                                <!-- Modal footer -->
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                                                 </div>
 
                                                 </div>
