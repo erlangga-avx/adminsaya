@@ -41,6 +41,7 @@ require 'cek.php';
                                             <tr>
                                                 <th>No</th>
                                                 <th>Nama Supplier</th>
+                                                <th>Kategori</th>
                                                 <th>No. Telepon Supplier</th>
                                                 <th>Alamat Supplier</th>
                                                 <th>Pilihan</th>
@@ -53,12 +54,14 @@ require 'cek.php';
                                             while($data=mysqli_fetch_array($ambilsemuadatasupplier)){
                                                 $ids = $data['idsupplier'];
                                                 $namasupplier = $data['namasupplier'];
+                                                $kategorisupplier = $data['kategorisupplier'];
                                                 $nomorsupplier = $data['nomorsupplier'];
                                                 $alamat = $data['alamat'];
                                             ?>
                                             <tr>
                                                 <td><?=$i++;?></td>
                                                 <td><?=$namasupplier;?></td>
+                                                <td><?=$kategorisupplier;?></td>
                                                 <td><?=$nomorsupplier;?></td>
                                                 <td><?=$alamat;?></td>
                                                 <td>
@@ -86,6 +89,8 @@ require 'cek.php';
                                                 <form method="post">
                                                 <div class="modal-body">
                                                 <input type="text" name="namasupplier" value="<?=$namasupplier;?>" class="form-control" required>
+                                                <br>
+                                                <input type="text" name="kategorisupplier" value="<?=$kategorisupplier;?>" class="form-control" required>
                                                 <br>
                                                 <input type="text" name="nomorsupplier" value="<?=$nomorsupplier;?>" class="form-control" required>
                                                 <br>
@@ -168,6 +173,8 @@ require 'cek.php';
         <form method="post">
         <div class="modal-body">
         <input type="text" name="namasupplier" placeholder="Nama Supplier" class="form-control" required>
+        <br>
+        <input type="text" name="kategorisupplier" placeholder="Kategori Produk" class="form-control" required>
         <br>
         <input type="text" name="nomorsupplier" placeholder="No. Telepon Supplier" class="form-control" required>
         <br>

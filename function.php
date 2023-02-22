@@ -77,10 +77,11 @@ if(isset($_POST['addbarangkeluar'])){
 //menambah supplier
 if(isset($_POST['addsupplier'])){
     $namasupplier = $_POST['namasupplier'];
+    $kategorisupplier = $_POST['kategorisupplier'];
     $nomorsupplier = $_POST['nomorsupplier'];
     $alamat = $_POST['alamat'];
 
-    $addtotable = mysqli_query($conn,"insert into supplier (namasupplier, nomorsupplier, alamat) values('$namasupplier', '$nomorsupplier', '$alamat')");
+    $addtotable = mysqli_query($conn,"insert into supplier (namasupplier, kategorisupplier, nomorsupplier, alamat) values('$namasupplier', '$kategorisupplier', '$nomorsupplier', '$alamat')");
     if($addtotable){
         header('location:supplier.php');
     } else {
@@ -261,10 +262,11 @@ if(isset($_POST['hapusbarangkeluar'])){
 if(isset($_POST['updatesupplier'])){
     $ids = $_POST['ids'];
     $namasupplier = $_POST['namasupplier'];
+    $kategorisupplier = $_POST['kategorisupplier'];
     $nomorsupplier = $_POST['nomorsupplier'];
     $alamat = $_POST['alamat'];
 
-    $update = mysqli_query($conn, "update supplier set namasupplier='$namasupplier' , nomorsupplier='$nomorsupplier' , alamat='$alamat' where idsupplier='$ids'");
+    $update = mysqli_query($conn, "update supplier set namasupplier='$namasupplier' , kategorisupplier='$kategorisupplier', nomorsupplier='$nomorsupplier' , alamat='$alamat' where idsupplier='$ids'");
     if($update){
         header('location:supplier.php');
     } else {
