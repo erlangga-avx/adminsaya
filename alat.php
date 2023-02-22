@@ -95,6 +95,9 @@ require 'cek.php';
                                                         $status = $data['status'];
                                                         $badge_class = '';
                                                         switch ($status) {
+                                                        case 'Baik':
+                                                            $badge_class = 'badge bg-success';
+                                                            break;
                                                         case 'Rusak':
                                                             $badge_class = 'badge bg-danger';
                                                             break;
@@ -137,18 +140,6 @@ require 'cek.php';
                                                 <input type="text" name="kategori" value="<?=$kategori;?>" class="form-control" required>
                                                 <br>
                                                 <input type="text" name="deskalat" value="<?=$deskalat;?>" class="form-control">
-                                                <br>
-                                                <input type="radio" name="status" value="Rusak" class="form-check-input" checked>
-                                                <label for="radio01" class="form-check-label">Rusak</label>
-                                                <br>
-                                                <br>
-                                                <input type="radio" name="status" value="Diperbaiki" class="form-check-input">
-                                                <label for="radio02" class="form-check-label">Diperbaiki</label>
-                                                <br>
-                                                <br>
-                                                <input type="radio" name="status" value="Harus Diganti" class="form-check-input">
-                                                <label for="radio03" class="form-check-label">Harus Diganti</label>
-                                                <br>
                                                 <br>
                                                 <input type="hidden" name="ida" value="<?=$ida;?>">
                                                 <button type="submit" class="btn btn-primary" name="updatealat">Submit</button>
@@ -233,16 +224,21 @@ require 'cek.php';
         <input type="text" name="deskalat" placeholder="Deskripsi Kerusakan" class="form-control">
         <br>
         <h5><small>Status Perbaikan</small></h5>
+        <input type="radio" name="status" value="Baik" class="form-check-input" checked>
+        <label for="radio01" class="form-check-label">Baik</label>
+        <br>
+        <br>
         <input type="radio" name="status" value="Rusak" class="form-check-input" checked>
         <label for="radio01" class="form-check-label">Rusak</label>
         <br>
-        <!--
+        <br>
         <input type="radio" name="status" value="Diperbaiki" class="form-check-input">
         <label for="radio02" class="form-check-label">Diperbaiki</label>
         <br>
+        <br>
         <input type="radio" name="status" value="Harus Diganti" class="form-check-input">
         <label for="radio03" class="form-check-label">Harus Diganti</label>
-        -->
+        <br>
         <br>
         <button type="submit" class="btn btn-primary" name="addalat">Submit</button>
         </form>
