@@ -29,7 +29,7 @@ require 'cek.php';
                                             <th>Tanggal</th>
                                             <th>Nama Barang</th>
                                             <th>Jumlah</th>
-                                            <th>Stok</th>
+                                            <th>Penerima</th>
                                         </tr>
                                     </thead>
                                     <tbody>
