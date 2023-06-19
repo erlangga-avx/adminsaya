@@ -58,6 +58,24 @@ if(!isset($_SESSION['log'])){
                                                 <input class="form-control" name="password" id="inputPassword" type="password" placeholder="Password" />
                                                 <label for="inputPassword">Password</label>
                                             </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="showpassword" name="showpassword" onclick="togglePasswordVisibility()">
+                                                <label class="form-check-label">Tampilkan Password</label>
+                                                
+                                                <!-- Checkbox menampilkan password -->
+                                                <script>
+                                                function togglePasswordVisibility() {
+                                                var passwordInput = document.getElementById("inputPassword");
+                                                var showPasswordCheckbox = document.getElementById("showpassword");
+
+                                                if (showPasswordCheckbox.checked) {
+                                                    passwordInput.type = "text";
+                                                } else {
+                                                    passwordInput.type = "password";
+                                                }
+                                                }
+                                                </script>
+                                            </div>
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                                 <button class="btn btn-primary" name="login">Login</button>
                                             </div>
