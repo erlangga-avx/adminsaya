@@ -9,12 +9,47 @@ if(isset($_POST['addnewbarang'])){
     $kategori = $_POST['kategori'];
     $stok = $_POST['stok'];
 
-    $addtotable = mysqli_query($conn,"insert into stok (namabarang, kategori, stok) values('$namabarang', '$kategori    ', '$stok')");
-    if($addtotable){
-        header('location:index.php');
+    //untuk gambar..
+    $allowed_extension = array('png','jpg');
+    $nama = $_FILES['file']['name']; //untuk mengambil nama file gambar
+    $dot = explode('.',$nama);
+    $ekstensi = strtolower(end($dot)); //untuk mengambil ekstensi nama file gambar
+    $ukuran = $_FILES['file']['size']; //untuk mengambil size file gambar
+    $file_tmp = $_FILES['file']['tmp_name']; //untuk mengambil lokasi file gambar
+
+    //penamaan file -> enkripsi
+    $image = md5(uniqid($nama,true).time()).'.'.$ekstensi; //menggabungkan nama file yang dienkripsi dg ekstensinya
+
+    //proses upload gambar
+    if(in_array($ekstensi, $allowed_extension) === true){
+        //validasi ukuran file
+        if($ukuran < 15000000){
+            move_uploaded_file($file_tmp, 'images/'.$image);
+
+            $addtotable = mysqli_query($conn,"insert into stok (namabarang, kategori, stok, image) values('$namabarang', '$kategori', '$stok', '$image')");
+            if($addtotable){
+                header('location:index.php');
+            } else {
+                echo 'Gagal';
+                header('location:index.php');
+            }
+        } else {
+            //kalau ukuran file melebihi 15mb
+            echo '
+            <script>
+                alert("File Terlalu Besar");
+                window.location.href="index.php";
+            </script>
+            ';
+        }
     } else {
-        echo 'Gagal';
-        header('location:index.php');
+        //kalau nama filenya tidak didukung
+        echo '
+            <script>
+                alert("Format File Tidak Didukung");
+                window.location.href="index.php";
+            </script>
+            ';
     }
 }
 
@@ -111,19 +146,41 @@ if(isset($_POST['updatebarang'])){
     $idb = $_POST['idb'];
     $namabarang = $_POST['namabarang'];
     $kategori = $_POST['kategori'];
+    
+    //untuk gambar..
+    $allowed_extension = array('png','jpg');
+    $nama = $_FILES['file']['name']; //untuk mengambil nama file gambar
+    $dot = explode('.',$nama);
+    $ekstensi = strtolower(end($dot)); //untuk mengambil ekstensi nama file gambar
+    $ukuran = $_FILES['file']['size']; //untuk mengambil size file gambar
+    $file_tmp = $_FILES['file']['tmp_name']; //untuk mengambil lokasi file gambar
 
-    $update = mysqli_query($conn, "update stok set namabarang='$namabarang' , kategori='$kategori' where idbarang='$idb'");
-    if($update){
-        header('location:index.php');
+    //penamaan file -> enkripsi
+    $image = md5(uniqid($nama,true).time()).'.'.$ekstensi; //menggabungkan nama file yang dienkripsi dg ekstensinya
+
+    if($ukuran==0){
+        //jika tidak mengupload
     } else {
-        echo 'Gagal';
-        header('location:index.php');
+        //jika mengupload
+        move_uploaded_file($file_tmp, 'images/'.$image);
+            $update = mysqli_query($conn, "update stok set namabarang='$namabarang' , kategori='$kategori' , image='$image' where idbarang='$idb'");
+        if($update){
+            header('location:index.php');
+        } else {
+            echo 'Gagal';
+            header('location:index.php');
+        }
     }
 }
 
 //menghapus barang dari stok
 if(isset($_POST['hapusbarang'])){
     $idb = $_POST['idb'];
+
+    $gambar = mysqli_query($conn, "select * from stok where idbarang='$idb'");
+    $get = mysqli_fetch_array($gambar);
+    $img = 'images/'.$get['image'];
+    unlink($img);
 
     $hapus = mysqli_query($conn, "delete from stok where idbarang='$idb'");
     if($hapus){

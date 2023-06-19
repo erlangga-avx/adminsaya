@@ -18,6 +18,15 @@ require 'cek.php';
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
         <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+        <style>
+            .zoomable{
+                width: 100px;
+            }
+            .zoomable:hover{
+                transform: scale(2.5);
+                transition: 0.3s ease;
+            }
+        </style>
     </head>
     <body class="sb-nav-fixed">
         <?php include "components/nav.php" ?>
@@ -56,6 +65,7 @@ require 'cek.php';
                                     <thead>
                                         <tr>
                                             <th>No</th>
+                                            <th>Gambar</th>
                                             <th>Nama Barang</th>
                                             <th>Kategori</th>
                                             <th>Stok</th>
@@ -71,10 +81,21 @@ require 'cek.php';
                                             $kategori = $data['kategori'];
                                             $stok = $data['stok'];
                                             $idb = $data['idbarang'];
+
+                                            //cek apakah ada gambar
+                                            $gambar = $data['image']; //mengambil gambar
+                                            if($gambar==null){
+                                                //jika tidak ada gambar
+                                                $img = 'Tidak Ada Gambar';
+                                            } else {
+                                                //jika ada gambar
+                                                $img = '<img src="images/'.$gambar.'" class="zoomable">';
+                                            }
                                         ?>
 
                                         <tr>
                                             <td><?=$i++;?></td>
+                                            <td><?=$img;?></td>
                                             <td><?=$namabarang;?></td>
                                             <td><?=$kategori;?></td>
                                             <td><?=$stok;?></td>
@@ -100,11 +121,13 @@ require 'cek.php';
                                             </div>
 
                                             <!-- Modal body -->
-                                            <form method="post">
+                                            <form method="post" enctype="multipart/form-data">
                                             <div class="modal-body">
                                             <input type="text" name="namabarang" value="<?=$namabarang;?>" class="form-control" required>
                                             <br>
                                             <input type="text" name="kategori" value="<?=$kategori;?>" class="form-control" required>
+                                            <br>
+                                            <input type="file" name="file" class="form-control">
                                             <br>
                                             <input type="hidden" name="idb" value="<?=$idb;?>">
                                             <button type="submit" class="btn btn-primary" name="updatebarang">Submit</button>
@@ -181,13 +204,15 @@ require 'cek.php';
         </div>
 
         <!-- Modal body -->
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
         <div class="modal-body">
         <input type="text" name="namabarang" placeholder="Nama Barang" class="form-control" required>
         <br>
         <input type="text" name="kategori" placeholder="Kategori Barang" class="form-control" required>
         <br>
         <input type="number" name="stok" placeholder="stok" class="form-control" required>
+        <br>
+        <input type="file" name="file" class="form-control">
         <br>
         <button type="submit" class="btn btn-primary" name="addnewbarang">Submit</button>
         </form>

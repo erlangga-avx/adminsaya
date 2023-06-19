@@ -18,6 +18,15 @@ require 'cek.php';
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
         <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+        <style>
+            .zoomable{
+                width: 100px;
+            }
+            .zoomable:hover{
+                transform: scale(2.5);
+                transition: 0.3s ease;
+            }
+        </style>
     </head>
     <body class="sb-nav-fixed">
     <body class="sb-nav-fixed">
@@ -55,6 +64,7 @@ require 'cek.php';
                                         <thead>
                                             <tr>
                                                 <th>Tanggal</th>
+                                                <th>Gambar</th>
                                                 <th>Nama Barang</th>
                                                 <th>Jumlah</th>
                                                 <th>Keterangan</th>
@@ -84,9 +94,20 @@ require 'cek.php';
                                                 $namabarang = $data['namabarang'];
                                                 $qty = $data['qty'];
                                                 $keterangan = $data['keterangan'];
+
+                                                    //cek apakah ada gambar
+                                                $gambar = $data['image']; //mengambil gambar
+                                                if($gambar==null){
+                                                    //jika tidak ada gambar
+                                                    $img = 'Tidak Ada Gambar';
+                                                } else {
+                                                    //jika ada gambar
+                                                    $img = '<img src="images/'.$gambar.'" class="zoomable">';
+                                                }
                                             ?>
                                             <tr>
                                                 <td><?=$tanggal;?></td>
+                                                <td><?=$img;?></td>
                                                 <td><?=$namabarang;?></td>
                                                 <td><?=$qty;?></td>
                                                 <td><?=$keterangan;?></td>
