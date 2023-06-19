@@ -201,12 +201,14 @@ if(isset($_POST['updatebarangkeluar'])){
     $idb = $_POST['idb'];
     $idk = $_POST['idk'];
     $keterangan = $_POST['keterangan'];
-    $qty = $_POST['qty'];
+    $qty = $_POST['qty'];//qty baru dari user
 
+    //mengambil stok barang saat ini
     $lihatstok = mysqli_query($conn, "select * from stok where idbarang='$idb'");
     $stoknya = mysqli_fetch_array($lihatstok);
     $stokskrg = $stoknya['stok'];
     
+    //qty barang keluar saat ini
     $qtyskrg = mysqli_query($conn, "select * from keluar where idkeluar='$idk'");
     $qtynya = mysqli_fetch_array($qtyskrg);
     $qtyskrg = $qtynya['qty'];
@@ -214,14 +216,29 @@ if(isset($_POST['updatebarangkeluar'])){
     if($qty>$qtyskrg){
         $selisih = $qty-$qtyskrg;
         $kurangin = $stokskrg - $selisih;
-        $kurangistoknya = mysqli_query($conn, "update stok set stok='$kurangin' where idbarang='$idb'");
-        $updatenya = mysqli_query($conn, "update keluar set qty='$qty', keterangan='$keterangan' where idkeluar='$idk'");
+
+        if($selisih <= $stokskrg){
+            //stok cukup, keluarkan stok
+            //update tabel keluar, stok
+            $kurangistoknya = mysqli_query($conn, "update stok set stok='$kurangin' where idbarang='$idb'");
+            $updatenya = mysqli_query($conn, "update keluar set qty='$qty', keterangan='$keterangan' where idkeluar='$idk'");
             if($kurangistoknya&&$updatenya){
                     header('location:keluar.php');
                 } else {
                     echo 'Gagal';
                     header('location:keluar.php');
             }
+        } else {
+            //stok tidak cukup
+            //alert gagal
+            echo '
+                <script>
+                    alert("Stok Tidak Mencukupi");
+                    window.location.href="keluar.php";
+                </script>
+            ';
+        }
+        
     } else {
         $selisih = $qtyskrg-$qty;
         $tambahin = $stokskrg + $selisih;
