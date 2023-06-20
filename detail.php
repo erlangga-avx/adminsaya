@@ -21,6 +21,10 @@ if($gambar==null){
     $img = '<img src="images/'.$gambar.'" class="zoomable">';
 }
 
+//membuat QR
+$urlview = 'http://localhost/adminsaya/view.php?id='.$idbarang;
+$qrcode = 'https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl='.$urlview.'&choe=UTF-8';
+
 ?>
 
 
@@ -40,7 +44,7 @@ if($gambar==null){
         <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
         <style>
             .zoomable{
-                width: 200px;
+                width: 350px;
             }
             .zoomable:hover{
                 transform: scale(1.5);
@@ -59,7 +63,8 @@ if($gambar==null){
                         <div class="card mb-4 mt-4">
                             <div class="card-header">
                                 <h2><?=$namabarang;?></h2>
-                                <?=$img;?>                            
+                                <?=$img;?>
+                                <img src="<?=$qrcode;?>">                            
                             </div>
                             <div class="card-body">
 
