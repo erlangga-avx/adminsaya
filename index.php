@@ -26,6 +26,10 @@ require 'cek.php';
                 transform: scale(2.5);
                 transition: 0.3s ease;
             }
+            a{
+                text-decoration: none;
+                color: black;
+            }
         </style>
     </head>
     <body class="sb-nav-fixed">
@@ -39,7 +43,7 @@ require 'cek.php';
                         <div class="card mb-4">
                             <div class="card-header">
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-                                Tambah Barang
+                                Barang Baru
                             </button>
                             <a href="export.php" class="btn btn-success">Export Data</a>                            
                             </div>
@@ -96,7 +100,7 @@ require 'cek.php';
                                         <tr>
                                             <td><?=$i++;?></td>
                                             <td><?=$img;?></td>
-                                            <td><?=$namabarang;?></td>
+                                            <td><strong><a href="detail.php?id=<?=$idb;?>"><?=$namabarang;?></a></strong></td>
                                             <td><?=$kategori;?></td>
                                             <td><?=$stok;?></td>
                                             <td>
