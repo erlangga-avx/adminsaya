@@ -49,7 +49,7 @@ require 'cek.php';
 
                                     while ($row = mysqli_fetch_assoc($result)) {
                                         $kategori = $row['kategori'];
-                                        $modalId = str_replace([' ', '/', '\\'], '_', $kategori); // Modify kategori value to create a valid modal ID
+                                        $modalId = str_replace([' ', '/', '\\'], '_', $kategori); // Mengubah Nilai kategori agar ID modal valid
                                     ?>
                                         <tr>
                                             <td><?= $kategori; ?></td>
@@ -73,7 +73,7 @@ require 'cek.php';
                         $result = mysqli_query($conn, $query);
                         while ($row = mysqli_fetch_assoc($result)) {
                             $kategori = $row['kategori'];
-                            $modalId = str_replace([' ', '/', '\\'], '_', $kategori); // Modify kategori value to create a valid modal ID
+                            $modalId = str_replace([' ', '/', '\\'], '_', $kategori); // Mengubah id kategori agar id modal bisa valid
                         ?>
                             <div class="modal fade" id="kategoriModal<?= $modalId; ?>" tabindex="-1" aria-labelledby="kategoriModalLabel<?= $modalId; ?>" aria-hidden="true">
                                 <div class="modal-dialog">
