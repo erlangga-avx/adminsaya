@@ -27,7 +27,7 @@ require 'cek.php';
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">Kategori</h1>
                     <div class="card mb-4">
-                        <a href="exportkategori.php" class="btn btn-success" width="20%">Export Data</a>
+                        <a href="exportkategori.php" class="btn btn-success" style="height: 40px; width: 120px;">Export Data</a>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
