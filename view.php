@@ -42,7 +42,7 @@ if($gambar==null){
                 <div class="card-body">
                 <h4 class="card-title"><?=$namabarang;?></h4>
                 <h4 class="card-text"><?=$kategori;?></h4>
-                <h4 class="card-text">Stok <?=$stok;?></h4>
+                <h4 class="card-text">Stok  <?=$stok;?></h4>
                 </div>
             </div>
             <br>
