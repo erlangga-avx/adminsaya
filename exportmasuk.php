@@ -21,7 +21,19 @@ require 'cek.php';
 			<h2>GRAND Fotocopy Gambut</h2>
 			<h4>Barang Masuk</h4>
 				<div class="data-tables datatable-dark">
-					
+                <form method="post" class="mt-3">
+                                <div class="row">
+                                    <div class="col">
+                                        <input type="date" name="tgl_mulai" class="form-control">
+                                    </div>
+                                    <div class="col">
+                                        <input type="date" name="tgl_selesai" class="form-control">
+                                    </div>
+                                    <div class="col">
+                                        <button type="submit" name="filter_tgl" class="btn btn-info">Filter</button>
+                                    </div>
+                                </div>
+                            </form>
 					<!-- Masukkan table nya disini, dimulai dari tag TABLE -->
                     <table class="table table-striped" id="mauexport" width="100%" cellspacing="0">
                                     <thead>
@@ -35,6 +47,18 @@ require 'cek.php';
                                     <tbody>
                                     <?php
                                         $ambilsemuadatastok = mysqli_query($conn, "select * from masuk m, stok s where s.idbarang = m.idbarang");
+                                        if(isset($_POST['filter_tgl'])){
+                                            $mulai = $_POST['tgl_mulai'];
+                                            $selesai = $_POST['tgl_selesai'];
+    
+                                            if($mulai!=null || $selesai!=null){
+                                                $ambilsemuadatastok = mysqli_query($conn, "select * from masuk m, stok s where s.idbarang = m.idbarang and tanggal BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY)");
+                                            } else {
+                                                $ambilsemuadatastok = mysqli_query($conn, "select * from masuk m, stok s where s.idbarang = m.idbarang");
+                                            }
+                                        } else {
+                                            $ambilsemuadatastok = mysqli_query($conn, "select * from masuk m, stok s where s.idbarang = m.idbarang");
+                                        }
                                         while($data=mysqli_fetch_array($ambilsemuadatastok)){
                                             $idb = $data['idbarang'];
                                             $idm = $data['idmasuk'];
