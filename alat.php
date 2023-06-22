@@ -222,6 +222,7 @@ require 'cek.php';
                                                 <!-- Modal footer -->
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary" onclick="printModalContent('rekapmodal<?=$ida;?>')">Print</button>
                                                 </div>
 
                                                 </div>
@@ -241,6 +242,17 @@ require 'cek.php';
                 </main>
             </div>
         </div>
+        <script>
+            function printModalContent(modalId) {
+                var printContents = document.getElementById(modalId).innerHTML;
+                var originalContents = document.body.innerHTML;
+
+                document.body.innerHTML = printContents;
+                window.print();
+
+                document.body.innerHTML = originalContents;
+            }
+        </script>
         <script>
             $(document).ready(function () {
                 $('#dataTable').DataTable();
