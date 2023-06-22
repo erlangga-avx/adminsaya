@@ -125,6 +125,44 @@ if(isset($_POST['addsupplier'])){
     }
 }
 
+//menambah pesanan
+if(isset($_POST['addpesanan'])){
+    $namabarang = $_POST['namabarang'];
+    $kategori = $_POST['kategori'];
+    $qty = $_POST['qty'];
+
+    $addtotable = mysqli_query($conn,"insert into pesanan (namabarang, kategori, qty) values('$namabarang', '$kategori', '$qty')");
+    if($addtotable){
+        header('location:pesanan.php');
+    } else {
+        echo 'Gagal';
+        header('location:pesanan.php');
+    }
+}
+
+// Fungsi untuk memeriksa stok barang yang kurang dari 5 dan menambahkannya ke tabel pesanan
+function checkAndAddToOrder($conn)
+{
+    $ambilsemuadatabarang = mysqli_query($conn, "SELECT * FROM stok WHERE stok < 5");
+    while ($data = mysqli_fetch_array($ambilsemuadatabarang)) {
+        $idbarang = $data['idbarang'];
+        $namabarang = $data['namabarang'];
+        $kategori = $data['kategori'];
+
+        // Memeriksa apakah barang sudah ada dalam tabel pesanan
+        $checkPesanan = mysqli_query($conn, "SELECT * FROM pesanan WHERE namabarang = '$namabarang' AND kategori = '$kategori'");
+        $rowCount = mysqli_num_rows($checkPesanan);
+
+        // Jika barang belum ada dalam tabel pesanan, tambahkan data ke tabel pesanan
+        if ($rowCount == 0) {
+            $insertPesanan = mysqli_query($conn, "INSERT INTO pesanan (namabarang, kategori, qty) VALUES ('$namabarang', '$kategori', 100)");
+        }
+    }
+}
+
+// Panggil fungsi untuk memeriksa stok dan menambahkan barang ke tabel pesanan
+checkAndAddToOrder($conn);
+
 //menambah laporan alat
 if(isset($_POST['addalat'])){
     $namaalat = $_POST['namaalat'];
@@ -310,22 +348,25 @@ if(isset($_POST['updatebarangkeluar'])){
     }
 }
 
-//menghapus barang keluar
-if(isset($_POST['hapusbarangkeluar'])){
+// Menghapus barang keluar
+if (isset($_POST['hapusbarangkeluar'])) {
     $idb = $_POST['idb'];
     $qty = $_POST['qty'];
     $idk = $_POST['idk'];
 
-    $getdatastok = mysqli_query($conn, "select * from stok where idbarang='$idb'");
+    // Mengambil data stok sebelumnya
+    $getdatastok = mysqli_query($conn, "SELECT * FROM stok WHERE idbarang='$idb'");
     $data = mysqli_fetch_array($getdatastok);
     $stok = $data['stok'];
 
-    $selisih = $stok-$qty;
+    // Mengembalikan jumlah stok
+    $stok_baru = $stok + $qty;
 
-    $update = mysqli_query($conn, "update stok set stok='$selisih' where idbarang='$idb'");
-    $hapusdata = mysqli_query($conn, "delete from keluar where idkeluar='$idk'");
+    // Memperbarui jumlah stok pada tabel stok
+    $update = mysqli_query($conn, "UPDATE stok SET stok='$stok_baru' WHERE idbarang='$idb'");
+    $hapusdata = mysqli_query($conn, "DELETE FROM keluar WHERE idkeluar='$idk'");
 
-    if($update&&$hapusdata){
+    if ($update && $hapusdata) {
         header('location:keluar.php');
     } else {
         header('location:keluar.php');
@@ -359,6 +400,35 @@ if(isset($_POST['hapussupplier'])){
     } else {
         echo 'Gagal';
         header('location:supplier.php');
+    }
+}
+
+//update info pesanan
+if(isset($_POST['updatepesanan'])){
+    $idp = $_POST['idp'];
+    $namabarang = $_POST['namabarang'];
+    $kategori = $_POST['kategori'];
+    $qty = $_POST['qty'];
+
+    $update = mysqli_query($conn, "update pesanan set namabarang='$namabarang' , kategori='$kategori', qty='$qty' where idpesanan='$idp'");
+    if($update){
+        header('location:pesanan.php');
+    } else {
+        echo 'Gagal';
+        header('location:pesanan.php');
+    }
+}
+
+//menghapus pesanan
+if(isset($_POST['hapuspesanan'])){
+    $idp = $_POST['idp'];
+
+    $hapus = mysqli_query($conn, "delete from pesanan where idpesanan='$idp'");
+    if($hapus){
+        header('location:pesanan.php');
+    } else {
+        echo 'Gagal';
+        header('location:pesanan.php');
     }
 }
 

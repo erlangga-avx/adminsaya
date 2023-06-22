@@ -14,6 +14,10 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-upload"></i></div>
                                 Barang Keluar
                             </a>
+                            <a class="nav-link" href="pesanan.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-shopping-bag"></i></div>
+                                Pemesanan
+                            </a>
                             <a class="nav-link" href="kategori.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tag"></i></div>
                                 Kategori
