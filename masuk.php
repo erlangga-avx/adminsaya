@@ -65,6 +65,7 @@ require 'cek.php';
                                             <th>Tanggal</th>
                                             <th>Gambar</th>
                                             <th>Nama Barang</th>
+                                            <th>Pengirim</th>
                                             <th>Jumlah</th>
                                             <th>Penerima</th>
                                             <th>Pilihan</th>
@@ -93,6 +94,7 @@ require 'cek.php';
                                             $namabarang = $data['namabarang'];
                                             $qty = $data['qty'];
                                             $penerima = $data['penerima'];
+                                            $supplier = $data['supplier'];
 
                                             //cek apakah ada gambar
                                             $gambar = $data['image']; //mengambil gambar
@@ -108,6 +110,7 @@ require 'cek.php';
                                             <td><?=$tanggal;?></td>
                                             <td><?=$img;?></td>
                                             <td><?=$namabarang;?></td>
+                                            <td><?=$supplier;?></td>
                                             <td><?=$qty;?></td>
                                             <td><?=$penerima;?></td>
                                             <td>
@@ -134,6 +137,20 @@ require 'cek.php';
                                             <!-- Modal body -->
                                             <form method="post">
                                             <div class="modal-body">
+                                            <select name="suppliernya" class="form-control">
+                                                <?php
+                                                    $ambilsemuadata = mysqli_query($conn, "select *  from supplier");
+                                                    while($fetcharray = mysqli_fetch_array($ambilsemuadata)){
+                                                        $namasupplier = $fetcharray['namasupplier'];
+                                                        $idsupplier = $fetcharray['idsupplier'];
+                                                ?>
+
+                                                <option value="<?=$namasupplier;?>"><?=$namasupplier;?></option>
+                                                <?php
+                                                    }
+                                                ?>
+                                            </select>
+                                            <br>
                                             <input type="text" name="penerima" value="<?=$penerima;?>" class="form-control" required>
                                             <br>
                                             <input type="number" name="qty" value="<?=$qty;?>" class="form-control" required>
@@ -166,6 +183,7 @@ require 'cek.php';
                                             <input type="hidden" name="idb" value="<?=$idb;?>">
                                             <input type="hidden" name="qty" value="<?=$qty;?>">
                                             <input type="hidden" name="idm" value="<?=$idm;?>">
+                                            <input type="hidden" name="supplier" value="<?=$supplier;?>">
                                             <br>
                                             <br>
                                             <button type="submit" class="btn btn-danger" name="hapusbarangmasuk">Hapus</button>
@@ -227,6 +245,20 @@ require 'cek.php';
             ?>
 
             <option value="<?=$idbarangnya;?>"><?=$namabarangnya;?></option>
+            <?php
+                }
+            ?>
+        </select>
+        <br>
+        <select name="suppliernya" class="form-control">
+            <?php
+                $ambilsemuadata = mysqli_query($conn, "select *  from supplier");
+                while($fetcharray = mysqli_fetch_array($ambilsemuadata)){
+                    $namasuppliernya = $fetcharray['namasupplier'];
+                    $idsuppliernya = $fetcharray['idsupplier'];
+            ?>
+
+            <option value="<?=$namasuppliernya;?>"><?=$namasuppliernya;?></option>
             <?php
                 }
             ?>

@@ -41,6 +41,7 @@ require 'cek.php';
                     <tr>
                         <th>Tanggal</th>
                         <th>Nama Barang</th>
+                        <th>Pengirim</th>
                         <th>Jumlah</th>
                         <th>Penerima</th>
                     </tr>
@@ -67,10 +68,12 @@ require 'cek.php';
                         $namabarang = $data['namabarang'];
                         $qty = $data['qty'];
                         $penerima = $data['penerima'];
+                        $supplier = $data['supplier'];
                     ?>
                         <tr>
                             <td><?= $tanggal; ?></td>
                             <td><?php echo $namabarang; ?></td>
+                            <td><?php echo $supplier; ?></td>
                             <td><?php echo $qty; ?></td>
                             <td><?php echo $penerima; ?></td>
                         </tr>
