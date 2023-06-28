@@ -11,6 +11,7 @@ $fetch = mysqli_fetch_assoc($get);
 $namabarang = $fetch['namabarang'];
 $kategori = $fetch['kategori'];
 $stok = $fetch['stok'];
+$namasupplier = $fetch['namasupplier'];
 //cek apakah ada gambar
 $gambar = $fetch['image']; //mengambil gambar
 if($gambar==null){
@@ -89,6 +90,7 @@ $qrcode = 'https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl='.$urlview.
                                                 <th>Tanggal</th>
                                                 <th>Penerima</th>
                                                 <th>Jumlah</th>
+                                                <th>Supplier</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -100,6 +102,7 @@ $qrcode = 'https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl='.$urlview.
                                                 $tanggal = $fetch['tanggal'];
                                                 $penerima = $fetch['penerima'];
                                                 $quantity = $fetch['qty'];
+                                                $namasupplier = $fetch['namasupplier'];
                                             ?>
 
                                             <tr>
@@ -107,6 +110,7 @@ $qrcode = 'https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl='.$urlview.
                                                 <td><?=$tanggal;?></td>
                                                 <td><?=$penerima;?></td>
                                                 <td><?=$quantity;?></td>
+                                                <td><?=$namasupplier;?></td>
                                             </tr>
                                             
                                             <?php

@@ -41,6 +41,7 @@ require 'cek.php';
                                             <tr>
                                                 <th>No</th>
                                                 <th>Nama Supplier</th>
+                                                <th>Rekap</th>
                                                 <th>Kategori</th>
                                                 <th>No. Telepon Supplier</th>
                                                 <th>Alamat Supplier</th>
@@ -61,6 +62,7 @@ require 'cek.php';
                                             <tr>
                                                 <td><?=$i++;?></td>
                                                 <td><?=$namasupplier;?></td>
+                                                <td><button type="button" class="btn btn-primary"><a href="detailsupplier.php?id=<?=$ids;?>"><i class="fas fa-info" style="color: #ffffff;"></i></a></button></td>
                                                 <td><?=$kategorisupplier;?></td>
                                                 <td><?=$nomorsupplier;?></td>
                                                 <td><?=$alamat;?></td>

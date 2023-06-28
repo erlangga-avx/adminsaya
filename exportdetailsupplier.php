@@ -20,35 +20,39 @@ require 'cek.php';
 <body>
     <div class="container">
         <h2>GRAND Fotocopy Gambut</h2>
-        <h4>Kategori</h4>
+        <h4>Supplier</h4>
         <div class="data-tables datatable-dark">
 
             <!-- Masukkan table nya disini, dimulai dari tag TABLE -->
             <table class="table table-striped" id="mauexport" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>Kategori</th>
-                        <th>Jumlah Produk</th>
-                        <th>Jumlah Stok</th>
+                        <th>No</th>
+                        <th>Nama Supplier</th>
+                        <th>No. Telepon Supplier</th>
+                        <th>Alamat Supplier</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    // Query untuk mengambil data produk berdasarkan kategori
-                    $query = "SELECT kategori, SUM(stok) as total_stok, COUNT(*) as jumlah_produk FROM stok GROUP BY kategori";
-                    $result = mysqli_query($conn, $query);
-
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $kategori = $row['kategori'];
-                        $modalId = str_replace([' ', '/', '\\'], '_', $kategori); // Mengubah Nilai kategori agar ID modal valid
+                    $ambilsemuadatasupplier = mysqli_query($conn, "select * from supplier");
+                    $i = 1;
+                    while ($data = mysqli_fetch_array($ambilsemuadatasupplier)) {
+                        $ids = $data['idsupplier'];
+                        $namasupplier = $data['namasupplier'];
+                        $nomorsupplier = $data['nomorsupplier'];
+                        $alamat = $data['alamat'];
                     ?>
                         <tr>
-                            <td><?= $kategori; ?></td>
-                            <td><?= $row['jumlah_produk']; ?></td>
-                            <td><?= $row['total_stok']; ?></td>
+                            <td><?= $i++; ?></td>
+                            <td><?php echo $namasupplier; ?></td>
+                            <td><?php echo $nomorsupplier; ?></td>
+                            <td><?php echo $alamat; ?></td>
                         </tr>
+
                     <?php
-                    }
+                    };
+
                     ?>
                 </tbody>
             </table>

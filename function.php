@@ -66,7 +66,7 @@ if(isset($_POST['barangmasuk'])){
     $stoksekarang = $ambildatanya['stok'];
     $tambahkanstoksekarangdenganqty = $stoksekarang+$qty;
 
-    $addtomasuk = mysqli_query($conn, "insert into masuk (idbarang, penerima, supplier, qty) values('$barangnya', '$penerima', '$namasuppliernya', '$qty')");
+    $addtomasuk = mysqli_query($conn, "insert into masuk (idbarang, penerima, namasupplier, qty) values('$barangnya', '$penerima', '$namasuppliernya', '$qty')");
     $updatestokmasuk = mysqli_query($conn, "update stok set stok='$tambahkanstoksekarangdenganqty' where idbarang='$barangnya'");
     if($addtomasuk&&$updatestokmasuk){
         header('location:masuk.php');
@@ -250,7 +250,7 @@ if(isset($_POST['updatebarangmasuk'])){
         $selisih = $qty-$qtyskrg;
         $kurangin = $stokskrg + $selisih;
         $kurangistoknya = mysqli_query($conn, "update stok set stok='$kurangin' where idbarang='$idb'");
-        $updatenya = mysqli_query($conn, "update masuk set qty='$qty', penerima='$penerima', supplier='$namasupplier' where idmasuk='$idm'");
+        $updatenya = mysqli_query($conn, "update masuk set qty='$qty', penerima='$penerima', namasupplier='$namasupplier' where idmasuk='$idm'");
             if($kurangistoknya&&$updatenya){
                     header('location:masuk.php');
                 } else {
@@ -261,7 +261,7 @@ if(isset($_POST['updatebarangmasuk'])){
         $selisih = $qtyskrg-$qty;
         $tambahin = $stokskrg - $selisih;
         $tambahistoknya = mysqli_query($conn, "update stok set stok='$tambahin' where idbarang='$idb'");
-        $updatenya = mysqli_query($conn, "update masuk set qty='$qty', penerima='$penerima', supplier='$namasupplier' where idmasuk='$idm'");
+        $updatenya = mysqli_query($conn, "update masuk set qty='$qty', penerima='$penerima', namasupplier='$namasupplier' where idmasuk='$idm'");
             if($tambahistoknya&&$updatenya){
                     header('location:masuk.php');
                 } else {
