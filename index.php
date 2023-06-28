@@ -71,6 +71,7 @@ require 'cek.php';
                                             <th>No</th>
                                             <th>Gambar</th>
                                             <th>Nama Barang</th>
+                                            <th>Detail</th>
                                             <th>Kategori</th>
                                             <th>Stok</th>
                                             <th>Pilihan</th>
@@ -100,7 +101,8 @@ require 'cek.php';
                                         <tr>
                                             <td><?=$i++;?></td>
                                             <td><?=$img;?></td>
-                                            <td><strong><a href="detail.php?id=<?=$idb;?>"><?=$namabarang;?></a></strong></td>
+                                            <td><?=$namabarang;?></td>
+                                            <td><button type="button" class="btn btn-primary"><a href="detail.php?id=<?=$idb;?>"><i class="fas fa-info" style="color: #ffffff;"></i></a></button></td>
                                             <td><?=$kategori;?></td>
                                             <td><?=$stok;?></td>
                                             <td>
