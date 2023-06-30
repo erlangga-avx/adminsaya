@@ -47,6 +47,7 @@ $alamat = $fetch['alamat'];
             <main>
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">Riwayat Pengiriman</h1>
+                    <a href="exportdetailsupplier.php?id=<?= $idsupplier; ?>" class="btn btn-success">Export Data</a>
                     <div class="card mb-4 mt-4">
                         <div class="card-header">
                             <h2><?= $namasupplier; ?></h2>
@@ -83,6 +84,19 @@ $alamat = $fetch['alamat'];
                             <br></br>
 
                             <h3>Pengiriman yang Masuk</h3>
+                            <form method="post" class="mt-3">
+                                <div class="row">
+                                    <div class="col">
+                                        <input type="date" name="tgl_mulai" class="form-control">
+                                    </div>
+                                    <div class="col">
+                                        <input type="date" name="tgl_selesai" class="form-control">
+                                    </div>
+                                    <div class="col">
+                                        <button type="submit" name="filter_tgl" class="btn btn-info">Filter</button>
+                                    </div>
+                                </div>
+                            </form>
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
@@ -96,7 +110,19 @@ $alamat = $fetch['alamat'];
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $ambildatamasuk = mysqli_query($conn, "SELECT masuk.tanggal, stok.namabarang, masuk.qty, masuk.penerima FROM masuk JOIN stok ON masuk.idbarang = stok.idbarang WHERE masuk.namasupplier='$namasupplier'");
+
+                                        if (isset($_POST['filter_tgl'])) {
+                                            $mulai = $_POST['tgl_mulai'];
+                                            $selesai = $_POST['tgl_selesai'];
+
+                                            if ($mulai != null || $selesai != null) {
+                                                $ambildatamasuk = mysqli_query($conn, "SELECT masuk.tanggal, stok.namabarang, masuk.qty, masuk.penerima FROM masuk JOIN stok ON masuk.idbarang = stok.idbarang WHERE masuk.namasupplier='$namasupplier' and tanggal BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY)");
+                                            } else {
+                                                $ambildatamasuk = mysqli_query($conn, "SELECT masuk.tanggal, stok.namabarang, masuk.qty, masuk.penerima FROM masuk JOIN stok ON masuk.idbarang = stok.idbarang WHERE masuk.namasupplier='$namasupplier'");
+                                            }
+                                        } else {
+                                            $ambildatamasuk = mysqli_query($conn, "SELECT masuk.tanggal, stok.namabarang, masuk.qty, masuk.penerima FROM masuk JOIN stok ON masuk.idbarang = stok.idbarang WHERE masuk.namasupplier='$namasupplier'");
+                                        }
                                         $i = 1;
 
                                         while ($fetch = mysqli_fetch_array($ambildatamasuk)) {
@@ -133,12 +159,7 @@ $alamat = $fetch['alamat'];
     </div>
     <script>
         $(document).ready(function() {
-            $('#dataTables').DataTable({
-                dom: 'Bfrtip',
-                buttons: [
-                    'copy', 'excel', 'pdf', 'print'
-                ]
-            });
+            $('#dataTable').DataTable();
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

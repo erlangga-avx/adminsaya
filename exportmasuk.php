@@ -68,12 +68,12 @@ require 'cek.php';
                         $namabarang = $data['namabarang'];
                         $qty = $data['qty'];
                         $penerima = $data['penerima'];
-                        $supplier = $data['supplier'];
+                        $namasupplier = $data['namasupplier'];
                     ?>
                         <tr>
                             <td><?= $tanggal; ?></td>
                             <td><?php echo $namabarang; ?></td>
-                            <td><?php echo $supplier; ?></td>
+                            <td><?php echo $namasupplier; ?></td>
                             <td><?php echo $qty; ?></td>
                             <td><?php echo $penerima; ?></td>
                         </tr>

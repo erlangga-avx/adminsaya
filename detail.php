@@ -11,7 +11,6 @@ $fetch = mysqli_fetch_assoc($get);
 $namabarang = $fetch['namabarang'];
 $kategori = $fetch['kategori'];
 $stok = $fetch['stok'];
-$namasupplier = $fetch['namasupplier'];
 //cek apakah ada gambar
 $gambar = $fetch['image']; //mengambil gambar
 if($gambar==null){
