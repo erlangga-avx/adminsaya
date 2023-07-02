@@ -20,7 +20,7 @@ require 'cek.php';
 <body>
     <div class="container">
         <h2>GRAND Fotocopy Gambut</h2>
-        <h4>Supplier</h4>
+        <h4>Pemesanan</h4>
         <div class="data-tables datatable-dark">
             <form method="post" class="mt-3">
                 <div class="row">
