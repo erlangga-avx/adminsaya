@@ -74,6 +74,7 @@ require 'cek.php';
                                             <th>Detail</th>
                                             <th>Kategori</th>
                                             <th>Stok</th>
+                                            <th>Satuan</th>
                                             <th>Pilihan</th>
                                         </tr>
                                     </thead>
@@ -84,6 +85,7 @@ require 'cek.php';
                                         while($data=mysqli_fetch_array($ambilsemuadatastok)){
                                             $namabarang = $data['namabarang'];
                                             $kategori = $data['kategori'];
+                                            $satuan = $data['satuan'];
                                             $stok = $data['stok'];
                                             $idb = $data['idbarang'];
 
@@ -105,6 +107,7 @@ require 'cek.php';
                                             <td><button type="button" class="btn btn-primary"><a href="detail.php?id=<?=$idb;?>"><i class="fas fa-info" style="color: #ffffff;"></i></a></button></td>
                                             <td><?=$kategori;?></td>
                                             <td><?=$stok;?></td>
+                                            <td><?=$satuan;?></td>
                                             <td>
                                                 <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?=$idb;?>">
                                                     Edit
@@ -132,6 +135,8 @@ require 'cek.php';
                                             <input type="text" name="namabarang" value="<?=$namabarang;?>" class="form-control" required>
                                             <br>
                                             <input type="text" name="kategori" value="<?=$kategori;?>" class="form-control" required>
+                                            <br>
+                                            <input type="text" name="satuan" value="<?=$satuan;?>" class="form-control" required>
                                             <br>
                                             <input type="file" name="file" class="form-control">
                                             <br>
@@ -217,6 +222,8 @@ require 'cek.php';
         <input type="text" name="kategori" placeholder="Kategori Barang" class="form-control" required>
         <br>
         <input type="number" name="stok" placeholder="stok" class="form-control" required>
+        <br>
+        <input type="text" name="satuan" placeholder="satuan" class="form-control" required>
         <br>
         <input type="file" name="file" class="form-control">
         <br>

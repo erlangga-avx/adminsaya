@@ -94,13 +94,17 @@ $qrcode = 'https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl='.$urlview.
                                         </thead>
                                         <tbody>
                                             <?php
-                                            $ambildatamasuk= mysqli_query($conn, "select * from masuk where idbarang='$idbarang'");
+                                            
+                                            $query = "select m.*, s.namasupplier from masuk m join supplier s on m.idsupplier = s.idsupplier where m.idbarang='$idbarang'";
+
+                                            $ambildatamasuk= mysqli_query($conn, $query);
                                             $i = 1;
 
                                             while($fetch=mysqli_fetch_array($ambildatamasuk)){
                                                 $tanggal = $fetch['tanggal'];
                                                 $penerima = $fetch['penerima'];
                                                 $quantity = $fetch['qty'];
+                                                $idsupplier = $fetch['idsupplier'];
                                                 $namasupplier = $fetch['namasupplier'];
                                             ?>
 

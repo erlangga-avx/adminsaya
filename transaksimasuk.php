@@ -12,21 +12,12 @@ require 'cek.php';
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Barang Masuk - GRAND Inventory</title>
+        <title>Transaksi Barang Masuk - GRAND Inventory</title>
         <link href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
         <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
-        <style>
-            .zoomable{
-                width: 100px;
-            }
-            .zoomable:hover{
-                transform: scale(2.5);
-                transition: 0.3s ease;
-            }
-        </style>
     </head>
     <body class="sb-nav-fixed">
         <?php include "components/nav.php" ?>
@@ -35,11 +26,11 @@ require 'cek.php';
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Barang Masuk</h1>
+                        <h1 class="mt-4">Transaksi Barang Masuk</h1>
                         <div class="card mb-4">
                             <div class="card-header">
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-                                Tambah Barang
+                                Tambah Transaksi
                             </button>
                             <a href="exportmasuk.php" class="btn btn-success">Export Data</a>
                             <br>
@@ -63,11 +54,10 @@ require 'cek.php';
                                     <thead>
                                         <tr>
                                             <th>Tanggal</th>
-                                            <th>Gambar</th>
-                                            <th>Nama Barang</th>
                                             <th>Pengirim</th>
+                                            <th>Penerima</th>
+                                            <th>Nomor Nota</th>
                                             <th>Jumlah</th>
-                                            <th>Satuan</th>
                                             <th>Penerima</th>
                                             <th>Pilihan</th>
                                         </tr>
@@ -80,42 +70,28 @@ require 'cek.php';
                                         $selesai = $_POST['tgl_selesai'];
 
                                         if($mulai!=null || $selesai!=null){
-                                            $ambilsemuadatastok = mysqli_query($conn, "select * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier and tanggal BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY)");
+                                            $ambilsemuadatastok = mysqli_query($conn, "select * from masuk m, stok s where s.idbarang = m.idbarang and tanggal BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY)");
                                         } else {
-                                            $ambilsemuadatastok = mysqli_query($conn, "select * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier");
+                                            $ambilsemuadatastok = mysqli_query($conn, "select * from masuk m, stok s where s.idbarang = m.idbarang");
                                         }
                                     } else {
-                                        $ambilsemuadatastok = mysqli_query($conn, "select * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier");
+                                        $ambilsemuadatastok = mysqli_query($conn, "select * from masuk m, stok s where s.idbarang = m.idbarang");
                                     }
                                     
                                         while($data=mysqli_fetch_array($ambilsemuadatastok)){
                                             $idb = $data['idbarang'];
                                             $idm = $data['idmasuk'];
                                             $tanggal = $data['tanggal'];
-                                            $satuan = $data['satuan'];
                                             $namabarang = $data['namabarang'];
                                             $qty = $data['qty'];
                                             $penerima = $data['penerima'];
-                                            $ids = $data['idsupplier'];
                                             $namasupplier = $data['namasupplier'];
-
-                                            //cek apakah ada gambar
-                                            $gambar = $data['image']; //mengambil gambar
-                                            if($gambar==null){
-                                                //jika tidak ada gambar
-                                                $img = 'Tidak Ada Gambar';
-                                            } else {
-                                                //jika ada gambar
-                                                $img = '<img src="images/'.$gambar.'" class="zoomable">';
-                                            }
                                         ?>
                                         <tr>
                                             <td><?=$tanggal;?></td>
-                                            <td><?=$img;?></td>
                                             <td><?=$namabarang;?></td>
                                             <td><?=$namasupplier;?></td>
                                             <td><?=$qty;?></td>
-                                            <td><?=$satuan;?></td>
                                             <td><?=$penerima;?></td>
                                             <td>
                                                 <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?=$idm;?>">
@@ -149,7 +125,7 @@ require 'cek.php';
                                                         $idsupplier = $fetcharray['idsupplier'];
                                                 ?>
 
-                                                <option value="<?=$idsupplier;?>"><?=$namasupplier;?></option>
+                                                <option value="<?=$namasupplier;?>"><?=$namasupplier;?></option>
                                                 <?php
                                                     }
                                                 ?>
@@ -158,8 +134,6 @@ require 'cek.php';
                                             <input type="text" name="penerima" value="<?=$penerima;?>" class="form-control" required>
                                             <br>
                                             <input type="number" name="qty" value="<?=$qty;?>" class="form-control" required>
-                                            <br>
-                                            <input type="text" name="satuan" value="<?=$satuan;?>" class="form-control" required>
                                             <br>
                                             <input type="hidden" name="idb" value="<?=$idb;?>">
                                             <input type="hidden" name="idm" value="<?=$idm;?>">
@@ -189,8 +163,7 @@ require 'cek.php';
                                             <input type="hidden" name="idb" value="<?=$idb;?>">
                                             <input type="hidden" name="qty" value="<?=$qty;?>">
                                             <input type="hidden" name="idm" value="<?=$idm;?>">
-                                            <input type="hidden" name="ids" value="<?=$ids;?>">
-                                            <input type="hidden" name="satuan" value="<?=$satuan;?>">
+                                            <input type="hidden" name="namasupplier" value="<?=$namasupplier;?>">
                                             <br>
                                             <br>
                                             <button type="submit" class="btn btn-danger" name="hapusbarangmasuk">Hapus</button>
@@ -265,15 +238,13 @@ require 'cek.php';
                     $idsuppliernya = $fetcharray['idsupplier'];
             ?>
 
-            <option value="<?=$idsuppliernya;?>"><?=$namasuppliernya;?></option>
+            <option value="<?=$namasuppliernya;?>"><?=$namasuppliernya;?></option>
             <?php
                 }
             ?>
         </select>
         <br>
         <input type="number" name="qty" placeholder="jumlah" class="form-control" required>
-        <br>
-        <input type="text" name="satuan" placeholder="satuan" class="form-control" required>
         <br>
         <input type="text" name="penerima" placeholder="Penerima" class="form-control" required>
         <br>

@@ -8,6 +8,7 @@ if(isset($_POST['addnewbarang'])){
     $namabarang = $_POST['namabarang'];
     $kategori = $_POST['kategori'];
     $stok = $_POST['stok'];
+    $satuan = $_POST['satuan'];
 
     //untuk gambar..
     $allowed_extension = array('png','jpg');
@@ -26,7 +27,7 @@ if(isset($_POST['addnewbarang'])){
         if($ukuran < 15000000){
             move_uploaded_file($file_tmp, 'images/'.$image);
 
-            $addtotable = mysqli_query($conn,"insert into stok (namabarang, kategori, stok, image) values('$namabarang', '$kategori', '$stok', '$image')");
+            $addtotable = mysqli_query($conn,"insert into stok (namabarang, kategori, stok, image, satuan) values('$namabarang', '$kategori', '$stok', '$image', '$satuan')");
             if($addtotable){
                 header('location:index.php');
             } else {
@@ -58,15 +59,19 @@ if(isset($_POST['barangmasuk'])){
     $barangnya = $_POST['barangnya'];
     $penerima = $_POST['penerima'];
     $qty = $_POST['qty'];
-    $namasuppliernya = $_POST['suppliernya'];
+    $satuan = $_POST['satuan'];
+    $suppliernya = $_POST['suppliernya'];
 
     $cekstoksekarang = mysqli_query($conn, "select * from stok where idbarang='$barangnya'");
     $ambildatanya = mysqli_fetch_array($cekstoksekarang);
+
+    $ceksupplier = mysqli_query($conn, "select * from supplier where idsupplier='$suppliernya'");
+    $ambildatasupplier = mysqli_fetch_array($ceksupplier);
     
     $stoksekarang = $ambildatanya['stok'];
     $tambahkanstoksekarangdenganqty = $stoksekarang+$qty;
 
-    $addtomasuk = mysqli_query($conn, "insert into masuk (idbarang, penerima, namasupplier, qty) values('$barangnya', '$penerima', '$namasuppliernya', '$qty')");
+    $addtomasuk = mysqli_query($conn, "insert into masuk (idbarang, penerima, idsupplier, qty, satuan) values('$barangnya', '$penerima', '$suppliernya', '$qty', '$satuan')");
     $updatestokmasuk = mysqli_query($conn, "update stok set stok='$tambahkanstoksekarangdenganqty' where idbarang='$barangnya'");
     if($addtomasuk&&$updatestokmasuk){
         header('location:masuk.php');
@@ -236,7 +241,7 @@ if(isset($_POST['updatebarangmasuk'])){
     $idm = $_POST['idm'];
     $penerima = $_POST['penerima'];
     $qty = $_POST['qty'];
-    $namasupplier = $_POST['suppliernya'];
+    $suppliernya = $_POST['suppliernya'];
 
     $lihatstok = mysqli_query($conn, "select * from stok where idbarang='$idb'");
     $stoknya = mysqli_fetch_array($lihatstok);
@@ -246,11 +251,14 @@ if(isset($_POST['updatebarangmasuk'])){
     $qtynya = mysqli_fetch_array($qtyskrg);
     $qtyskrg = $qtynya['qty'];
 
+    $ceksupplier = mysqli_query($conn, "select * from supplier where idsupplier='$suppliernya'");
+    $ambildatasupplier = mysqli_fetch_array($ceksupplier);
+
     if($qty>$qtyskrg){
         $selisih = $qty-$qtyskrg;
         $kurangin = $stokskrg + $selisih;
         $kurangistoknya = mysqli_query($conn, "update stok set stok='$kurangin' where idbarang='$idb'");
-        $updatenya = mysqli_query($conn, "update masuk set qty='$qty', penerima='$penerima', namasupplier='$namasupplier' where idmasuk='$idm'");
+        $updatenya = mysqli_query($conn, "update masuk set qty='$qty', penerima='$penerima', idsupplier='$suppliernya' where idmasuk='$idm'");
             if($kurangistoknya&&$updatenya){
                     header('location:masuk.php');
                 } else {
@@ -261,7 +269,7 @@ if(isset($_POST['updatebarangmasuk'])){
         $selisih = $qtyskrg-$qty;
         $tambahin = $stokskrg - $selisih;
         $tambahistoknya = mysqli_query($conn, "update stok set stok='$tambahin' where idbarang='$idb'");
-        $updatenya = mysqli_query($conn, "update masuk set qty='$qty', penerima='$penerima', namasupplier='$namasupplier' where idmasuk='$idm'");
+        $updatenya = mysqli_query($conn, "update masuk set qty='$qty', penerima='$penerima', idsupplier='$suppliernya' where idmasuk='$idm'");
             if($tambahistoknya&&$updatenya){
                     header('location:masuk.php');
                 } else {
@@ -276,11 +284,14 @@ if(isset($_POST['hapusbarangmasuk'])){
     $idb = $_POST['idb'];
     $qty = $_POST['qty'];
     $idm = $_POST['idm'];
-    $supplier = $_POST['supplier'];
+    $suppliernya = $_POST['suppliernya'];
 
     $getdatastok = mysqli_query($conn, "select * from stok where idbarang='$idb'");
     $data = mysqli_fetch_array($getdatastok);
     $stok = $data['stok'];
+
+    $ceksupplier = mysqli_query($conn, "select * from supplier where idsupplier='$suppliernya'");
+    $ambildatasupplier = mysqli_fetch_array($ceksupplier);
 
     $selisih = $stok-$qty;
 
