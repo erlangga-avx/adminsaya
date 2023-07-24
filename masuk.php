@@ -64,12 +64,15 @@ require 'cek.php';
                                         <tr>
                                             <th>Tanggal</th>
                                             <th>Gambar</th>
+                                            <th>Kode Transaksi</th>
                                             <th>Nama Barang</th>
                                             <th>Pengirim</th>
                                             <th>Jumlah</th>
                                             <th>Satuan</th>
                                             <th>Penerima</th>
+                                            <!--
                                             <th>Pilihan</th>
+                                            -->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -91,6 +94,8 @@ require 'cek.php';
                                         while($data=mysqli_fetch_array($ambilsemuadatastok)){
                                             $idb = $data['idbarang'];
                                             $idm = $data['idmasuk'];
+                                            $idt = $data['idtransaksi'];
+                                            $kodetransaksi = $data['kodetransaksi'];
                                             $tanggal = $data['tanggal'];
                                             $satuan = $data['satuan'];
                                             $namabarang = $data['namabarang'];
@@ -112,11 +117,13 @@ require 'cek.php';
                                         <tr>
                                             <td><?=$tanggal;?></td>
                                             <td><?=$img;?></td>
+                                            <td><?=$kodetransaksi;?></td>
                                             <td><?=$namabarang;?></td>
                                             <td><?=$namasupplier;?></td>
                                             <td><?=$qty;?></td>
                                             <td><?=$satuan;?></td>
                                             <td><?=$penerima;?></td>
+                                            <!--
                                             <td>
                                                 <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?=$idm;?>">
                                                     Edit
@@ -125,6 +132,7 @@ require 'cek.php';
                                                     Delete
                                                 </button>
                                             </td>
+                                            -->
                                         </tr>
 
                                          <!-- Edit Modal -->

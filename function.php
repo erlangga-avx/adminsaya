@@ -131,6 +131,51 @@ if(isset($_POST['addsupplier'])){
     }
 }
 
+// Fungsi untuk mendapatkan nomor urutan transaksi terakhir dalam database untuk bulan dan tahun yang sama
+function getLastTransactionNumber($conn, $bulan, $tahun)
+{
+    $query = "SELECT MAX(SUBSTRING(kodetransaksi, 8, 3)) AS max_urutan FROM transaksimasuk WHERE SUBSTRING(kodetransaksi, 4, 2) = '$bulan' AND SUBSTRING(kodetransaksi, 5, 4) = '$tahun'";
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
+
+    return $row['max_urutan'] ? $row['max_urutan'] : 0;
+}
+
+// Mendapatkan bulan dan tahun saat ini
+$bulanSekarang = date('m');
+$tahunSekarang = date('Y');
+
+// Cek apakah ada transaksi pada bulan dan tahun saat ini
+$urutanTransaksi = getLastTransactionNumber($conn, $bulanSekarang, $tahunSekarang);
+$urutanTransaksi++; // Increment nomor urutan transaksi untuk transaksi baru
+
+// Jika bulan berubah, atur nomor urutan transaksi kembali menjadi 1
+if ($bulanSekarang != $_SESSION['bulan_terakhir']) {
+    $urutanTransaksi = 1;
+    $_SESSION['bulan_terakhir'] = $bulanSekarang; // Simpan bulan terakhir dalam session
+}
+
+// Generate the full transaction code
+$kodetransaksi = 'GRD' . $tahunSekarang . $bulanSekarang . str_pad($urutanTransaksi, 3, '0', STR_PAD_LEFT);
+
+// Selanjutnya, Anda bisa menyimpan $urutanTransaksi ke database setiap kali ada transaksi baru.
+
+if (isset($_POST['addtransaksimasuk'])) {
+    $pengirim = $_POST['pengirim'];
+    $penerima = $_POST['penerima'];
+    $nota = $_POST['nota'];
+    $keterangan = $_POST['keterangan'];
+
+    // Menyimpan $kodetransaksi ke dalam tabel sebelum melakukan query insert
+    $addtotable = mysqli_query($conn, "INSERT INTO transaksimasuk (kodetransaksi, pengirim, penerima, nota, keterangan) VALUES ('$kodetransaksi', '$pengirim', '$penerima', '$nota', '$keterangan')");
+    if ($addtotable) {
+        header('location: transaksimasuk.php');
+    } else {
+        echo 'Gagal';
+        header('location: transaksimasuk.php');
+    }
+}
+
 //menambah pesanan
 if(isset($_POST['addpesanan'])){
     $namabarang = $_POST['namabarang'];

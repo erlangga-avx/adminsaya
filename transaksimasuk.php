@@ -18,6 +18,15 @@ require 'cek.php';
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
         <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+        <style>
+            .zoomable{
+                width: 100px;
+            }
+            .zoomable:hover{
+                transform: scale(2.5);
+                transition: 0.3s ease;
+            }
+        </style>
     </head>
     <body class="sb-nav-fixed">
         <?php include "components/nav.php" ?>
@@ -53,12 +62,13 @@ require 'cek.php';
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
+                                            <th>Kode Transaksi</th>
                                             <th>Tanggal</th>
                                             <th>Pengirim</th>
                                             <th>Penerima</th>
                                             <th>Nomor Nota</th>
-                                            <th>Jumlah</th>
-                                            <th>Penerima</th>
+                                            <th>Keterangan</th>
+                                            <th>Detail</th>
                                             <th>Pilihan</th>
                                         </tr>
                                     </thead>
@@ -70,51 +80,59 @@ require 'cek.php';
                                         $selesai = $_POST['tgl_selesai'];
 
                                         if($mulai!=null || $selesai!=null){
-                                            $ambilsemuadatastok = mysqli_query($conn, "select * from masuk m, stok s where s.idbarang = m.idbarang and tanggal BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY)");
+                                            $ambilsemuadatatransaksi = mysqli_query($conn, "select * from transaksimasuk and tanggal BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY)");
                                         } else {
-                                            $ambilsemuadatastok = mysqli_query($conn, "select * from masuk m, stok s where s.idbarang = m.idbarang");
+                                            $ambilsemuadatatransaksi = mysqli_query($conn, "select * from transaksimasuk");
                                         }
                                     } else {
-                                        $ambilsemuadatastok = mysqli_query($conn, "select * from masuk m, stok s where s.idbarang = m.idbarang");
+                                        $ambilsemuadatatransaksi = mysqli_query($conn, "select * from transaksimasuk");
                                     }
                                     
-                                        while($data=mysqli_fetch_array($ambilsemuadatastok)){
-                                            $idb = $data['idbarang'];
-                                            $idm = $data['idmasuk'];
+                                        while($data=mysqli_fetch_array($ambilsemuadatatransaksi)){
+                                            $idt = $data['idtransaksi'];
                                             $tanggal = $data['tanggal'];
-                                            $namabarang = $data['namabarang'];
-                                            $qty = $data['qty'];
+                                            $kodetransaksi = $data['kodetransaksi'];
+                                            $pengirim = $data['pengirim'];
                                             $penerima = $data['penerima'];
-                                            $namasupplier = $data['namasupplier'];
+                                            $nota = $data['nota'];
+                                            $keterangan = $data['keterangan'];
+
+                                            //cek apakah ada keterangan
+                                            if ($keterangan == null) {
+                                                //jika tidak ada keterangan
+                                                $keterangan = '-';
+                                            }
                                         ?>
                                         <tr>
+                                            <td><?=$kodetransaksi;?></td>
                                             <td><?=$tanggal;?></td>
-                                            <td><?=$namabarang;?></td>
-                                            <td><?=$namasupplier;?></td>
-                                            <td><?=$qty;?></td>
+                                            <td><?=$pengirim;?></td>
                                             <td><?=$penerima;?></td>
+                                            <td><?=$nota;?></td>
+                                            <td><?=$keterangan;?></td>
                                             <td>
-                                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?=$idm;?>">
-                                                    Edit
-                                                </button>
-                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete<?=$idm;?>">
-                                                    Delete
-                                                </button>
+                                                <a href="detailtransaksi.php?id=<?=$idt;?>">
+                                                    <i class="fa-solid fa-bars"></i>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <i class="fa-solid fa-delete-left" data-bs-toggle="modal" data-bs-target="#delete<?=$idm;?>"></i>
                                             </td>
                                         </tr>
 
-                                         <!-- Edit Modal -->
+                                        <!--
+                                          Edit Modal
                                          <div class="modal fade" id="edit<?=$idm;?>">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
 
-                                            <!-- Modal Header -->
+                                            Modal Header
                                             <div class="modal-header">
                                                 <h4 class="modal-title">Edit Barang Masuk</h4>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                             </div>
 
-                                            <!-- Modal body -->
+                                            Modal body
                                             <form method="post">
                                             <div class="modal-body">
                                             <select name="suppliernya" class="form-control">
@@ -125,7 +143,7 @@ require 'cek.php';
                                                         $idsupplier = $fetcharray['idsupplier'];
                                                 ?>
 
-                                                <option value="<?=$namasupplier;?>"><?=$namasupplier;?></option>
+                                                <option value="<?=$idsupplier;?>"><?=$namasupplier;?></option>
                                                 <?php
                                                     }
                                                 ?>
@@ -135,6 +153,8 @@ require 'cek.php';
                                             <br>
                                             <input type="number" name="qty" value="<?=$qty;?>" class="form-control" required>
                                             <br>
+                                            <input type="text" name="satuan" value="<?=$satuan;?>" class="form-control" required>
+                                            <br>
                                             <input type="hidden" name="idb" value="<?=$idb;?>">
                                             <input type="hidden" name="idm" value="<?=$idm;?>">
                                             <button type="submit" class="btn btn-primary" name="updatebarangmasuk">Submit</button>
@@ -143,7 +163,8 @@ require 'cek.php';
 
                                             </div>
                                         </div>
-                                        </div>
+                                        </div> 
+                                        -->
 
                                         <!-- Hapus Modal -->
                                         <div class="modal fade" id="delete<?=$idm;?>">
@@ -163,7 +184,8 @@ require 'cek.php';
                                             <input type="hidden" name="idb" value="<?=$idb;?>">
                                             <input type="hidden" name="qty" value="<?=$qty;?>">
                                             <input type="hidden" name="idm" value="<?=$idm;?>">
-                                            <input type="hidden" name="namasupplier" value="<?=$namasupplier;?>">
+                                            <input type="hidden" name="ids" value="<?=$ids;?>">
+                                            <input type="hidden" name="satuan" value="<?=$satuan;?>">
                                             <br>
                                             <br>
                                             <button type="submit" class="btn btn-danger" name="hapusbarangmasuk">Hapus</button>
@@ -200,7 +222,6 @@ require 'cek.php';
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
     </body>
-
             <!-- The Modal -->
             <div class="modal fade" id="myModal">
     <div class="modal-dialog">
@@ -208,7 +229,7 @@ require 'cek.php';
 
         <!-- Modal Header -->
         <div class="modal-header">
-            <h4 class="modal-title">Tambah Barang Masuk</h4>
+            <h4 class="modal-title">Tambah Transaksi Barang Masuk</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
 
@@ -216,42 +237,19 @@ require 'cek.php';
         <form method="post">
         <div class="modal-body">
 
-        <select name="barangnya" class="form-control">
-            <?php
-                $ambilsemuadata = mysqli_query($conn, "select *  from stok");
-                while($fetcharray = mysqli_fetch_array($ambilsemuadata)){
-                    $namabarangnya = $fetcharray['namabarang'];
-                    $idbarangnya = $fetcharray['idbarang'];
-            ?>
-
-            <option value="<?=$idbarangnya;?>"><?=$namabarangnya;?></option>
-            <?php
-                }
-            ?>
-        </select>
+        <input type="text" name="kodetransaksi" value="<?php echo $kodetransaksi;?>" class="form-control" disabled>
         <br>
-        <select name="suppliernya" class="form-control">
-            <?php
-                $ambilsemuadata = mysqli_query($conn, "select *  from supplier");
-                while($fetcharray = mysqli_fetch_array($ambilsemuadata)){
-                    $namasuppliernya = $fetcharray['namasupplier'];
-                    $idsuppliernya = $fetcharray['idsupplier'];
-            ?>
-
-            <option value="<?=$namasuppliernya;?>"><?=$namasuppliernya;?></option>
-            <?php
-                }
-            ?>
-        </select>
-        <br>
-        <input type="number" name="qty" placeholder="jumlah" class="form-control" required>
+        <input type="text" name="pengirim" placeholder="Pengirim" class="form-control" required>
         <br>
         <input type="text" name="penerima" placeholder="Penerima" class="form-control" required>
         <br>
-        <button type="submit" class="btn btn-primary" name="barangmasuk">Submit</button>
+        <input type="text" name="nota" placeholder="Nomor Nota" class="form-control" required>
+        <br>
+        <input type="text" name="keterangan" placeholder="Keterangan" class="form-control">
+        <br>
+        <button type="submit" class="btn btn-primary" name="addtransaksimasuk">Submit</button>
         </form>
         </div>
-
         </div>
     </div>
     </div>
