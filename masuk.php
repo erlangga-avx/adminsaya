@@ -38,9 +38,9 @@ require 'cek.php';
                         <h1 class="mt-4">Barang Masuk</h1>
                         <div class="card mb-4">
                             <div class="card-header">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+                                <!--<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
                                 Tambah Barang
-                            </button>
+                            </button> -->
                             <a href="exportmasuk.php" class="btn btn-success">Export Data</a>
                             <br>
                             <form method="post" class="mt-3">
@@ -67,9 +67,9 @@ require 'cek.php';
                                             <th>Kode Transaksi</th>
                                             <th>Nama Barang</th>
                                             <th>Pengirim</th>
+                                            <th>Nomor Nota</th>
                                             <th>Jumlah</th>
                                             <th>Satuan</th>
-                                            <th>Penerima</th>
                                             <!--
                                             <th>Pilihan</th>
                                             -->
@@ -103,6 +103,7 @@ require 'cek.php';
                                             $penerima = $data['penerima'];
                                             $ids = $data['idsupplier'];
                                             $namasupplier = $data['namasupplier'];
+                                            $nota = $data['nota'];
 
                                             //cek apakah ada gambar
                                             $gambar = $data['image']; //mengambil gambar
@@ -120,9 +121,9 @@ require 'cek.php';
                                             <td><?=$kodetransaksi;?></td>
                                             <td><?=$namabarang;?></td>
                                             <td><?=$namasupplier;?></td>
+                                            <td><?=$nota;?></td>
                                             <td><?=$qty;?></td>
                                             <td><?=$satuan;?></td>
-                                            <td><?=$penerima;?></td>
                                             <!--
                                             <td>
                                                 <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?=$idm;?>">
@@ -162,8 +163,6 @@ require 'cek.php';
                                                     }
                                                 ?>
                                             </select>
-                                            <br>
-                                            <input type="text" name="penerima" value="<?=$penerima;?>" class="form-control" required>
                                             <br>
                                             <input type="number" name="qty" value="<?=$qty;?>" class="form-control" required>
                                             <br>
@@ -282,8 +281,6 @@ require 'cek.php';
         <input type="number" name="qty" placeholder="jumlah" class="form-control" required>
         <br>
         <input type="text" name="satuan" placeholder="satuan" class="form-control" required>
-        <br>
-        <input type="text" name="penerima" placeholder="Penerima" class="form-control" required>
         <br>
         <button type="submit" class="btn btn-primary" name="barangmasuk">Submit</button>
         </form>

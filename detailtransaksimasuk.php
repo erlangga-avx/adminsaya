@@ -12,8 +12,7 @@ $tanggal = $fetch['tanggal'];
 $kodetransaksi = $fetch['kodetransaksi'];
 $pengirim = $fetch['pengirim'];
 $penerima = $fetch['penerima'];
-$nota = $fetch['nota'];
-$keterangan = $fetch['keterangan'];
+$jumlah = $fetch['jumlah'];
 ?>
 
 
@@ -52,10 +51,6 @@ $keterangan = $fetch['keterangan'];
                             <input type="text" name="pengirim" value="Pengirim : <?php echo $pengirim; ?>" class="form-control" disabled>
                             <br>
                             <input type="text" name="penerima" value="Penerima : <?php echo $penerima; ?>" class="form-control" disabled>
-                            <br>
-                            <input type="text" name="nota" value="Nomor Nota : <?php echo $nota; ?>" class="form-control" disabled>
-                            <br>
-                            <input type="text" name="keterangan" value="Keterangan Tambahan : <?php echo $keterangan; ?>" class="form-control" disabled>
 
                             <br></br>
 
@@ -70,7 +65,7 @@ $keterangan = $fetch['keterangan'];
                                     </form>
                                 </div>
                                 <div class="table-responsive">
-                                    <table class="table table-bordered" id="barangmasuk" width="100%" cellspacing="0">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
                                                 <th>Nama Barang</th>
@@ -202,6 +197,15 @@ $keterangan = $fetch['keterangan'];
 
                         </tbody>
                         </table>
+                        <br>
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+                                Simpan
+                            </button>
+                            <br>
+                            <form method="post" class="mt-3">
+                            </form>
+                        </div>
                         </div>
 
                         <br></br>
@@ -212,6 +216,11 @@ $keterangan = $fetch['keterangan'];
         </main>
     </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable();
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="js/scripts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
@@ -226,56 +235,62 @@ $keterangan = $fetch['keterangan'];
     <div class="modal-dialog">
         <div class="modal-content">
 
-        <!-- Modal Header -->
-        <div class="modal-header">
-            <h4 class="modal-title">Tambah Barang Masuk</h4>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Tambah Barang Masuk</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <form method="post">
+                <div class="modal-body">
+
+                    <select name="barangnya" class="form-control">
+                        <?php
+                        $ambilsemuadata = mysqli_query($conn, "select *  from stok");
+                        while ($fetcharray = mysqli_fetch_array($ambilsemuadata)) {
+                            $namabarangnya = $fetcharray['namabarang'];
+                            $idbarangnya = $fetcharray['idbarang'];
+                        ?>
+
+                            <option value="<?= $idbarangnya; ?>"><?= $namabarangnya; ?></option>
+                        <?php
+                        }
+                        ?>
+                    </select>
+                    <br>
+                    <select name="suppliernya" class="form-control">
+                        <?php
+                        $ambilsemuadata = mysqli_query($conn, "select *  from supplier");
+                        while ($fetcharray = mysqli_fetch_array($ambilsemuadata)) {
+                            $namasuppliernya = $fetcharray['namasupplier'];
+                            $idsuppliernya = $fetcharray['idsupplier'];
+                        ?>
+
+                            <option value="<?= $idsuppliernya; ?>"><?= $namasuppliernya; ?></option>
+                        <?php
+                        }
+                        ?>
+                    </select>
+                    <br>
+                    <input type="text" name="nota" placeholder="nomor nota" class="form-control" required>
+                    <br>
+                    <input type="number" name="qty" placeholder="jumlah" class="form-control" required>
+                    <br>
+                    <select name="satuan" class="form-control" required>
+                        <option value="pcs">pcs</option>
+                        <option value="rim">rim</option>
+                        <option value="ply">ply</option>
+                        <option value="pack">pack</option>
+                    </select>
+                    <!--<input type="text" name="satuan" placeholder="satuan" class="form-control" required>-->
+                    <br>
+                    <button type="submit" class="btn btn-primary" name="barangmasuk">Submit</button>
+            </form>
         </div>
 
-        <!-- Modal body -->
-        <form method="post">
-        <div class="modal-body">
-
-        <select name="barangnya" class="form-control">
-            <?php
-                $ambilsemuadata = mysqli_query($conn, "select *  from stok");
-                while($fetcharray = mysqli_fetch_array($ambilsemuadata)){
-                    $namabarangnya = $fetcharray['namabarang'];
-                    $idbarangnya = $fetcharray['idbarang'];
-            ?>
-
-            <option value="<?=$idbarangnya;?>"><?=$namabarangnya;?></option>
-            <?php
-                }
-            ?>
-        </select>
-        <br>
-        <select name="suppliernya" class="form-control">
-            <?php
-                $ambilsemuadata = mysqli_query($conn, "select *  from supplier");
-                while($fetcharray = mysqli_fetch_array($ambilsemuadata)){
-                    $namasuppliernya = $fetcharray['namasupplier'];
-                    $idsuppliernya = $fetcharray['idsupplier'];
-            ?>
-
-            <option value="<?=$idsuppliernya;?>"><?=$namasuppliernya;?></option>
-            <?php
-                }
-            ?>
-        </select>
-        <br>
-        <input type="text" name="nota" placeholder="nomor nota" class="form-control" required>
-        <br>
-        <input type="number" name="qty" placeholder="jumlah" class="form-control" required>
-        <br>
-        <input type="text" name="satuan" placeholder="satuan" class="form-control" required>
-        <br>
-        <button type="submit" class="btn btn-primary" name="barangmasuk">Submit</button>
-        </form>
-        </div>
-
-        </div>
     </div>
-    </div>
+</div>
+</div>
 
 </html>
