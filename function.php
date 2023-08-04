@@ -138,8 +138,8 @@ $data = mysqli_fetch_array($sql);
 $kode = $data['maxID'];
 
 $kode++;
-$ket = "EN/";
-$tgl = date("ymd/");
+$ket = "EN";
+$tgl = date("ymd");
 $kodeauto = $ket . $tgl . sprintf("%03s", $kode);
 
 //menambah transaksi masuk

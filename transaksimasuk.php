@@ -42,9 +42,7 @@ require 'cek.php';
                     <h1 class="mt-4">Transaksi Barang Masuk</h1>
                     <div class="card mb-4">
                         <div class="card-header">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-                                Tambah Transaksi
-                            </button>
+                            <a href="tr_masuk.php" class="btn btn-primary"> Tambah Transaksi</a>
                             <a href="exportmasuk.php" class="btn btn-success">Export Data</a>
                             <br>
                             <form method="post" class="mt-3">
