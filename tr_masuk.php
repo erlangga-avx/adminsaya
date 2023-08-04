@@ -42,7 +42,7 @@ require 'cek.php';
                                     <label for="kodetransaksi" class="form-label">Kode Transaksi</label>
                                     <input type="text" name="kodetransaksi" id="kodetransaksi" class="form-control" value="<?php echo $kodeauto; ?>" disabled>
                                 </div>
-                                <input type="hidden" id="tanggal" value="<?php echo $tanggal ;?>" required>
+                                <input type="hidden" id="tanggal" value="<?php echo $tanggal; ?>" required>
                                 <div class="mb-3">
                                     <label for="pengirim" class="form-label">Pengirim</label>
                                     <input type="text" class="form-control" id="pengirim" name="pengirim" required>
@@ -62,14 +62,17 @@ require 'cek.php';
                                         <tr>
                                             <th>Nama Barang</th>
                                             <th>Quantity</th>
+                                            <th>Satuan</th>
                                             <th>Nota</th>
                                             <th>Supplier</th>
-                                            <th>Satuan</th>
                                             <th>Pilihan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-
+                                        <?php
+                                        $rowNumber = 0;
+                                        $rowNumber++;
+                                        ?>
                                         <!-- You can use a loop to create multiple rows here if needed -->
                                         <tr>
                                             <td>
@@ -91,6 +94,14 @@ require 'cek.php';
                                                 <input type="number" class="form-control" name="qty[]" required>
                                             </td>
                                             <td>
+                                                <select name="satuan[]" class="form-control" required>
+                                                    <option value="pcs">pcs</option>
+                                                    <option value="rim">rim</option>
+                                                    <option value="ply">ply</option>
+                                                    <option value="pack">pack</option>
+                                                </select>
+                                            </td>
+                                            <td>
                                                 <input type="text" class="form-control" name="nota[]" required>
                                             </td>
                                             <td>
@@ -109,41 +120,9 @@ require 'cek.php';
                                                 </select>
                                             </td>
                                             <td>
-                                                <select name="satuan[]" class="form-control" required>
-                                                    <option value="pcs">pcs</option>
-                                                    <option value="rim">rim</option>
-                                                    <option value="ply">ply</option>
-                                                    <option value="pack">pack</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-danger btn-delete" data-idmasuk="<?= $idm ;?>">
-                                                    Delete
-                                                </button>
+                                                <button type="button" class="btn btn-danger btn-delete" data-row="<?= $rowNumber ?>">Hapus Baris</button>
                                             </td>
                                         </tr>
-
-                                        <!-- Delete Modal -->
-                                        <div class="modal fade" id="delete<?= $idm; ?>" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="deleteModalLabel">Delete Barang Masuk</h5>
-                                                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <p>Are you sure you want to delete this entry?</p>
-                                                        <form action="delete_barang_masuk.php" method="post">
-                                                            <input type="hidden" name="idmasuk" id="delete-idmasuk">
-                                                            <button type="submit" class="btn btn-danger">Delete</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
                                     </tbody>
                                 </table>
                                 <button type="button" class="btn btn-success" id="btn-add-row">Tambah Baris</button>
@@ -170,64 +149,57 @@ require 'cek.php';
     <script src="js/datatables-simple-demo.js"></script>
     <script>
         $(document).ready(function() {
-            // Show the Delete Modal when the "Delete" button is clicked
+            // Hapus baris saat tombol "Hapus Baris" diklik
             $(document).on("click", ".btn-delete", function() {
-                var idmasuk = $(this).data("idmasuk");
-                $("#delete-idmasuk").val(idmasuk);
-
-                $("#deleteModal").modal("show");
+                var rowNumber = $(this).data("row");
+                // Hapus baris dari tabel berdasarkan nomor baris
+                $("#dataTable tr:nth-child(" + (rowNumber + 1) + ")").remove();
             });
             // Add new row when the "Tambah Baris" button is clicked
-        $("#btn-add-row").on("click", function() {
-            var newRow = '<tr>' +
-                '<td>' +
-                '<select name="barangnya[]" class="form-control" required>' +
-                '<?php
-                $ambilsemuadata = mysqli_query($conn, "select * from stok");
-                while ($fetcharray = mysqli_fetch_array($ambilsemuadata)) {
-                    $namabarangnya = $fetcharray['namabarang'];
-                    $idbarangnya = $fetcharray['idbarang'];
-                    echo "<option value=\"$idbarangnya\">$namabarangnya</option>";
-                }
-                ?>' +
-                '</select>' +
-                '</td>' +
-                '<td><input type="number" class="form-control" name="qty[]" required></td>' +
-                '<td><input type="text" class="form-control" name="nota[]" required></td>' +
-                '<td>' +
-                '<select name="suppliernya[]" class="form-control" required>' +
-                '<?php
-                $ambilsemuadata = mysqli_query($conn, "select * from supplier");
-                while ($fetcharray = mysqli_fetch_array($ambilsemuadata)) {
-                    $namasuppliernya = $fetcharray['namasupplier'];
-                    $idsuppliernya = $fetcharray['idsupplier'];
-                    echo "<option value=\"$idsuppliernya\">$namasuppliernya</option>";
-                }
-                ?>' +
-                '</select>' +
-                '</td>' +
-                '<td>' +
-                '<select name="satuan[]" class="form-control" required>' +
-                '<option value="pcs">pcs</option>' +
-                '<option value="rim">rim</option>' +
-                '<option value="ply">ply</option>' +
-                '<option value="pack">pack</option>' +
-                '</select>' +
-                '</td>' +
-                '<td>' +
-                '<button type="button" class="btn btn-warning btn-edit" ' +
-                'data-idmasuk="" ' +
-                'data-idbarang="" ' +
-                'data-qty="" ' +
-                'data-nota="" ' +
-                'data-supplier="" ' +
-                'data-satuan="" ' +
-                '<button type="button" class="btn btn-danger btn-delete" data-idmasuk="">Delete</button>' +
-                '</td>' +
-                '</tr>';
+            $("#btn-add-row").on("click", function() {
+                var newRow = '<tr>' +
+                    '<td>' +
+                    '<select name="barangnya[]" class="form-control" required>' +
+                    '<?php
+                        $ambilsemuadata = mysqli_query($conn, "select *  from stok");
+                        while ($fetcharray = mysqli_fetch_array($ambilsemuadata)) {
+                            $namabarangnya = $fetcharray['namabarang'];
+                            $idbarangnya = $fetcharray['idbarang'];
+                            echo "<option value=\"$idbarangnya\">$namabarangnya</option>";
+                        }
+                        ?>' +
+                    '</select>' +
+                    '</td>' +
+                    '<td><input type="number" class="form-control" name="qty[]" required></td>' +
+                    '<td>' +
+                    '<select name="satuan[]" class="form-control" required>' +
+                    '<option value="pcs">pcs</option>' +
+                    '<option value="rim">rim</option>' +
+                    '<option value="ply">ply</option>' +
+                    '<option value="pack">pack</option>' +
+                    '</select>' +
+                    '</td>' +
+                    '<td><input type="text" class="form-control" name="nota[]" required></td>' +
+                    '<td>' +
+                    '<select name="suppliernya[]" class="form-control" required>' +
+                    '<?php
+                        $ambilsemuadata = mysqli_query($conn, "select *  from supplier");
+                        while ($fetcharray = mysqli_fetch_array($ambilsemuadata)) {
+                            $namasuppliernya = $fetcharray['namasupplier'];
+                            $idsuppliernya = $fetcharray['idsupplier'];
+                            echo "<option value=\"$idsuppliernya\">$namasuppliernya</option>";
+                        }
+                        ?>' +
+                    '</select>' +
+                    '</td>' +
+                    '<td>' +
+                    '<button type="button" class="btn btn-danger btn-delete" data-row="<?= $rowNumber ?>">Hapus Baris</button>' +
+                    '</td>' +
+                    '</tr>';
 
-            $("#dataTable tbody").append(newRow);
-        });
+                // Append new row to the table body
+                $("#dataTable tbody").append(newRow);
+            });
         });
     </script>
 </body>
