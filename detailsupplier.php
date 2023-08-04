@@ -102,10 +102,11 @@ $alamat = $fetch['alamat'];
                                     <thead>
                                         <tr>
                                             <th>No</th>
+                                            <th>Kode Transaksi</th>
                                             <th>Tanggal</th>
                                             <th>Nama Barang</th>
                                             <th>Jumlah</th>
-                                            <th>Penerima</th>
+                                            <th>Nomor Nota</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -116,28 +117,34 @@ $alamat = $fetch['alamat'];
                                             $selesai = $_POST['tgl_selesai'];
 
                                             if ($mulai != null || $selesai != null) {
-                                                $ambildatamasuk = mysqli_query($conn, "SELECT masuk.tanggal, stok.namabarang, masuk.qty, masuk.penerima FROM masuk JOIN stok ON masuk.idbarang = stok.idbarang WHERE masuk.namasupplier='$namasupplier' and tanggal BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY)");
+                                                $ambildatamasuk = mysqli_query($conn, "select * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier join transaksimasuk tm on tm.idtransaksi = m.idtransaksi WHERE m.idsupplier='$idsupplier' and tanggal BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY)");
                                             } else {
-                                                $ambildatamasuk = mysqli_query($conn, "SELECT masuk.tanggal, stok.namabarang, masuk.qty, masuk.penerima FROM masuk JOIN stok ON masuk.idbarang = stok.idbarang WHERE masuk.namasupplier='$namasupplier'");
+                                                $ambildatamasuk = mysqli_query($conn, "select * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier join transaksimasuk tm on tm.idtransaksi = m.idtransaksi WHERE m.idsupplier='$idsupplier'");
                                             }
                                         } else {
-                                            $ambildatamasuk = mysqli_query($conn, "SELECT masuk.tanggal, stok.namabarang, masuk.qty, masuk.penerima FROM masuk JOIN stok ON masuk.idbarang = stok.idbarang WHERE masuk.namasupplier='$namasupplier'");
+                                            $ambildatamasuk = mysqli_query($conn, "select * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier join transaksimasuk tm on tm.idtransaksi = m.idtransaksi WHERE m.supplier='$idsupplier'");
                                         }
                                         $i = 1;
 
                                         while ($fetch = mysqli_fetch_array($ambildatamasuk)) {
-                                            $tanggal = $fetch['tanggal'];
-                                            $namabarang = $fetch['namabarang'];
-                                            $penerima = $fetch['penerima'];
-                                            $quantity = $fetch['qty'];
+                                            $idb = $data['idbarang'];
+                                            $idm = $data['idmasuk'];
+                                            $idt = $data['idtransaksi'];
+                                            $kodeauto = $data['kodetransaksi'];
+                                            $tanggal = $data['tanggal'];
+                                            $satuan = $data['satuan'];
+                                            $namabarang = $data['namabarang'];
+                                            $qty = $data['qty'];
+                                            $nota = $data['nota'];
                                         ?>
 
                                             <tr>
                                                 <td><?= $i++; ?></td>
+                                                <td><?= $kodeauto; ?></td>
                                                 <td><?= $tanggal; ?></td>
                                                 <td><?= $namabarang; ?></td>
                                                 <td><?= $quantity; ?></td>
-                                                <td><?= $penerima; ?></td>
+                                                <td><?= $nota; ?></td>
                                             </tr>
 
                                         <?php

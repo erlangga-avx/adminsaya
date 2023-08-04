@@ -41,6 +41,7 @@ $jumlah = $fetch['jumlah'];
             <main>
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">Detail Transaksi Masuk</h1>
+                    <a href="exportdetailtransaksimasuk.php?id=<?= $idtransaksi; ?>" class="btn btn-success">Export Data</a>
                     <div class="card mb-4 mt-4">
                         <div class="card-header">
                             <h2>Kode Transaksi <?= $kodetransaksi; ?></h2>
@@ -56,14 +57,6 @@ $jumlah = $fetch['jumlah'];
 
                             <h3>Data Barang Masuk</h3>
                             <div class="card mb-4">
-                                <div class="card-header">
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-                                        Tambah Barang
-                                    </button>
-                                    <br>
-                                    <form method="post" class="mt-3">
-                                    </form>
-                                </div>
                                 <div class="table-responsive">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
@@ -79,7 +72,7 @@ $jumlah = $fetch['jumlah'];
                                         <tbody>
                                             <?php
 
-                                            $query = "select * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier";
+                                            $query = "select * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier where m.idtransaksi='$idtransaksi'";
 
                                             $ambildatamasuk = mysqli_query($conn, $query);
                                             $i = 1;

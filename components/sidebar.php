@@ -6,21 +6,28 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-box-open"></i></div>
                     Stok Barang
                 </a>
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsMasuk" aria-expanded="false" aria-controls="collapseLayouts">
                     <div class="sb-nav-link-icon"><i class="fas fa-download"></i></div>
                     Barang Masuk
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
-                <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                <div class="collapse" id="collapseLayoutsMasuk" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
                         <a class="nav-link" href="transaksimasuk.php">Transaksi Barang Masuk</a>
                         <a class="nav-link" href="masuk.php">Laporan Barang Masuk</a>
                     </nav>
                 </div>
-                <a class="nav-link" href="keluar.php">
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsKeluar" aria-expanded="false" aria-controls="collapseLayouts">
                     <div class="sb-nav-link-icon"><i class="fas fa-upload"></i></div>
                     Barang Keluar
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
+                <div class="collapse" id="collapseLayoutsKeluar" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="transaksikeluar.php">Transaksi Barang Keluar</a>
+                        <a class="nav-link" href="keluar.php">Laporan Barang Keluar</a>
+                    </nav>
+                </div>
                 <a class="nav-link" href="pesanan.php">
                     <div class="sb-nav-link-icon"><i class="fas fa-shopping-bag"></i></div>
                     Pemesanan

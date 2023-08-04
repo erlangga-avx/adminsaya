@@ -54,6 +54,17 @@ if (isset($_POST['addnewbarang'])) {
     }
 }
 
+//generator kode transaksi keluar
+$sql = mysqli_query($conn, "SELECT max(idtransaksi) as maxID FROM transaksimasuk");
+$data = mysqli_fetch_array($sql);
+
+$kode = $data['maxID'];
+
+$kode++;
+$ket = "EX";
+$tgl = date("ymd");
+$kodeauto = $ket . $tgl . sprintf("%03s", $kode);
+
 //menambah barang masuk
 if (isset($_POST['barangmasuk'])) {
     $barangnya = $_POST['barangnya'];
@@ -170,6 +181,46 @@ if (isset($_POST['hapustransaksimasuk'])) {
     } else {
         echo 'Gagal';
         header('location:transaksimasuk.php');
+    }
+}
+
+//generator kode transaksi keluar
+$sql = mysqli_query($conn, "SELECT max(idtransaksi) as maxID FROM transaksikeluar");
+$data = mysqli_fetch_array($sql);
+
+$kode = $data['maxID'];
+
+$kode++;
+$ket = "EX";
+$tgl = date("ymd");
+$kodeauto = $ket . $tgl . sprintf("%03s", $kode);
+
+//menambah transaksi keluar
+if (isset($_POST['addtransaksikeluar'])) {
+    $jumlah = $_POST['jumlah'];
+
+
+    $addtotable = mysqli_query($conn, "INSERT INTO transaksikeluar (kodetransaksi, jumlah) VALUES ('$kodeauto', '$jumlah')");
+
+
+    if ($addtotable) {
+        header('location: transaksikeluar.php');
+    } else {
+        echo 'Gagal';
+        header('location: transaksikeluar.php');
+    }
+}
+
+//menghapus transaksi keluar
+if (isset($_POST['hapustransaksikeluar'])) {
+    $idt = $_POST['idt'];
+
+    $hapus = mysqli_query($conn, "delete from transaksikeluar where idtransaksi='$idt'");
+    if ($hapus) {
+        header('location:transaksikeluar.php');
+    } else {
+        echo 'Gagal';
+        header('location:transaksikeluar.php');
     }
 }
 
