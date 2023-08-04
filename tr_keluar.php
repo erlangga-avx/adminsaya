@@ -45,7 +45,7 @@ require 'cek.php';
                                 <input type="hidden" id="tanggal" value="<?php echo $tanggal; ?>" required>
                                 <div class="mb-3">
                                     <label for="jumlah" class="form-label">Jumlah Produk</label>
-                                    <input type="number" class="form-control" id="jumlah" name="jumlah" required>
+                                    <input type="number" class="form-control" id="jumlah" name="jumlah" value="1" readonly>
                                 </div>
                                 <hr>
                                 <h5>Barang Keluar</h5>
@@ -96,7 +96,7 @@ require 'cek.php';
                                                 <input type="text" class="form-control" name="keterangan[]" required>
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-danger btn-delete" data-row="<?= $rowNumber ?>">Hapus Baris</button>
+                                                <button type="button" class="btn btn-danger btn-delete" data-row="<?= $rowNumber ?>" disabled>Hapus Baris</button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -127,10 +127,24 @@ require 'cek.php';
         $(document).ready(function() {
             // Hapus baris saat tombol "Hapus Baris" diklik
             $(document).on("click", ".btn-delete", function() {
-                var rowNumber = $(this).data("row");
-                // Hapus baris dari tabel berdasarkan nomor baris
-                $("#dataTable tr:nth-child(" + (rowNumber + 1) + ")").remove();
+                $(this).closest("tr").remove();
+                // Perbarui nilai "Jumlah Produk" setelah menghapus baris
+                updateJumlahProduk();
             });
+
+            // Function untuk memperbarui nilai "Jumlah Produk"
+            function updateJumlahProduk() {
+                var rowCount = $("#dataTable tbody tr").length;
+                $("#jumlah").val(rowCount);
+            }
+
+            // Panggil fungsi updateJumlahProduk saat halaman dimuat
+            updateJumlahProduk();
+
+            // Counter untuk memberi nomor pada setiap baris baru
+            var rowNumber = 1;
+
+
             // Add new row when the "Tambah Baris" button is clicked
             $("#btn-add-row").on("click", function() {
                 var newRow = '<tr>' +
@@ -163,6 +177,9 @@ require 'cek.php';
 
                 // Append new row to the table body
                 $("#dataTable tbody").append(newRow);
+
+                // Update the "Jumlah Produk" input field value after adding the row
+                updateJumlahProduk();
             });
         });
     </script>
