@@ -106,6 +106,7 @@ $alamat = $fetch['alamat'];
                                             <th>Tanggal</th>
                                             <th>Nama Barang</th>
                                             <th>Jumlah</th>
+                                            <th>Satuan</th>
                                             <th>Nomor Nota</th>
                                         </tr>
                                     </thead>
@@ -122,11 +123,11 @@ $alamat = $fetch['alamat'];
                                                 $ambildatamasuk = mysqli_query($conn, "select * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier join transaksimasuk tm on tm.idtransaksi = m.idtransaksi WHERE m.idsupplier='$idsupplier'");
                                             }
                                         } else {
-                                            $ambildatamasuk = mysqli_query($conn, "select * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier join transaksimasuk tm on tm.idtransaksi = m.idtransaksi WHERE m.supplier='$idsupplier'");
+                                            $ambildatamasuk = mysqli_query($conn, "select * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier join transaksimasuk tm on tm.idtransaksi = m.idtransaksi WHERE m.idsupplier='$idsupplier'");
                                         }
                                         $i = 1;
 
-                                        while ($fetch = mysqli_fetch_array($ambildatamasuk)) {
+                                        while ($data = mysqli_fetch_array($ambildatamasuk)) {
                                             $idb = $data['idbarang'];
                                             $idm = $data['idmasuk'];
                                             $idt = $data['idtransaksi'];
@@ -143,7 +144,8 @@ $alamat = $fetch['alamat'];
                                                 <td><?= $kodeauto; ?></td>
                                                 <td><?= $tanggal; ?></td>
                                                 <td><?= $namabarang; ?></td>
-                                                <td><?= $quantity; ?></td>
+                                                <td><?= $qty; ?></td>
+                                                <td><?= $satuan; ?></td>
                                                 <td><?= $nota; ?></td>
                                             </tr>
 
