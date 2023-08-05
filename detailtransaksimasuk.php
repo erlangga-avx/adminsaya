@@ -66,6 +66,7 @@ $jumlah = $fetch['jumlah'];
                                                 <th>Satuan</th>
                                                 <th>Supplier</th>
                                                 <th>Nomor Nota</th>
+                                                <th>Tanda Terima</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -96,6 +97,11 @@ $jumlah = $fetch['jumlah'];
                                                     <td><?= $satuan; ?></td>
                                                     <td><?= $namasupplier; ?></td>
                                                     <td><?= $nota; ?></td>
+                                                    <td>
+                                                        <a href="tandaterimamasuk.php?id=<?= $ids; ?>">
+                                                            <i class="fa-solid fa-pen-nib"></i>
+                                                        </a>
+                                                    </td>
                                                 </tr>
                                 </div>
                             </div>
