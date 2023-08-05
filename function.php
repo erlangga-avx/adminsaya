@@ -175,14 +175,43 @@ if (isset($_POST['addtransaksimasuk'])) {
 if (isset($_POST['hapustransaksimasuk'])) {
     $idt = $_POST['idt'];
 
-    $hapus = mysqli_query($conn, "delete from transaksimasuk where idtransaksi='$idt'");
+    $get_transaksi = mysqli_query($conn, "SELECT * FROM transaksimasuk WHERE idtransaksi='$idt'");
+    $transaksi_data = mysqli_fetch_assoc($get_transaksi);
+    $suppliernya = $transaksi_data['idsupplier'];
+
+    $hapus = mysqli_query($conn, "DELETE FROM transaksimasuk WHERE idtransaksi='$idt'");
     if ($hapus) {
-        header('location:transaksimasuk.php');
+
+        $hapusdata = mysqli_query($conn, "DELETE FROM masuk WHERE idtransaksi='$idt'");
+
+        if ($hapusdata) {
+
+            $get_deleted_masuk = mysqli_query($conn, "SELECT * FROM masuk WHERE idtransaksi='$idt'");
+            while ($data = mysqli_fetch_array($get_deleted_masuk)) {
+                $idb = $data['idbarang'];
+                $qty = $data['qty'];
+
+
+                $getdatastok = mysqli_query($conn, "SELECT * FROM stok WHERE idbarang='$idb'");
+                $data = mysqli_fetch_array($getdatastok);
+                $stok = $data['stok'];
+
+
+                $selisih = $stok - $qty;
+
+                $update = mysqli_query($conn, "UPDATE stok SET stok='$selisih' WHERE idbarang='$idb'");
+            }
+            header('location:transaksimasuk.php');
+        } else {
+            echo 'Gagal';
+            header('location:transaksimasuk.php');
+        }
     } else {
         echo 'Gagal';
         header('location:transaksimasuk.php');
     }
 }
+
 
 //generator kode transaksi keluar
 $sql = mysqli_query($conn, "SELECT max(idtransaksi) as maxID FROM transaksikeluar");
@@ -215,14 +244,39 @@ if (isset($_POST['addtransaksikeluar'])) {
 if (isset($_POST['hapustransaksikeluar'])) {
     $idt = $_POST['idt'];
 
-    $hapus = mysqli_query($conn, "delete from transaksikeluar where idtransaksi='$idt'");
+
+    $get_transaksi = mysqli_query($conn, "SELECT * FROM transaksikeluar WHERE idtransaksi='$idt'");
+    $transaksi_data = mysqli_fetch_assoc($get_transaksi);
+
+    $hapus = mysqli_query($conn, "DELETE FROM transaksikeluar WHERE idtransaksi='$idt'");
     if ($hapus) {
-        header('location:transaksikeluar.php');
+        $hapusdata = mysqli_query($conn, "DELETE FROM keluar WHERE idtransaksi='$idt'");
+
+        if ($hapusdata) {
+            $get_deleted_keluar = mysqli_query($conn, "SELECT * FROM keluar WHERE idtransaksi='$idt'");
+            while ($data = mysqli_fetch_array($get_deleted_keluar)) {
+                $idb = $data['idbarang'];
+                $qty = $data['qty'];
+
+                $getdatastok = mysqli_query($conn, "SELECT * FROM stok WHERE idbarang='$idb'");
+                $data = mysqli_fetch_array($getdatastok);
+                $stok = $data['stok'];
+
+                $stok_baru = $stok + $qty;
+
+                $update = mysqli_query($conn, "UPDATE stok SET stok='$stok_baru' WHERE idbarang='$idb'");
+            }
+            header('location:transaksikeluar.php');
+        } else {
+            echo 'Gagal';
+            header('location:transaksikeluar.php');
+        }
     } else {
         echo 'Gagal';
         header('location:transaksikeluar.php');
     }
 }
+
 
 //menambah pesanan
 if (isset($_POST['addpesanan'])) {

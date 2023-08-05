@@ -64,7 +64,6 @@ require 'cek.php';
                                         $rowNumber = 0;
                                         $rowNumber++;
                                         ?>
-                                        <!-- You can use a loop to create multiple rows here if needed -->
                                         <tr>
                                             <td>
                                                 <select name="barangnya[]" class="form-control" required>
@@ -145,7 +144,6 @@ require 'cek.php';
             var rowNumber = 1;
 
 
-            // Add new row when the "Tambah Baris" button is clicked
             $("#btn-add-row").on("click", function() {
                 var newRow = '<tr>' +
                     '<td>' +
@@ -175,10 +173,8 @@ require 'cek.php';
                     '</td>' +
                     '</tr>';
 
-                // Append new row to the table body
                 $("#dataTable tbody").append(newRow);
 
-                // Update the "Jumlah Produk" input field value after adding the row
                 updateJumlahProduk();
             });
         });
