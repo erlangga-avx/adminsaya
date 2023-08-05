@@ -110,12 +110,12 @@ $qrcode = 'https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl=' . $urlvie
                                     <tbody>
                                         <?php
 
-                                        $query = "select * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier";
+                                        $query = "select * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier join transaksimasuk tm on tm.idtransaksi = m.idtransaksi";
 
                                         $ambildatamasuk = mysqli_query($conn, $query);
                                         $i = 1;
 
-                                        while ($fetch = mysqli_fetch_array($ambildatamasuk)) {
+                                        while ($data = mysqli_fetch_array($ambildatamasuk)) {
                                             $idb = $data['idbarang'];
                                             $idm = $data['idmasuk'];
                                             $idt = $data['idtransaksi'];
@@ -155,10 +155,11 @@ $qrcode = 'https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl=' . $urlvie
                                 <table class="table table-bordered" id="barangkeluar" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>No</th>
                                             <th>Tanggal</th>
-                                            <th>Keterangan</th>
+                                            <th>Kode Transaksi</th>
                                             <th>Jumlah</th>
+                                            <th>Satuan</th>
+                                            <th>Keterangan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -173,10 +174,11 @@ $qrcode = 'https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl=' . $urlvie
                                         ?>
 
                                             <tr>
-                                                <td><?= $i++; ?></td>
                                                 <td><?= $tanggal; ?></td>
-                                                <td><?= $keterangan; ?></td>
+                                                <td><?= $kodeauto; ?></td>
                                                 <td><?= $quantity; ?></td>
+                                                <td><?= $satuan; ?></td>
+                                                <td><?= $keterangan; ?></td>
                                             </tr>
 
                                         <?php
