@@ -40,74 +40,95 @@ require 'cek.php';
                 <thead>
                     <tr>
                         <th>Tanggal</th>
+                        <th>Kode Transaksi</th>
                         <th>Nama Barang</th>
                         <th>Pengirim</th>
+                        <th>Nomor Nota</th>
                         <th>Jumlah</th>
-                        <th>Penerima</th>
+                        <th>Satuan</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    $ambilsemuadatastok = mysqli_query($conn, "select * from masuk m, stok s where s.idbarang = m.idbarang");
+
                     if (isset($_POST['filter_tgl'])) {
                         $mulai = $_POST['tgl_mulai'];
                         $selesai = $_POST['tgl_selesai'];
 
                         if ($mulai != null || $selesai != null) {
-                            $ambilsemuadatastok = mysqli_query($conn, "select * from masuk m, stok s where s.idbarang = m.idbarang and tanggal BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY)");
+                            $ambilsemuadatastok = mysqli_query($conn, "select * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier join transaksimasuk tm on tm.idtransaksi = m.idtransaksi and tanggal BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY)");
                         } else {
-                            $ambilsemuadatastok = mysqli_query($conn, "select * from masuk m, stok s where s.idbarang = m.idbarang");
+                            $ambilsemuadatastok = mysqli_query($conn, "select * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier join transaksimasuk tm on tm.idtransaksi = m.idtransaksi");
                         }
                     } else {
-                        $ambilsemuadatastok = mysqli_query($conn, "select * from masuk m, stok s where s.idbarang = m.idbarang");
+                        $ambilsemuadatastok = mysqli_query($conn, "select * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier join transaksimasuk tm on tm.idtransaksi = m.idtransaksi");
                     }
+
                     while ($data = mysqli_fetch_array($ambilsemuadatastok)) {
                         $idb = $data['idbarang'];
                         $idm = $data['idmasuk'];
+                        $idt = $data['idtransaksi'];
+                        $kodeauto = $data['kodetransaksi'];
                         $tanggal = $data['tanggal'];
+                        $satuan = $data['satuan'];
                         $namabarang = $data['namabarang'];
                         $qty = $data['qty'];
-                        $penerima = $data['penerima'];
+                        $ids = $data['idsupplier'];
                         $namasupplier = $data['namasupplier'];
+                        $nota = $data['nota'];
+
+                        //cek apakah ada gambar
+                        $gambar = $data['image']; //mengambil gambar
+                        if ($gambar == null) {
+                            //jika tidak ada gambar
+                            $img = 'Tidak Ada Gambar';
+                        } else {
+                            //jika ada gambar
+                            $img = '<img src="images/' . $gambar . '" class="zoomable">';
+                        }
                     ?>
                         <tr>
                             <td><?= $tanggal; ?></td>
-                            <td><?php echo $namabarang; ?></td>
-                            <td><?php echo $namasupplier; ?></td>
-                            <td><?php echo $qty; ?></td>
-                            <td><?php echo $penerima; ?></td>
+                            <td><?= $kodeauto; ?></td>
+                            <td><?= $namabarang; ?></td>
+                            <td><?= $namasupplier; ?></td>
+                            <td><?= $nota; ?></td>
+                            <td><?= $qty; ?></td>
+                            <td><?= $satuan; ?></td>
                         </tr>
-
-                    <?php
-                    }
-
-                    ?>
-                </tbody>
-            </table>
-
         </div>
     </div>
 
-    <script>
-        $(document).ready(function() {
-            $('#mauexport').DataTable({
-                dom: 'Bfrtip',
-                buttons: [
-                    'copy', 'excel', 'pdf', 'print'
-                ]
-            });
-        });
-    </script>
+<?php
+                    };
 
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.4/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.flash.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.print.min.js"></script>
+?>
+</tbody>
+</table>
+
+</div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#mauexport').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'excel', 'pdf', 'print'
+            ]
+        });
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.4/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.flash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.print.min.js"></script>
 
 
 
