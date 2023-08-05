@@ -63,6 +63,7 @@ $qrcode = 'https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl=' . $urlvie
             <main>
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">Detail Barang</h1>
+                    <a href="exportdetail.php?id=<?= $idbarang; ?>" class="btn btn-success">Export Data</a>
                     <div class="card mb-4 mt-4">
                         <div class="card-header">
                             <h2><?= $namabarang; ?></h2>
