@@ -92,7 +92,11 @@ require 'cek.php';
                                                 </select>
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control" name="keterangan[]" required>
+                                                <select name="keterangan[]" class="form-control" required>
+                                                    <option value="terjual">terjual</option>
+                                                    <option value="rusak">rusak</option>
+                                                    <option value="hilang">hilang</option>
+                                                    <option value="lain-lain">lain-lain</option>
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-danger btn-delete" data-row="<?= $rowNumber ?>" disabled>Hapus Baris</button>

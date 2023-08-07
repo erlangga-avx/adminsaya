@@ -11,6 +11,9 @@ $fetch = mysqli_fetch_assoc($get);
 $namabarang = $fetch['namabarang'];
 $kategori = $fetch['kategori'];
 $stok = $fetch['stok'];
+$harga = $fetch['harga'];
+$format_harga = number_format($harga, 0, ',', '.');
+$satuan = $fetch['satuan'];
 //cek apakah ada gambar
 $gambar = $fetch['image']; //mengambil gambar
 if ($gambar == null) {
@@ -86,7 +89,16 @@ $qrcode = 'https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl=' . $urlvie
                                     <h4>Stok</h4>
                                 </div>
                                 <div class="col-md-9">
-                                    <h4>: <?= $stok; ?></h4>
+                                    <h4>: <?= $stok; ?> <?= $satuan ;?></h4>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h4>Harga</h4>
+                                </div>
+                                <div class="col-md-9">
+                                    <h4>: Rp.<?= $format_harga; ?></h4>
                                 </div>
                             </div>
 
@@ -111,7 +123,7 @@ $qrcode = 'https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl=' . $urlvie
                                     <tbody>
                                         <?php
 
-                                        $query = "select * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier join transaksimasuk tm on tm.idtransaksi = m.idtransaksi";
+                                        $query = "select * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier join transaksimasuk tm on tm.idtransaksi = m.idtransaksi where s.idbarang='$idbarang'";
 
                                         $ambildatamasuk = mysqli_query($conn, $query);
                                         $i = 1;
@@ -132,12 +144,12 @@ $qrcode = 'https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl=' . $urlvie
                                         ?>
 
                                             <tr>
-                                            <td><?=$tanggal;?></td>
-                                            <td><?=$kodetransaksi;?></td>
-                                            <td><?=$namasupplier;?></td>
-                                            <td><?=$qty;?></td>
-                                            <td><?=$satuan;?></td>
-                                            <td><?=$penerima;?></td>
+                                                <td><?= $tanggal; ?></td>
+                                                <td><?= $kodetransaksi; ?></td>
+                                                <td><?= $namasupplier; ?></td>
+                                                <td><?= $qty; ?></td>
+                                                <td><?= $satuan; ?></td>
+                                                <td><?= $penerima; ?></td>
                                             </tr>
 
                                         <?php

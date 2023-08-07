@@ -79,6 +79,7 @@ require 'cek.php';
                                             <th>Kategori</th>
                                             <th>Stok</th>
                                             <th>Satuan</th>
+                                            <th>Harga</th>
                                             <th>Pilihan</th>
                                         </tr>
                                     </thead>
@@ -92,16 +93,12 @@ require 'cek.php';
                                             $satuan = $data['satuan'];
                                             $stok = $data['stok'];
                                             $idb = $data['idbarang'];
+                                            $harga = $data['harga'];
+                                            $format_harga = number_format($harga, 0, ',', '.');
 
                                             //cek apakah ada gambar
-                                            $gambar = $data['image']; //mengambil gambar
-                                            if ($gambar == null) {
-                                                //jika tidak ada gambar
-                                                $img = "Tidak Ada Gambar";
-                                            } else {
-                                                //jika ada gambar
-                                                $img = '<img src="images/' . $gambar . '" class="zoomable">';
-                                            }
+                                            $image = $data['image']; //mengambil gambar
+                                                $img = '<img src="images/' . $image . '" class="zoomable">';
                                         ?>
 
                                             <tr>
@@ -112,6 +109,7 @@ require 'cek.php';
                                                 <td><?= $kategori; ?></td>
                                                 <td><?= $stok; ?></td>
                                                 <td><?= $satuan; ?></td>
+                                                <td><?= $format_harga; ?></td>
                                                 <td>
                                                     <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?= $idb; ?>">
                                                         Edit
@@ -140,9 +138,16 @@ require 'cek.php';
                                                                 <br>
                                                                 <input type="text" name="kategori" value="<?= $kategori; ?>" class="form-control" required>
                                                                 <br>
-                                                                <input type="text" name="satuan" value="<?= $satuan; ?>" class="form-control" required>
+                                                                <select name="satuan" class="form-control" required>
+                                                                    <option value="pcs">pcs</option>
+                                                                    <option value="rim">rim</option>
+                                                                    <option value="ply">ply</option>
+                                                                    <option value="pack">pack</option>
+                                                                </select>
                                                                 <br>
-                                                                <input type="file" name="file" class="form-control">
+                                                                <input type="text" name="harga" value="<?= $harga; ?>" class="form-control" required>
+                                                                <br>
+                                                                <input type="file" name="file" class="form-control" required>
                                                                 <br>
                                                                 <input type="hidden" name="idb" value="<?= $idb; ?>">
                                                                 <button type="submit" class="btn btn-primary" name="updatebarang">Submit</button>
@@ -234,7 +239,9 @@ require 'cek.php';
                         <option value="pack">pack</option>
                     </select>
                     <br>
-                    <input type="file" name="file" class="form-control">
+                    <input type="text" name="harga" placeholder="Harga Barang (ketik angka tanpa titik)" class="form-control" required>
+                    <br>
+                    <input type="file" name="file" class="form-control" required>
                     <br>
                     <button type="submit" class="btn btn-primary" name="addnewbarang">Submit</button>
             </form>

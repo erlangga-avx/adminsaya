@@ -9,6 +9,7 @@ if (isset($_POST['addnewbarang'])) {
     $kategori = $_POST['kategori'];
     $stok = $_POST['stok'];
     $satuan = $_POST['satuan'];
+    $harga = $_POST['harga'];
 
     //untuk gambar..
     $allowed_extension = array('png', 'jpg');
@@ -27,7 +28,7 @@ if (isset($_POST['addnewbarang'])) {
         if ($ukuran < 15000000) {
             move_uploaded_file($file_tmp, 'images/' . $image);
 
-            $addtotable = mysqli_query($conn, "insert into stok (namabarang, kategori, stok, image, satuan) values('$namabarang', '$kategori', '$stok', '$image', '$satuan')");
+            $addtotable = mysqli_query($conn, "insert into stok (namabarang, kategori, stok, image, satuan, harga) values('$namabarang', '$kategori', '$stok', '$image', '$satuan', '$harga')");
             if ($addtotable) {
                 header('location:index.php');
             } else {
@@ -338,6 +339,8 @@ if (isset($_POST['updatebarang'])) {
     $idb = $_POST['idb'];
     $namabarang = $_POST['namabarang'];
     $kategori = $_POST['kategori'];
+    $harga = $_POST['harga'];
+    $satuan = $_POST['satuan'];
 
     //untuk gambar..
     $allowed_extension = array('png', 'jpg');
@@ -355,7 +358,7 @@ if (isset($_POST['updatebarang'])) {
     } else {
         //jika mengupload
         move_uploaded_file($file_tmp, 'images/' . $image);
-        $update = mysqli_query($conn, "update stok set namabarang='$namabarang' , kategori='$kategori' , image='$image' where idbarang='$idb'");
+        $update = mysqli_query($conn, "update stok set namabarang='$namabarang' , kategori='$kategori' , image='$image' , satuan='$satuan' , harga='$harga' where idbarang='$idb'");
         if ($update) {
             header('location:index.php');
         } else {
