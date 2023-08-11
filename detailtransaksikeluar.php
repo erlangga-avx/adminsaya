@@ -59,6 +59,7 @@ $jumlah = $fetch['jumlah'];
                                                 <th>Jumlah</th>
                                                 <th>Satuan</th>
                                                 <th>Keterangan</th>
+                                                <th>Struk</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -69,15 +70,33 @@ $jumlah = $fetch['jumlah'];
                                             $ambildatakeluar = mysqli_query($conn, $query);
                                             $i = 1;
 
+                                            $datagrup = array();
+
                                             while ($data = mysqli_fetch_array($ambildatakeluar)) {
                                                 $idb = $data['idbarang'];
                                                 $idk = $data['idkeluar'];
                                                 $idt = $data['idtransaksi'];
                                                 $tanggal = $data['tanggal'];
                                                 $satuan = $data['satuan'];
+                                                $harga = $data['harga'];
                                                 $namabarang = $data['namabarang'];
                                                 $qty = $data['qty'];
                                                 $keterangan = $data['keterangan'];
+                                                $format_harga = number_format($harga, 0, ',', '.');
+
+                                                $harga_total1 = $harga * $qty;
+                                                $format_harga2 = number_format($harga_total1, 0, ',', '.');
+                                                $harga_total2;
+
+                                                $groupedData[$keterangan][] = array(
+                                                    'idt' => $idt,
+                                                    'namabarang' => $namabarang,
+                                                    'qty' => $qty,
+                                                    'satuan' => $satuan,
+                                                    'keterangan' => $keterangan,
+                                                    'format_harga' => $format_harga,
+                                                    'format_harga2' => $format_harga2
+                                                );
                                             ?>
 
                                                 <tr>
@@ -85,7 +104,81 @@ $jumlah = $fetch['jumlah'];
                                                     <td><?= $qty; ?></td>
                                                     <td><?= $satuan; ?></td>
                                                     <td><?= $keterangan; ?></td>
+                                                    <td>
+                                                        <!--<a href="tandaterimamasuk.php?id=<?= $ids; ?>">
+                                                                    <i class="fa-solid fa-pen-nib"></i>
+                                                                </a>-->
+                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#strukmodal<?= $idt . '_' . $keterangan; ?>">
+                                                            <i class="fas fa-pen-nib"></i>
+                                                        </button>
+                                                    </td>
                                                 </tr>
+                                </div>
+                            </div>
+                            <!-- Modal Struk -->
+                            <div class="modal fade" id="strukmodal<?= $idt . '_' . $keterangan; ?>">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="terimaModalLabel">
+                                                GRAND Fotocopy Gambut
+                                            </h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+                                            <h5>
+                                                <p style="text-align:center">
+                                                    <strong>Struk Pengeluaran Barang</strong>
+                                                </p>
+                                            </h5>
+                                            <p>Kode Transaksi : <?= $kodetransaksi; ?>
+                                                <input type="hidden" name="kodetransaksi" value="<? $kodetransaksi; ?>">
+                                            </p>
+                                            <p>Tanggal : <?= $tanggal; ?>
+                                                <br>
+                                                <?php
+                                                foreach ($groupedData[$keterangan] as $item) {
+                                                    if ($keterangan === 'terjual') {
+                                                        echo '<p><strong>Nama Barang : </strong>' . $item["namabarang"] . '</p>';
+                                                        echo '<p><strong>Jumlah : </strong>' . $item["qty"] . ' ' . $item["satuan"] . '</p>';
+                                                        echo '<p><strong>Harga Satuan : </strong>' . $item["format_harga"] . '</p>';
+                                                        echo '<p><strong>Total Harga : </strong>' . $item["format_harga2"] . '</p>';
+                                                    } elseif ($keterangan === 'rusak' || $keterangan === 'hilang') {
+                                                        echo '<p>Barang-barang berikut keluar dari toko dalam kondisi ' . $keterangan . ':</p>';
+                                                        echo '<p><strong>Nama Barang : </strong>' . $item["namabarang"] . '</p>';
+                                                        echo '<p><strong>Jumlah : </strong>' . $item["qty"] . ' ' . $item["satuan"] . '</p>';
+                                                    } elseif ($keterangan === 'lain-lain') {
+                                                        echo '<p>Barang-barang berikut keluar dari toko dalam kondisi.......................:</p>';
+                                                        echo '<p><strong>Nama Barang : </strong>' . $item["namabarang"] . '</p>';
+                                                        echo '<p><strong>Jumlah : </strong>' . $item["qty"] . ' ' . $item["satuan"] . '</p>';
+                                                    }
+                                                    echo "<hr>";
+                                                    echo "<hr>";
+                                                }
+                                                ?>
+                                                <br>
+                                            <p>Atas Perhatiannya Kami Ucapkan Terima Kasih</p>
+                                            <br>
+                                            <p style="text-align: right;">
+                                                Hormat Kami,
+                                            </p>
+                                            <br>
+                                            <br>
+                                            <p style="text-align: right;">
+                                                GRAND Fotocopy Gambut
+                                            </p>
+                                        </div>
+
+                                        <!-- Modal footer -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" onclick="printModalContent('terimamodal<?= $ids; ?>')">Print</button>
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
 
@@ -124,6 +217,29 @@ $jumlah = $fetch['jumlah'];
     <script src="assets/demo/chart-bar-demo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
     <script src="js/datatables-simple-demo.js"></script>
+    <style>
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .table-row .left {
+            flex: 1;
+            text-align: left;
+        }
+
+        .table-row .center {
+            flex: 1;
+            text-align: center;
+        }
+
+        .table-row .right {
+            flex: 1;
+            text-align: right;
+        }
+    </style>
+
+    </style>
 </body>
 </div>
 

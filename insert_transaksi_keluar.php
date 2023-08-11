@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     mysqli_autocommit($conn, false);
     $semuaBarangCukup = true;
 
-    // Insert data into 'transaksimasuk' table
+    // Insert data into 'transaksikeluar' table
     $insert_transaksi = mysqli_query($conn, "INSERT INTO transaksikeluar (kodetransaksi, jumlah) VALUES ('$kodeauto', '$jumlah')");
 
     if ($insert_transaksi) {

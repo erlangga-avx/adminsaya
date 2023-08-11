@@ -135,8 +135,7 @@
                                                     <br>
                                                     <?php
                                                         // SQL query
-                                                        $sql = "SELECT * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier where m.idsupplier='$ids'
-                                                            GROUP BY s.idbarang, su.idsupplier, m.idtransaksi, m.qty, m.nota, m.satuan, m.tanggal";
+                                                        $sql = "SELECT * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier where m.idsupplier='$ids' AND m.idtransaksi='$idtransaksi'";
 
                                                         // Execute query
                                                         $result = $conn->query($sql);
