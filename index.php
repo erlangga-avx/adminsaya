@@ -19,21 +19,127 @@ require 'cek.php';
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
-    <style>
-        .zoomable {
-            width: 100px;
-        }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script>
+        $(document).ready(function() {
+            // data untuk pie chart
+            <?php
+            $query = "SELECT kategori, COUNT(idbarang) as total FROM stok GROUP BY kategori";
+            $result = mysqli_query($conn, $query);
 
-        .zoomable:hover {
-            transform: scale(2.5);
-            transition: 0.3s ease;
-        }
+            $categories = [];
+            $categoryCounts = [];
 
-        a {
-            text-decoration: none;
-            color: black;
-        }
-    </style>
+            while ($row = mysqli_fetch_assoc($result)) {
+                $categories[] = $row['kategori'];
+                $categoryCounts[] = $row['total'];
+            }
+            ?>
+
+            var pieData = {
+                labels: <?php echo json_encode($categories); ?>,
+                datasets: [{
+                    data: <?php echo json_encode($categoryCounts); ?>,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.5)',
+                        'rgba(54, 162, 235, 0.5)',
+                        'rgba(255, 206, 86, 0.5)',
+                    ],
+                }],
+            };
+
+            // buat pie chart
+            var pieChartCanvas = $('#pieChart').get(0).getContext('2d');
+            var pieChart = new Chart(pieChartCanvas, {
+                type: 'pie',
+                data: pieData,
+            });
+
+            // data untuk bar chart
+            <?php
+            $query = "SELECT namabarang, stok FROM stok ORDER BY stok DESC LIMIT 5";
+            $result = mysqli_query($conn, $query);
+
+            $itemNames = [];
+            $itemStocks = [];
+
+            while ($row = mysqli_fetch_assoc($result)) {
+                $itemNames[] = $row['namabarang'];
+                $itemStocks[] = $row['stok'];
+            }
+            ?>
+
+            var barData = {
+                labels: <?php echo json_encode($itemNames); ?>,
+                datasets: [{
+                    label: 'Stok Barang',
+                    data: <?php echo json_encode($itemStocks); ?>,
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                }],
+            };
+
+            // buat bar chart
+            var barChartCanvas = $('#barChart').get(0).getContext('2d');
+            var barChart = new Chart(barChartCanvas, {
+                type: 'bar',
+                data: barData,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                        },
+                    },
+                },
+            });
+            <?php
+            $query = "SELECT idbarang, SUM(qty) as total_qty FROM keluar GROUP BY idbarang ORDER BY total_qty DESC LIMIT 5";
+            $result = mysqli_query($conn, $query);
+
+            $topItemIds = [];
+            $topItemQuantities = [];
+
+            while ($row = mysqli_fetch_assoc($result)) {
+                $topItemIds[] = $row['idbarang'];
+                $topItemQuantities[] = $row['total_qty'];
+            }
+
+            $topItemNames = [];
+            $query = "SELECT idbarang, namabarang FROM stok WHERE idbarang IN (" . implode(',', $topItemIds) . ")";
+            $result = mysqli_query($conn, $query);
+
+            while ($row = mysqli_fetch_assoc($result)) {
+                $topItemNames[$row['idbarang']] = $row['namabarang'];
+            }
+            ?>
+
+            var topBarData = {
+                labels: <?php echo json_encode(array_values($topItemNames)); ?>,
+                datasets: [{
+                    label: 'jumlah terjual',
+                    data: <?php echo json_encode($topItemQuantities); ?>,
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                }],
+            };
+
+            // bar chart barang terlaris
+            var topBarChartCanvas = $('#topBarChart').get(0).getContext('2d');
+            var topBarChart = new Chart(topBarChartCanvas, {
+                type: 'bar',
+                data: topBarData,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                        },
+                    },
+                },
+            });
+        });
+    </script>
 </head>
 
 <body class="sb-nav-fixed">
@@ -42,157 +148,134 @@ require 'cek.php';
         <?php include "components/sidebar.php" ?>
         <div id="layoutSidenav_content">
             <main>
+                <?php
+
+                //mengambil jumlah stok
+                $query = "SELECT SUM(stok) as total_stock FROM stok";
+                $result = mysqli_query($conn, $query);
+                $totalstok = 0;
+                if ($result && mysqli_num_rows($result) > 0) {
+                    $row = mysqli_fetch_assoc($result);
+                    $totalstok = $row['total_stock'];
+                }
+
+                //mengambil jumlah transaksi keluar
+                $query = "SELECT COUNT(idtransaksi) as total_transaksi_keluar FROM transaksikeluar";
+                $result = mysqli_query($conn, $query);
+                $totaltranskeluar = 0;
+                if ($result && mysqli_num_rows($result) > 0) {
+                    $row = mysqli_fetch_assoc($result);
+                    $totaltranskeluar = $row['total_transaksi_keluar'];
+                }
+
+                //mengambil jumlah transaksi masuk
+                $query = "SELECT COUNT(idtransaksi) as total_transaksi_masuk FROM transaksimasuk";
+                $result = mysqli_query($conn, $query);
+                $totaltransmasuk = 0;
+                if ($result && mysqli_num_rows($result) > 0) {
+                    $row = mysqli_fetch_assoc($result);
+                    $totaltransmasuk = $row['total_transaksi_masuk'];
+                }
+
+                //mengambil jumlah alat rusak
+                $query = "SELECT COUNT(idalat) as total_alat_rusak FROM alat WHERE status = 'Rusak'";
+                $result = mysqli_query($conn, $query);
+                $totalrusak = 0;
+                if ($result && mysqli_num_rows($result) > 0) {
+                    $row = mysqli_fetch_assoc($result);
+                    $totalrusak = $row['total_alat_rusak'];
+                }
+
+
+                ?>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Stok Barang</h1>
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-                                Barang Baru
-                            </button>
-                            <a href="export.php" class="btn btn-success">Export Data</a>
-                        </div>
-                        <div class="card-body">
-
-                            <?php
-                            $ambildatastok = mysqli_query($conn, "select * from stok where stok < 5");
-
-                            while ($fetch = mysqli_fetch_array($ambildatastok)) {
-                                $barang = $fetch['namabarang'];
-
-                            ?>
-                                <div class="alert alert-danger alert-dismissible">
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                    <strong>Peringatan!</strong> Stok <?= $barang; ?> Telah Habis
+                    <h1 class="mt-4">INVENTARIS GRAND FOTOCOPY & FOTO STUDIO GAMBUT</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item active">Dashboard</li>
+                    </ol>
+                    <div class="row">
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-primary text-white mb-4">
+                                <div class="card-body">TOTAL STOK :<h2 class="mt-1"><strong><?= $totalstok; ?></strong></h2>
                                 </div>
-                            <?php
-                            }
-                            ?>
-
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Gambar</th>
-                                            <th>Nama Barang</th>
-                                            <th>Detail</th>
-                                            <th>Kategori</th>
-                                            <th>Stok</th>
-                                            <th>Satuan</th>
-                                            <th>Harga</th>
-                                            <th>Pilihan</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        $ambilsemuadatastok = mysqli_query($conn, "select * from stok");
-                                        $i = 1;
-                                        while ($data = mysqli_fetch_array($ambilsemuadatastok)) {
-                                            $namabarang = $data['namabarang'];
-                                            $kategori = $data['kategori'];
-                                            $satuan = $data['satuan'];
-                                            $stok = $data['stok'];
-                                            $idb = $data['idbarang'];
-                                            $harga = $data['harga'];
-                                            $format_harga = number_format($harga, 0, ',', '.');
-
-                                            //cek apakah ada gambar
-                                            $image = $data['image']; //mengambil gambar
-                                                $img = '<img src="images/' . $image . '" class="zoomable">';
-                                        ?>
-
-                                            <tr>
-                                                <td><?= $i++; ?></td>
-                                                <td><?= $img; ?></td>
-                                                <td><?= $namabarang; ?></td>
-                                                <td><button type="button" class="btn btn-primary"><a href="detail.php?id=<?= $idb; ?>"><i class="fas fa-info" style="color: #ffffff;"></i></a></button></td>
-                                                <td><?= $kategori; ?></td>
-                                                <td><?= $stok; ?></td>
-                                                <td><?= $satuan; ?></td>
-                                                <td><?= $format_harga; ?></td>
-                                                <td>
-                                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?= $idb; ?>">
-                                                        Edit
-                                                    </button>
-                                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete<?= $idb; ?>">
-                                                        Delete
-                                                    </button>
-                                                </td>
-                                            </tr>
-
-                                            <!-- Edit Modal -->
-                                            <div class="modal fade" id="edit<?= $idb; ?>">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-
-                                                        <!-- Modal Header -->
-                                                        <div class="modal-header">
-                                                            <h4 class="modal-title">Edit Barang</h4>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                                        </div>
-
-                                                        <!-- Modal body -->
-                                                        <form method="post" enctype="multipart/form-data">
-                                                            <div class="modal-body">
-                                                                <input type="text" name="namabarang" value="<?= $namabarang; ?>" class="form-control" required>
-                                                                <br>
-                                                                <input type="text" name="kategori" value="<?= $kategori; ?>" class="form-control" required>
-                                                                <br>
-                                                                <select name="satuan" class="form-control" required>
-                                                                    <option value="pcs">pcs</option>
-                                                                    <option value="rim">rim</option>
-                                                                    <option value="ply">ply</option>
-                                                                    <option value="pack">pack</option>
-                                                                </select>
-                                                                <br>
-                                                                <input type="text" name="harga" value="<?= $harga; ?>" class="form-control" required>
-                                                                <br>
-                                                                <input type="file" name="file" class="form-control" required>
-                                                                <br>
-                                                                <input type="hidden" name="idb" value="<?= $idb; ?>">
-                                                                <button type="submit" class="btn btn-primary" name="updatebarang">Submit</button>
-                                                        </form>
-                                                    </div>
-
-                                                </div>
-                                            </div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <a class="small text-white stretched-link" href="stok.php">Lihat</a>
+                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                </div>
                             </div>
-
-                            <!-- Hapus Modal -->
-                            <div class="modal fade" id="delete<?= $idb; ?>">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-
-                                        <!-- Modal Header -->
-                                        <div class="modal-header">
-                                            <h4 class="modal-title">Hapus Barang?</h4>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                        </div>
-
-                                        <!-- Modal body -->
-                                        <form method="post">
-                                            <div class="modal-body">
-                                                Apakah Anda yakin ingin menghapus <?= $namabarang; ?>?
-                                                <input type="hidden" name="idb" value="<?= $idb; ?>">
-                                                <br>
-                                                <br>
-                                                <button type="submit" class="btn btn-danger" name="hapusbarang">Hapus</button>
-                                        </form>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-warning text-white mb-4">
+                                <div class="card-body">TOTAL TRANSAKSI KELUAR :<h2 class="mt-1"><strong><?= $totaltranskeluar; ?></strong></h2>
+                                </div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <a class="small text-white stretched-link" href="transaksikeluar.php">Lihat</a>
+                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-success text-white mb-4">
+                                <div class="card-body">TOTAL TRANSAKSI MASUK :<h2 class="mt-1"><strong><?= $totaltransmasuk; ?></strong></h2>
+                                </div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <a class="small text-white stretched-link" href="transaksimasuk.php">Lihat</a>
+                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-danger text-white mb-4">
+                                <div class="card-body">ALAT RUSAK :<h2 class="mt-1"><strong><?= $totalrusak; ?></strong></h2>
+                                </div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <a class="small text-white stretched-link" href="alat.php">Lihat</a>
+                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-6 col-md-12">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        Kategori
                                     </div>
-
+                                    <div class="card-body">
+                                        <canvas id="pieChart" width="100%" height="40"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-md-12">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        Stok Barang
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="barChart" width="100%" height="40"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-md-12">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        Barang Terlaris
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="topBarChart" width="100%" height="40"></canvas>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-                    <?php
-                                        };
-
-                    ?>
-
-                    </tbody>
-                    </table>
                     </div>
                 </div>
+            </main>
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; Muhammad Erlangga 19630325</div>
+                    </div>
+                </div>
+            </footer>
         </div>
     </div>
     </main>
@@ -211,44 +294,5 @@ require 'cek.php';
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
     <script src="js/datatables-simple-demo.js"></script>
 </body>
-
-<!-- The Modal -->
-<div class="modal fade" id="myModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Tambah Barang</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-
-            <!-- Modal body -->
-            <form method="post" enctype="multipart/form-data">
-                <div class="modal-body">
-                    <input type="text" name="namabarang" placeholder="Nama Barang" class="form-control" required>
-                    <br>
-                    <input type="text" name="kategori" placeholder="Kategori Barang" class="form-control" required>
-                    <br>
-                    <input type="number" name="stok" placeholder="stok" class="form-control" required>
-                    <br>
-                    <select name="satuan" class="form-control" required>
-                        <option value="pcs">pcs</option>
-                        <option value="rim">rim</option>
-                        <option value="ply">ply</option>
-                        <option value="pack">pack</option>
-                    </select>
-                    <br>
-                    <input type="text" name="harga" placeholder="Harga Barang (ketik angka tanpa titik)" class="form-control" required>
-                    <br>
-                    <input type="file" name="file" class="form-control" required>
-                    <br>
-                    <button type="submit" class="btn btn-primary" name="addnewbarang">Submit</button>
-            </form>
-        </div>
-
-    </div>
-</div>
-</div>
 
 </html>

@@ -175,43 +175,43 @@ if (isset($_POST['addtransaksimasuk'])) {
 //menghapus transaksi masuk
 if (isset($_POST['hapustransaksimasuk'])) {
     $idt = $_POST['idt'];
+    $idb = $_POST['idb'];
+    $qty = $_POST['qty'];
+    $idm = $_POST['idm'];
+    $suppliernya = $_POST['suppliernya'];
 
-    $get_transaksi = mysqli_query($conn, "SELECT * FROM transaksimasuk WHERE idtransaksi='$idt'");
-    $transaksi_data = mysqli_fetch_assoc($get_transaksi);
-    $suppliernya = $transaksi_data['idsupplier'];
+    // Hapus data dari tabel 'masuk'
+    $hapusdata = mysqli_query($conn, "DELETE FROM masuk WHERE idmasuk='$idm'");
 
-    $hapus = mysqli_query($conn, "DELETE FROM transaksimasuk WHERE idtransaksi='$idt'");
-    if ($hapus) {
+    if ($hapusdata) {
+        // Dapatkan stok sebelumnya
+        $getdatastok = mysqli_query($conn, "SELECT stok FROM stok WHERE idbarang='$idb'");
+        $data = mysqli_fetch_array($getdatastok);
+        $stok_sebelumnya = $data['stok'];
 
-        $hapusdata = mysqli_query($conn, "DELETE FROM masuk WHERE idtransaksi='$idt'");
+        // Kalkulasi stok setelah dikurangi qty masuk
+        $stok_baru = $stok_sebelumnya - $qty;
 
-        if ($hapusdata) {
+        // Perbarui stok di tabel 'stok'
+        $update = mysqli_query($conn, "UPDATE stok SET stok='$stok_baru' WHERE idbarang='$idb'");
 
-            $get_deleted_masuk = mysqli_query($conn, "SELECT * FROM masuk WHERE idtransaksi='$idt'");
-            while ($data = mysqli_fetch_array($get_deleted_masuk)) {
-                $idb = $data['idbarang'];
-                $qty = $data['qty'];
+        if ($update) {
+            // Hapus data dari tabel 'transaksimasuk'
+            $hapus = mysqli_query($conn, "DELETE FROM transaksimasuk WHERE idtransaksi='$idt'");
 
-
-                $getdatastok = mysqli_query($conn, "SELECT * FROM stok WHERE idbarang='$idb'");
-                $data = mysqli_fetch_array($getdatastok);
-                $stok = $data['stok'];
-
-
-                $selisih = $stok - $qty;
-
-                $update = mysqli_query($conn, "UPDATE stok SET stok='$selisih' WHERE idbarang='$idb'");
+            if ($hapus) {
+                header('location: transaksimasuk.php');
+            } else {
+                echo 'Gagal menghapus transaksimasuk';
             }
-            header('location:transaksimasuk.php');
         } else {
-            echo 'Gagal';
-            header('location:transaksimasuk.php');
+            echo 'Gagal memperbarui stok';
         }
     } else {
-        echo 'Gagal';
-        header('location:transaksimasuk.php');
+        echo 'Gagal menghapus data masuk';
     }
 }
+
 
 
 //generator kode transaksi keluar

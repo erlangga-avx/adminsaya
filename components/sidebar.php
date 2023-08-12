@@ -2,7 +2,7 @@
     <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
         <div class="sb-sidenav-menu">
             <div class="nav">
-                <a class="nav-link" href="index.php">
+                <a class="nav-link" href="stok.php">
                     <div class="sb-nav-link-icon"><i class="fas fa-box-open"></i></div>
                     Stok Barang
                 </a>
