@@ -107,10 +107,21 @@ $jumlah = $fetch['jumlah'];
                                                         <!--<a href="tandaterimamasuk.php?id=<?= $ids; ?>">
                                                                     <i class="fa-solid fa-pen-nib"></i>
                                                                 </a>-->
-                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#strukmodal<?= $idt . '_' . $keterangan; ?>">
-                                                            <i class="fas fa-pen-nib"></i>
-                                                        </button>
-                                                        <button type="button" class="btn btn-primary" onclick="printModalContent('strukmodal<?= $idt . '_' . $keterangan; ?>')">Print</button>
+                                                        <?php
+                                                        if ($keterangan === 'terjual') {
+                                                            echo '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#strukmodal' . $idt . '_' . $keterangan . '">';
+                                                            echo '<i class="fas fa-pen-nib"></i>';
+                                                            echo '</button>';
+                                                            echo '&nbsp;';
+                                                            echo '<button type="button" class="btn btn-primary" onclick="printModalContent(\'strukmodal' . $idt . '_' . $keterangan . '\')">Print</button>';
+                                                        } else {
+                                                            echo '<button type="button" class="btn btn-primary" disabled>';
+                                                            echo '<i class="fas fa-pen-nib"></i>';
+                                                            echo '</button>';
+                                                            echo '&nbsp;';
+                                                            echo '<button type="button" class="btn btn-primary" disabled>Print</button>';
+                                                        }
+                                                        ?>
                                                     </td>
                                                 </tr>
                                 </div>
@@ -140,7 +151,7 @@ $jumlah = $fetch['jumlah'];
                                             <p>Tanggal : <?= $tanggal; ?>
                                                 <br>
                                                 <?php
-                                                $sql = "SELECT * from keluar k join stok s on s.idbarang = k.idbarang WHERE k.idtransaksi='$idtransaksi' ORDER BY k.keterangan";
+                                                $sql = "SELECT * from keluar k join stok s on s.idbarang = k.idbarang WHERE k.idtransaksi='$idtransaksi' AND k.keterangan = 'terjual' ORDER BY k.keterangan";
 
                                                 $subtotal = 0;
 
@@ -149,32 +160,18 @@ $jumlah = $fetch['jumlah'];
                                                 if ($result->num_rows > 0) {
                                                     // Output data of each row
                                                     while ($row = $result->fetch_assoc()) {
-                                                        foreach ($groupedData[$keterangan] as $item) {
-                                                            if ($keterangan === 'terjual') {
-                                                                echo '<p><strong>Nama Barang : </strong>' . $row["namabarang"] . '</p>';
-                                                                echo '<p><strong>Jumlah : </strong>' . $row["qty"] . ' ' . $row["satuan"] . '</p>';
-                                                                $harga_barang = $conn->query("SELECT harga FROM stok WHERE idbarang = " . $row["idbarang"])->fetch_assoc()["harga"];
-                                                                echo '<p><strong>Harga Satuan : </strong> Rp.' . number_format($harga_barang, 0, ',', '.') . '</p>';
-                                                                $total_harga = $harga_barang * $row["qty"];
-                                                                $subtotal += $total_harga;
-                                                                echo '<p><strong>Total Harga : </strong> Rp.' . number_format($total_harga, 0, ',', '.') . '</p>';
-                                                            } elseif ($keterangan === 'rusak' || $keterangan === 'hilang') {
-                                                                echo '<p>Barang-barang berikut keluar dari toko dalam kondisi ' . $keterangan . ':</p>';
-                                                                echo '<p><strong>Nama Barang : </strong>' . $row["namabarang"] . '</p>';
-                                                                echo '<p><strong>Jumlah : </strong>' . $row["qty"] . ' ' . $row["satuan"] . '</p>';
-                                                            } elseif ($keterangan === 'lain-lain') {
-                                                                echo '<p>Barang-barang berikut keluar dari toko dalam kondisi.......................:</p>';
-                                                                echo '<p><strong>Nama Barang : </strong>' . $row["namabarang"] . '</p>';
-                                                                echo '<p><strong>Jumlah : </strong>' . $row["qty"] . ' ' . $row["satuan"] . '</p>';
-                                                            }
-                                                            echo "<hr>";
-                                                        }
+                                                        echo '<p><strong>Nama Barang : </strong>' . $row["namabarang"] . '</p>';
+                                                        echo '<p><strong>Jumlah : </strong>' . $row["qty"] . ' ' . $row["satuan"] . '</p>';
+                                                        $harga_barang = $conn->query("SELECT harga FROM stok WHERE idbarang = " . $row["idbarang"])->fetch_assoc()["harga"];
+                                                        echo '<p><strong>Harga Satuan : </strong> Rp.' . number_format($harga_barang, 0, ',', '.') . '</p>';
+                                                        $total_harga = $harga_barang * $row["qty"];
+                                                        $subtotal += $total_harga;
+                                                        echo '<p><strong>Total Harga : </strong> Rp.' . number_format($total_harga, 0, ',', '.') . '</p>';
+                                                        echo "<hr>";
                                                     }
-                                                } else {
-                                                    echo "0 results";
-                                                }
-                                                if ($keterangan === 'terjual') {
                                                     echo '<p style="text-align: right"><strong>Subtotal:  Rp.' . number_format($subtotal, 0, ',', '.') . '</strong></p>';
+                                                } else {
+                                                    echo "No results found for 'terjual'.";
                                                 }
                                                 ?>
                                                 <br>
