@@ -90,12 +90,11 @@ $jumlah = $fetch['jumlah'];
 
                                                 $groupedData[$keterangan][] = array(
                                                     'idt' => $idt,
+                                                    'idk' => $idk,
                                                     'namabarang' => $namabarang,
                                                     'qty' => $qty,
                                                     'satuan' => $satuan,
                                                     'keterangan' => $keterangan,
-                                                    'format_harga' => $format_harga,
-                                                    'format_harga2' => $format_harga2
                                                 );
                                             ?>
 
@@ -111,6 +110,7 @@ $jumlah = $fetch['jumlah'];
                                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#strukmodal<?= $idt . '_' . $keterangan; ?>">
                                                             <i class="fas fa-pen-nib"></i>
                                                         </button>
+                                                        <button type="button" class="btn btn-primary" onclick="printModalContent('strukmodal<?= $idt . '_' . $keterangan; ?>')">Print</button>
                                                     </td>
                                                 </tr>
                                 </div>
@@ -125,7 +125,6 @@ $jumlah = $fetch['jumlah'];
                                             <h4 class="modal-title" id="terimaModalLabel">
                                                 GRAND Fotocopy Gambut
                                             </h4>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
 
                                         <!-- Modal body -->
@@ -141,23 +140,41 @@ $jumlah = $fetch['jumlah'];
                                             <p>Tanggal : <?= $tanggal; ?>
                                                 <br>
                                                 <?php
-                                                foreach ($groupedData[$keterangan] as $item) {
-                                                    if ($keterangan === 'terjual') {
-                                                        echo '<p><strong>Nama Barang : </strong>' . $item["namabarang"] . '</p>';
-                                                        echo '<p><strong>Jumlah : </strong>' . $item["qty"] . ' ' . $item["satuan"] . '</p>';
-                                                        echo '<p><strong>Harga Satuan : </strong>' . $item["format_harga"] . '</p>';
-                                                        echo '<p><strong>Total Harga : </strong>' . $item["format_harga2"] . '</p>';
-                                                    } elseif ($keterangan === 'rusak' || $keterangan === 'hilang') {
-                                                        echo '<p>Barang-barang berikut keluar dari toko dalam kondisi ' . $keterangan . ':</p>';
-                                                        echo '<p><strong>Nama Barang : </strong>' . $item["namabarang"] . '</p>';
-                                                        echo '<p><strong>Jumlah : </strong>' . $item["qty"] . ' ' . $item["satuan"] . '</p>';
-                                                    } elseif ($keterangan === 'lain-lain') {
-                                                        echo '<p>Barang-barang berikut keluar dari toko dalam kondisi.......................:</p>';
-                                                        echo '<p><strong>Nama Barang : </strong>' . $item["namabarang"] . '</p>';
-                                                        echo '<p><strong>Jumlah : </strong>' . $item["qty"] . ' ' . $item["satuan"] . '</p>';
+                                                $sql = "SELECT * from keluar k join stok s on s.idbarang = k.idbarang WHERE k.idtransaksi='$idtransaksi' ORDER BY k.keterangan";
+
+                                                $subtotal = 0;
+
+                                                // Execute query
+                                                $result = $conn->query($sql);
+                                                if ($result->num_rows > 0) {
+                                                    // Output data of each row
+                                                    while ($row = $result->fetch_assoc()) {
+                                                        foreach ($groupedData[$keterangan] as $item) {
+                                                            if ($keterangan === 'terjual') {
+                                                                echo '<p><strong>Nama Barang : </strong>' . $row["namabarang"] . '</p>';
+                                                                echo '<p><strong>Jumlah : </strong>' . $row["qty"] . ' ' . $row["satuan"] . '</p>';
+                                                                $harga_barang = $conn->query("SELECT harga FROM stok WHERE idbarang = " . $row["idbarang"])->fetch_assoc()["harga"];
+                                                                echo '<p><strong>Harga Satuan : </strong> Rp.' . number_format($harga_barang, 0, ',', '.') . '</p>';
+                                                                $total_harga = $harga_barang * $row["qty"];
+                                                                $subtotal += $total_harga;
+                                                                echo '<p><strong>Total Harga : </strong> Rp.' . number_format($total_harga, 0, ',', '.') . '</p>';
+                                                            } elseif ($keterangan === 'rusak' || $keterangan === 'hilang') {
+                                                                echo '<p>Barang-barang berikut keluar dari toko dalam kondisi ' . $keterangan . ':</p>';
+                                                                echo '<p><strong>Nama Barang : </strong>' . $row["namabarang"] . '</p>';
+                                                                echo '<p><strong>Jumlah : </strong>' . $row["qty"] . ' ' . $row["satuan"] . '</p>';
+                                                            } elseif ($keterangan === 'lain-lain') {
+                                                                echo '<p>Barang-barang berikut keluar dari toko dalam kondisi.......................:</p>';
+                                                                echo '<p><strong>Nama Barang : </strong>' . $row["namabarang"] . '</p>';
+                                                                echo '<p><strong>Jumlah : </strong>' . $row["qty"] . ' ' . $row["satuan"] . '</p>';
+                                                            }
+                                                            echo "<hr>";
+                                                        }
                                                     }
-                                                    echo "<hr>";
-                                                    echo "<hr>";
+                                                } else {
+                                                    echo "0 results";
+                                                }
+                                                if ($keterangan === 'terjual') {
+                                                    echo '<p style="text-align: right"><strong>Subtotal:  Rp.' . number_format($subtotal, 0, ',', '.') . '</strong></p>';
                                                 }
                                                 ?>
                                                 <br>
@@ -175,7 +192,6 @@ $jumlah = $fetch['jumlah'];
 
                                         <!-- Modal footer -->
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary" onclick="printModalContent('terimamodal<?= $ids; ?>')">Print</button>
                                         </div>
 
                                     </div>
@@ -205,6 +221,17 @@ $jumlah = $fetch['jumlah'];
         </main>
     </div>
     </div>
+    <script>
+        function printModalContent(modalId) {
+            var printContents = document.getElementById(modalId).innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+            window.print();
+
+            document.body.innerHTML = originalContents;
+        }
+    </script>
     <script>
         $(document).ready(function() {
             $('#dataTable').DataTable();

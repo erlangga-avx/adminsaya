@@ -104,6 +104,7 @@
                                                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#terimamodal<?= $ids; ?>">
                                                                     <i class="fas fa-pen-nib"></i>
                                                                 </button>
+                                                                <button type="button" class="btn btn-primary" onclick="printModalContent('terimamodal<?= $ids; ?>')">Print</button>
                                                             </td>
                                                         </tr>
                                         </div>
@@ -118,7 +119,6 @@
                                                     <h4 class="modal-title" id="terimaModalLabel">
                                                         GRAND Fotocopy Gambut
                                                     </h4>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                 </div>
 
                                                 <!-- Modal body -->
@@ -168,7 +168,6 @@
 
                                                 <!-- Modal footer -->
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-primary" onclick="printModalContent('terimamodal<?= $ids; ?>')">Print</button>
                                                 </div>
 
                                             </div>
