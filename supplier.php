@@ -71,7 +71,7 @@ require 'cek.php';
                                                         Edit
                                                     </button>
                                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete<?=$ids;?>">
-                                                        Delete
+                                                        Hapus
                                                     </button>
                                                 </td>
                                             </tr>
@@ -99,7 +99,7 @@ require 'cek.php';
                                                 <input type="text" name="alamat" value="<?=$alamat;?>" class="form-control" required>
                                                 <br>
                                                 <input type="hidden" name="ids" value="<?=$ids;?>">
-                                                <button type="submit" class="btn btn-primary" name="updatesupplier">Submit</button>
+                                                <button type="submit" class="btn btn-primary" name="updatesupplier">Simpan</button>
                                                 </form>
                                                 </div>
 
@@ -182,7 +182,7 @@ require 'cek.php';
         <br>
         <input type="text" name="alamat" placeholder="Alamat Supplier" class="form-control" required>
         <br>
-        <button type="submit" class="btn btn-primary" name="addsupplier">Submit</button>
+        <button type="submit" class="btn btn-primary" name="addsupplier">Tambah</button>
         </form>
         </div>
 

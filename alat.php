@@ -95,6 +95,7 @@ require 'cek.php';
                                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rekapmodal<?= $ida; ?>">
                                                         <i class="fas fa-cogs"></i>
                                                     </button>
+                                                    <button type="button" class="btn btn-primary" onclick="printModalContent('rekapmodal<?= $ida; ?>')">Print</button>
                                                 </td>
                                                 <td><?= $kategori; ?></td>
                                                 <td><?= $deskalat; ?></td>
@@ -124,7 +125,7 @@ require 'cek.php';
                                                         Edit
                                                     </button>
                                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete<?= $ida; ?>">
-                                                        Delete
+                                                        Hapus
                                                     </button>
                                                 </td>
                                             </tr>
@@ -150,7 +151,7 @@ require 'cek.php';
                                                                 <input type="text" name="deskalat" value="<?= $deskalat; ?>" class="form-control">
                                                                 <br>
                                                                 <input type="hidden" name="ida" value="<?= $ida; ?>">
-                                                                <button type="submit" class="btn btn-primary" name="updatealat">Submit</button>
+                                                                <button type="submit" class="btn btn-primary" name="updatealat">Simpan</button>
                                                         </form>
                                                     </div>
 
@@ -195,7 +196,6 @@ require 'cek.php';
                                             Rekap Perbaikan <?= $namaalat; ?>
                                             <input type="hidden" name="ida" value="<?= $ida; ?>">
                                         </h4>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                     </div>
 
                                     <!-- Modal body -->
@@ -227,7 +227,6 @@ require 'cek.php';
 
                                     <!-- Modal footer -->
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary" onclick="printModalContent('rekapmodal<?= $ida; ?>')">Print</button>
                                     </div>
 
                                 </div>
@@ -309,7 +308,7 @@ require 'cek.php';
                     <label for="radio03" class="form-check-label">Harus Diganti</label>
                     <br>
                     <br>
-                    <button type="submit" class="btn btn-primary" name="addalat">Submit</button>
+                    <button type="submit" class="btn btn-primary" name="addalat">Tambah</button>
             </form>
         </div>
 

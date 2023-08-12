@@ -125,7 +125,7 @@ require 'cek.php';
                                     </tbody>
                                 </table>
                                 <button type="button" class="btn btn-success" id="btn-add-row">Tambah Baris</button>
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
                             </form>
                         </div>
                     </div>

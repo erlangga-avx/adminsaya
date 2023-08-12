@@ -122,7 +122,7 @@ require 'cek.php';
                                                 <input type="number" name="qty" value="<?=$qty;?>" class="form-control" required>
                                                 <br>
                                                 <input type="hidden" name="idp" value="<?=$idp;?>">
-                                                <button type="submit" class="btn btn-primary" name="updatepesanan">Submit</button>
+                                                <button type="submit" class="btn btn-primary" name="updatepesanan">Simpan</button>
                                                 </form>
                                                 </div>
 
@@ -203,7 +203,7 @@ require 'cek.php';
         <br>
         <input type="number" name="qty" placeholder="Jumlah Pesanan" class="form-control" required>
         <br>
-        <button type="submit" class="btn btn-primary" name="addpesanan">Submit</button>
+        <button type="submit" class="btn btn-primary" name="addpesanan">Tambah</button>
         </form>
         </div>
 

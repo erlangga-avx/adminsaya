@@ -115,7 +115,7 @@ require 'cek.php';
                                                         Edit
                                                     </button>
                                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete<?= $idb; ?>">
-                                                        Delete
+                                                        Hapus
                                                     </button>
                                                 </td>
                                             </tr>
@@ -150,7 +150,7 @@ require 'cek.php';
                                                                 <input type="file" name="file" class="form-control" required>
                                                                 <br>
                                                                 <input type="hidden" name="idb" value="<?= $idb; ?>">
-                                                                <button type="submit" class="btn btn-primary" name="updatebarang">Submit</button>
+                                                                <button type="submit" class="btn btn-primary" name="updatebarang">Simpan</button>
                                                         </form>
                                                     </div>
 
@@ -243,7 +243,7 @@ require 'cek.php';
                     <br>
                     <input type="file" name="file" class="form-control" required>
                     <br>
-                    <button type="submit" class="btn btn-primary" name="addnewbarang">Submit</button>
+                    <button type="submit" class="btn btn-primary" name="addnewbarang">Tambah</button>
             </form>
         </div>
 
