@@ -131,7 +131,7 @@ $qrcode = 'https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl=' . $urlvie
                         <tbody>
                             <?php
 
-                            $query = "select * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier join transaksimasuk tm on tm.idtransaksi = m.idtransaksi";
+                            $query = "select * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier join transaksimasuk tm on tm.idtransaksi = m.idtransaksi where s.idbarang='$idbarang'";
 
                             $ambildatamasuk = mysqli_query($conn, $query);
                             $i = 1;

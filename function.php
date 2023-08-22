@@ -175,41 +175,36 @@ if (isset($_POST['addtransaksimasuk'])) {
 //menghapus transaksi masuk
 if (isset($_POST['hapustransaksimasuk'])) {
     $idt = $_POST['idt'];
-    $idb = $_POST['idb'];
-    $qty = $_POST['qty'];
-    $idm = $_POST['idm'];
-    $suppliernya = $_POST['suppliernya'];
 
-    // Hapus data dari tabel 'masuk'
-    $hapusdata = mysqli_query($conn, "DELETE FROM masuk WHERE idmasuk='$idm'");
+    // Get items from the transaction
+    $getItemsQuery = "SELECT idbarang, qty FROM masuk WHERE idtransaksi = $idt";
+    $getItemsResult = mysqli_query($conn, $getItemsQuery);
+    while ($itemData = mysqli_fetch_assoc($getItemsResult)) {
+        $idbarang = $itemData['idbarang'];
+        $qty = $itemData['qty'];
 
-    if ($hapusdata) {
-        // Dapatkan stok sebelumnya
-        $getdatastok = mysqli_query($conn, "SELECT stok FROM stok WHERE idbarang='$idb'");
-        $data = mysqli_fetch_array($getdatastok);
-        $stok_sebelumnya = $data['stok'];
+        // Get current stock and update
+        $getStokQuery = "SELECT stok FROM stok WHERE idbarang = $idbarang";
+        $getStokResult = mysqli_query($conn, $getStokQuery);
+        $stokData = mysqli_fetch_assoc($getStokResult);
+        $stokSebelumnya = $stokData['stok'];
 
-        // Kalkulasi stok setelah dikurangi qty masuk
-        $stok_baru = $stok_sebelumnya - $qty;
+        $stokBaru = $stokSebelumnya - $qty;
 
-        // Perbarui stok di tabel 'stok'
-        $update = mysqli_query($conn, "UPDATE stok SET stok='$stok_baru' WHERE idbarang='$idb'");
-
-        if ($update) {
-            // Hapus data dari tabel 'transaksimasuk'
-            $hapus = mysqli_query($conn, "DELETE FROM transaksimasuk WHERE idtransaksi='$idt'");
-
-            if ($hapus) {
-                header('location: transaksimasuk.php');
-            } else {
-                echo 'Gagal menghapus transaksimasuk';
-            }
-        } else {
-            echo 'Gagal memperbarui stok';
-        }
-    } else {
-        echo 'Gagal menghapus data masuk';
+        $updateStokQuery = "UPDATE stok SET stok = $stokBaru WHERE idbarang = $idbarang";
+        mysqli_query($conn, $updateStokQuery);
     }
+
+    // Delete related data from 'masuk' table
+    $deleteMasukQuery = "DELETE FROM masuk WHERE idtransaksi = $idt";
+    mysqli_query($conn, $deleteMasukQuery);
+
+    // Delete transaction from 'transaksimasuk' table
+    $deleteTransaksiMasukQuery = "DELETE FROM transaksimasuk WHERE idtransaksi = $idt";
+    mysqli_query($conn, $deleteTransaksiMasukQuery);
+
+    // Redirect after successful deletion
+    header('location:transaksimasuk.php');
 }
 
 
@@ -245,37 +240,35 @@ if (isset($_POST['addtransaksikeluar'])) {
 if (isset($_POST['hapustransaksikeluar'])) {
     $idt = $_POST['idt'];
 
+    // Get items from the transaction
+    $getItemsQuery = "SELECT idbarang, qty FROM keluar WHERE idtransaksi = $idt";
+    $getItemsResult = mysqli_query($conn, $getItemsQuery);
+    while ($itemData = mysqli_fetch_assoc($getItemsResult)) {
+        $idbarang = $itemData['idbarang'];
+        $qty = $itemData['qty'];
 
-    $get_transaksi = mysqli_query($conn, "SELECT * FROM transaksikeluar WHERE idtransaksi='$idt'");
-    $transaksi_data = mysqli_fetch_assoc($get_transaksi);
+        // Get current stock and update
+        $getStokQuery = "SELECT stok FROM stok WHERE idbarang = $idbarang";
+        $getStokResult = mysqli_query($conn, $getStokQuery);
+        $stokData = mysqli_fetch_assoc($getStokResult);
+        $stokSebelumnya = $stokData['stok'];
 
-    $hapus = mysqli_query($conn, "DELETE FROM transaksikeluar WHERE idtransaksi='$idt'");
-    if ($hapus) {
-        $hapusdata = mysqli_query($conn, "DELETE FROM keluar WHERE idtransaksi='$idt'");
+        $stokBaru = $stokSebelumnya + $qty;
 
-        if ($hapusdata) {
-            $get_deleted_keluar = mysqli_query($conn, "SELECT * FROM keluar WHERE idtransaksi='$idt'");
-            while ($data = mysqli_fetch_array($get_deleted_keluar)) {
-                $idb = $data['idbarang'];
-                $qty = $data['qty'];
-
-                $getdatastok = mysqli_query($conn, "SELECT * FROM stok WHERE idbarang='$idb'");
-                $data = mysqli_fetch_array($getdatastok);
-                $stok = $data['stok'];
-
-                $stok_baru = $stok + $qty;
-
-                $update = mysqli_query($conn, "UPDATE stok SET stok='$stok_baru' WHERE idbarang='$idb'");
-            }
-            header('location:transaksikeluar.php');
-        } else {
-            echo 'Gagal';
-            header('location:transaksikeluar.php');
-        }
-    } else {
-        echo 'Gagal';
-        header('location:transaksikeluar.php');
+        $updateStokQuery = "UPDATE stok SET stok = $stokBaru WHERE idbarang = $idbarang";
+        mysqli_query($conn, $updateStokQuery);
     }
+
+    // Delete related data from 'keluar' table
+    $deleteKeluarQuery = "DELETE FROM keluar WHERE idtransaksi = $idt";
+    mysqli_query($conn, $deleteKeluarQuery);
+
+    // Delete transaction from 'transaksikeluar' table
+    $deleteTransaksiKeluarQuery = "DELETE FROM transaksikeluar WHERE idtransaksi = $idt";
+    mysqli_query($conn, $deleteTransaksiKeluarQuery);
+
+    // Redirect after successful deletion
+    header('location:transaksikeluar.php');
 }
 
 
