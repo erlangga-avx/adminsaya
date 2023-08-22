@@ -11,6 +11,9 @@ $fetch = mysqli_fetch_assoc($get);
 $namabarang = $fetch['namabarang'];
 $kategori = $fetch['kategori'];
 $stok = $fetch['stok'];
+$harga = $fetch['harga'];
+$format_harga = number_format($harga, 0, ',', '.');
+$satuan = $fetch['satuan'];
 //cek apakah ada gambar
 $gambar = $fetch['image']; //mengambil gambar
 if ($gambar == null) {
@@ -44,7 +47,8 @@ if ($gambar == null) {
                 <div class="card-body">
                     <h4 class="card-title"><?= $namabarang; ?></h4>
                     <h4 class="card-text"><?= $kategori; ?></h4>
-                    <h4 class="card-text">Stok <?= $stok; ?></h4>
+                    <h4 class="card-text">Stok <?= $stok; ?> <?= $satuan; ?></h4>
+                    <h4 class="card-text">Harga <?= $format_harga; ?></h4>
                 </div>
             </div>
             <br>
