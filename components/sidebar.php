@@ -44,6 +44,18 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-tools"></i></div>
                     Status Alat
                 </a>
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsGrafik" aria-expanded="false" aria-controls="collapseLayouts">
+                    <div class="sb-nav-link-icon"><i class="fa-solid fa-chart-simple"></i></div>
+                    Grafik
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseLayoutsGrafik" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="grafikkategori.php">Grafik Kategori</a>
+                        <a class="nav-link" href="grafikstok.php">Grafik Stok</a>
+                        <!--<a class="nav-link" href="grafiklaris.php">Grafik Barang Terlaris</a>!-->
+                    </nav>
+                </div>
                 <a class="nav-link" href="logout.php">
                     Logout
                 </a>
