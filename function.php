@@ -30,17 +30,17 @@ if (isset($_POST['addnewbarang'])) {
 
             $addtotable = mysqli_query($conn, "insert into stok (namabarang, kategori, stok, image, satuan, harga) values('$namabarang', '$kategori', '$stok', '$image', '$satuan', '$harga')");
             if ($addtotable) {
-                header('location:index.php');
+                header('location:stok.php');
             } else {
                 echo 'Gagal';
-                header('location:index.php');
+                header('location:stok.php');
             }
         } else {
             //kalau ukuran file melebihi 15mb
             echo '
             <script>
                 alert("File Terlalu Besar");
-                window.location.href="index.php";
+                window.location.href="stok.php";
             </script>
             ';
         }
@@ -49,7 +49,7 @@ if (isset($_POST['addnewbarang'])) {
         echo '
             <script>
                 alert("Format File Tidak Didukung");
-                window.location.href="index.php";
+                window.location.href="stok.php";
             </script>
             ';
     }
@@ -353,10 +353,10 @@ if (isset($_POST['updatebarang'])) {
         move_uploaded_file($file_tmp, 'images/' . $image);
         $update = mysqli_query($conn, "update stok set namabarang='$namabarang' , kategori='$kategori' , image='$image' , satuan='$satuan' , harga='$harga' where idbarang='$idb'");
         if ($update) {
-            header('location:index.php');
+            header('location:stok.php');
         } else {
             echo 'Gagal';
-            header('location:index.php');
+            header('location:stok.php');
         }
     }
 }
@@ -372,10 +372,10 @@ if (isset($_POST['hapusbarang'])) {
 
     $hapus = mysqli_query($conn, "delete from stok where idbarang='$idb'");
     if ($hapus) {
-        header('location:index.php');
+        header('location:stok.php');
     } else {
         echo 'Gagal';
-        header('location:index.php');
+        header('location:stok.php');
     }
 }
 
