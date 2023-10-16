@@ -54,10 +54,27 @@ require 'cek.php';
                         <div class="card-body">
 
                             <?php
-                            $ambildatastok = mysqli_query($conn, "select * from stok where stok < 5");
+                            $ambildatastok = mysqli_query($conn, "select * from stok where stok < 5 and stok > 0");
 
                             while ($fetch = mysqli_fetch_array($ambildatastok)) {
                                 $barang = $fetch['namabarang'];
+                                $stok = $fetch['stok'];
+                                $satuan = $fetch['satuan'];
+
+                            ?>
+                                <div class="alert alert-danger alert-dismissible">
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                    <strong>Peringatan!</strong> Stok <?= $barang; ?> Hampir Habis, stok tersisa <u><?= $stok; ?> <?= $satuan; ?></u>
+                                </div>
+                            <?php
+                            }
+
+                            $ambildatastok = mysqli_query($conn, "select * from stok where stok = 0");
+
+                            while ($fetch = mysqli_fetch_array($ambildatastok)) {
+                                $barang = $fetch['namabarang'];
+                                $stok = $fetch['stok'];
+                                $satuan = $fetch['satuan'];
 
                             ?>
                                 <div class="alert alert-danger alert-dismissible">
@@ -66,6 +83,7 @@ require 'cek.php';
                                 </div>
                             <?php
                             }
+
                             ?>
 
                             <div class="table-responsive">
