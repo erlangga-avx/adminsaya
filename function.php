@@ -617,3 +617,53 @@ if (isset($_POST['hapusalat'])) {
         header('location:alat.php');
     }
 }
+
+//menambah data aset
+if (isset($_POST['addnewaset'])) {
+    $namaaset = $_POST['namaaset'];
+    $jumlah = $_POST['jumlah'];
+    $jenis = $_POST['jenis'];
+    $kondisi = $_POST['kondisi'];
+    $tglinput = $_POST['tglinput'];
+    $tglupdate = $_POST['tglupdate'];
+
+    $addtotable = mysqli_query($conn, "insert into aset (namaaset, jumlah, jenis, kondisi, tglinput) values('$namaaset', '$jumlah', '$jenis', '$kondisi', '$tglinput')");
+    if ($addtotable) {
+        header('location:aset.php');
+    } else {
+        echo 'Gagal';
+        header('location:aset.php');
+    }
+}
+
+//update data aset
+if (isset($_POST['updateaset'])) {
+    $idaset = $_POST['idaset'];
+    $namaaset = $_POST['namaaset'];
+    $jumlah = $_POST['jumlah'];
+    $jenis = $_POST['jenis'];
+    $kondisi = $_POST['kondisi'];
+    $tglinput = $_POST['tglinput'];
+    $tglupdate = $_POST['tglupdate'];
+
+    $update = mysqli_query($conn, "update aset set namaaset='$namaaset' , jumlah='$jumlah' , jenis='$jenis' , kondisi='$kondisi' , tglinput='$tglinput' where idaset='$idaset'");
+    if ($update) {
+        header('location:aset.php');
+    } else {
+        echo 'Gagal';
+        header('location:aset.php');
+    }
+}
+
+//menghapus data aset
+if (isset($_POST['hapusaset'])) {
+    $idaset = $_POST['idaset'];
+
+    $hapus = mysqli_query($conn, "delete from aset where idaset='$idaset'");
+    if ($hapus) {
+        header('location:aset.php');
+    } else {
+        echo 'Gagal';
+        header('location:aset.php');
+    }
+}

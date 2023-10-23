@@ -6,6 +6,10 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-box-open"></i></div>
                     Stok Barang
                 </a>
+                <a class="nav-link" href="aset.php">
+                    <div class="sb-nav-link-icon"><i class="fas fa-store"></i></div>
+                    Aset Toko
+                </a>
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsMasuk" aria-expanded="false" aria-controls="collapseLayouts">
                     <div class="sb-nav-link-icon"><i class="fas fa-download"></i></div>
                     Barang Masuk

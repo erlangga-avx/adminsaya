@@ -296,7 +296,7 @@ require 'cek.php';
                     <label for="radio01" class="form-check-label">Baik</label>
                     <br>
                     <br>
-                    <input type="radio" name="status" value="Rusak" class="form-check-input" checked>
+                    <input type="radio" name="status" value="Rusak" class="form-check-input">
                     <label for="radio01" class="form-check-label">Rusak</label>
                     <br>
                     <br>
