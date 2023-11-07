@@ -65,6 +65,7 @@ require 'cek.php';
                                             <th>Satuan</th>
                                             <th>Nota</th>
                                             <th>Supplier</th>
+                                            <th>Biaya</th>
                                             <th>Pilihan</th>
                                         </tr>
                                     </thead>
@@ -117,6 +118,9 @@ require 'cek.php';
                                                     }
                                                     ?>
                                                 </select>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" name="hargamasuk[]" required>
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-danger btn-delete" data-row="<?= $rowNumber ?>" disabled>Hapus Baris</button>
@@ -203,6 +207,7 @@ require 'cek.php';
                         ?>' +
                     '</select>' +
                     '</td>' +
+                    '<td><input type="text" class="form-control" name="hargamasuk[]" required></td>' +
                     '<td>' +
                     '<button type="button" class="btn btn-danger btn-delete">Hapus Baris</button>' +
                     '</td>' +

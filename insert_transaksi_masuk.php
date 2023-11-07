@@ -25,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nota = $_POST["nota"];
     $suppliernya = $_POST["suppliernya"];
     $satuan = $_POST["satuan"];
+    $hargamasuk = $_POST["hargamasuk"];
 
     // Insert data into 'transaksimasuk' table
     $insert_transaksi = mysqli_query($conn, "INSERT INTO transaksimasuk (kodetransaksi, pengirim, penerima, jumlah) VALUES ('$kodeauto', '$pengirim', '$penerima', '$jumlah')");
@@ -38,6 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $nota_value = mysqli_real_escape_string($conn, $nota[$index]);
             $qty_value = mysqli_real_escape_string($conn, $qty[$index]);
             $satuan_value = mysqli_real_escape_string($conn, $satuan[$index]);
+            $harga_value = mysqli_real_escape_string($conn, $hargamasuk[$index]);
             $supplier_value = mysqli_real_escape_string($conn, $suppliernya[$index]);
 
             $cekstoksekarang = mysqli_query($conn, "SELECT * FROM stok WHERE idbarang='$idbarang'");
@@ -50,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $tambahkanstoksekarangdenganqty = $stoksekarang + $qty_value;
 
             // Insert data into 'masuk' table
-            $addtomasuk = mysqli_query($conn, "INSERT INTO masuk (idbarang, idtransaksi, nota, idsupplier, qty, satuan) VALUES ('$idbarang', '$idtransaksi', '$nota_value', '$supplier_value', '$qty_value', '$satuan_value')");
+            $addtomasuk = mysqli_query($conn, "INSERT INTO masuk (idbarang, idtransaksi, nota, idsupplier, qty, satuan, hargamasuk) VALUES ('$idbarang', '$idtransaksi', '$nota_value', '$supplier_value', '$qty_value', '$satuan_value', '$harga_value')");
 
             // Update stock in 'stok' table
             $updatestokmasuk = mysqli_query($conn, "UPDATE stok SET stok='$tambahkanstoksekarangdenganqty' WHERE idbarang='$idbarang'");

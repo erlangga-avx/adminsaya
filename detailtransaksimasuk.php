@@ -66,6 +66,7 @@
                                                         <th>Satuan</th>
                                                         <th>Supplier</th>
                                                         <th>Nomor Nota</th>
+                                                        <th>Biaya</th>
                                                         <th>Tanda Terima</th>
                                                     </tr>
                                                 </thead>
@@ -88,6 +89,8 @@
                                                         $ids = $data['idsupplier'];
                                                         $namasupplier = $data['namasupplier'];
                                                         $nota = $data['nota'];
+                                                        $harga = $data['hargamasuk'];
+                                                        $format_harga = number_format($harga, 0, ',', '.');
 
                                                     ?>
 
@@ -97,6 +100,7 @@
                                                             <td><?= $satuan; ?></td>
                                                             <td><?= $namasupplier; ?></td>
                                                             <td><?= $nota; ?></td>
+                                                            <td><?= $format_harga; ?></td>
                                                             <td>
                                                                 <!--<a href="tandaterimamasuk.php?id=<?= $ids; ?>">
                                                                     <i class="fa-solid fa-pen-nib"></i>
@@ -162,7 +166,7 @@
                                                     <br>
                                                     <br>
                                                     <p style="text-align: right;">
-                                                        <?= $penerima ;?>
+                                                        <?= $penerima; ?>
                                                     </p>
                                                 </div>
 

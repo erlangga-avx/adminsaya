@@ -73,6 +73,7 @@ require 'cek.php';
                                             <th>Nomor Nota</th>
                                             <th>Jumlah</th>
                                             <th>Satuan</th>
+                                            <th>Biaya</th>
                                             <!--
                                             <th>Pilihan</th>
                                             -->
@@ -106,6 +107,8 @@ require 'cek.php';
                                             $ids = $data['idsupplier'];
                                             $namasupplier = $data['namasupplier'];
                                             $nota = $data['nota'];
+                                            $hargamasuk = $data['hargamasuk'];
+                                            $format_harga = number_format($hargamasuk, 0, ',', '.');
 
                                             //cek apakah ada gambar
                                             $gambar = $data['image']; //mengambil gambar
@@ -126,6 +129,7 @@ require 'cek.php';
                                                 <td><?= $nota; ?></td>
                                                 <td><?= $qty; ?></td>
                                                 <td><?= $satuan; ?></td>
+                                                <td><?= $format_harga; ?></td>
                                             </tr>
                             </div>
                         </div>

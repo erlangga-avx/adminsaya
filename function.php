@@ -72,6 +72,7 @@ if (isset($_POST['barangmasuk'])) {
     $nota = $_POST['nota'];
     $qty = $_POST['qty'];
     $satuan = $_POST['satuan'];
+    $hargamasuk = $_POST['harga'];
     $suppliernya = $_POST['suppliernya'];
 
     $cekstoksekarang = mysqli_query($conn, "select * from stok where idbarang='$barangnya'");
@@ -83,7 +84,7 @@ if (isset($_POST['barangmasuk'])) {
     $stoksekarang = $ambildatanya['stok'];
     $tambahkanstoksekarangdenganqty = $stoksekarang + $qty;
 
-    $addtomasuk = mysqli_query($conn, "insert into masuk (idbarang, nota, idsupplier, qty, satuan) values('$barangnya', '$nota', '$suppliernya', '$qty', '$satuan')");
+    $addtomasuk = mysqli_query($conn, "insert into masuk (idbarang, nota, idsupplier, qty, satuan, harga) values('$barangnya', '$nota', '$suppliernya', '$qty', '$satuan', '$hargamasuk')");
     $updatestokmasuk = mysqli_query($conn, "update stok set stok='$tambahkanstoksekarangdenganqty' where idbarang='$barangnya'");
     if ($addtomasuk && $updatestokmasuk) {
         header('location:masuk.php');
