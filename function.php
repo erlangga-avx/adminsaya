@@ -328,6 +328,45 @@ if (isset($_POST['addalat'])) {
     }
 }
 
+//menambah pengeluaran
+if (isset($_POST['addpengeluaran'])) {
+    $namabarang = $_POST['namabarang'];
+    $harga = $_POST['harga'];
+
+    $addtotable = mysqli_query($conn, "insert into pengeluaran (namabarang, harga) values('$namabarang', '$harga')");
+    if ($addtotable) {
+        header('location:pengeluaran.php');
+    } else {
+        echo 'Gagal';
+        header('location:pengeluaran.php');
+    }
+}
+
+// Fungsi untuk memeriksa barang masuk dan menambahkannya ke tabel pesanan
+function checkAndAddToExpen($conn)
+{
+    $ambilsemuadatabarang = mysqli_query($conn, "SELECT * FROM stok s, masuk m WHERE s.idbarang = m.idbarang");
+    while ($data = mysqli_fetch_array($ambilsemuadatabarang)) {
+        $idbarang = $data['idbarang'];
+        $idmasuk = $data['idmasuk'];
+        $namabarang = $data['namabarang'];
+        $hargamasuk = $data['hargamasuk'];
+
+        // Memeriksa apakah barang sudah ada dalam tabel pesanan
+        $checkPengeluaran = mysqli_query($conn, "SELECT * FROM pengeluaran WHERE namabarang = '$namabarang' AND harga = '$hargamasuk'");
+        $rowCount = mysqli_num_rows($checkPengeluaran);
+
+        // Jika barang belum ada dalam tabel pesanan, tambahkan data ke tabel pesanan
+        if ($rowCount == 0) {
+            $insertPengeluaran = mysqli_query($conn, "INSERT INTO pengeluaran (namabarang, harga) VALUES ('$namabarang', '$hargamasuk')");
+        }
+    }
+}
+
+
+// Panggil fungsi untuk memeriksa stok dan menambahkan barang ke tabel pesanan
+checkAndAddToExpen($conn);
+
 //update info barang
 if (isset($_POST['updatebarang'])) {
     $idb = $_POST['idb'];
@@ -587,6 +626,34 @@ if (isset($_POST['hapuspesanan'])) {
     } else {
         echo 'Gagal';
         header('location:pesanan.php');
+    }
+}
+
+//update info pengeluaran
+if (isset($_POST['updatepengeluaran'])) {
+    $idp = $_POST['idp'];
+    $namabarang = $_POST['namabarang'];
+    $harga = $_POST['harga'];
+
+    $update = mysqli_query($conn, "update pengeluaran set namabarang='$namabarang' , harga='$harga' where idpengeluaran ='$idp'");
+    if ($update) {
+        header('location:pengeluaran.php');
+    } else {
+        echo 'Gagal';
+        header('location:pengeluaran.php');
+    }
+}
+
+//menghapus pengeluaran
+if (isset($_POST['hapuspengeluaran'])) {
+    $idp = $_POST['idp'];
+
+    $hapus = mysqli_query($conn, "delete from pengeluaran where idpengeluaran='$idp'");
+    if ($hapus) {
+        header('location:pengeluaran.php');
+    } else {
+        echo 'Gagal';
+        header('location:pengeluaran.php');
     }
 }
 

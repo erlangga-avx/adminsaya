@@ -48,6 +48,18 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-tools"></i></div>
                     Status Alat
                 </a>
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsKeuangan" aria-expanded="false" aria-controls="collapseLayouts">
+                    <div class="sb-nav-link-icon"><i class="fas fa-wallet"></i></div>
+                    Keuangan
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseLayoutsKeuangan" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="pemasukan.php">Pemasukan</a>
+                        <a class="nav-link" href="pengeluaran.php">Pengeluaran</a>
+                        <a class="nav-link" href="labarugi.php">Laporan Laba Rugi</a>
+                    </nav>
+                </div>
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsGrafik" aria-expanded="false" aria-controls="collapseLayouts">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-chart-simple"></i></div>
                     Grafik
