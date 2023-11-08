@@ -342,7 +342,7 @@ if (isset($_POST['addpengeluaran'])) {
     }
 }
 
-// Fungsi untuk memeriksa barang masuk dan menambahkannya ke tabel pesanan
+// Fungsi untuk memeriksa barang masuk dan menambahkannya ke tabel pengeluaran
 function checkAndAddToExpen($conn)
 {
     $ambilsemuadatabarang = mysqli_query($conn, "SELECT * FROM stok s, masuk m WHERE s.idbarang = m.idbarang");
@@ -352,11 +352,11 @@ function checkAndAddToExpen($conn)
         $namabarang = $data['namabarang'];
         $hargamasuk = $data['hargamasuk'];
 
-        // Memeriksa apakah barang sudah ada dalam tabel pesanan
+        // Memeriksa apakah barang sudah ada dalam tabel pengeluaran
         $checkPengeluaran = mysqli_query($conn, "SELECT * FROM pengeluaran WHERE namabarang = '$namabarang' AND harga = '$hargamasuk'");
         $rowCount = mysqli_num_rows($checkPengeluaran);
 
-        // Jika barang belum ada dalam tabel pesanan, tambahkan data ke tabel pesanan
+        // Jika barang belum ada dalam tabel pengeluaran, tambahkan data ke tabel pengeluaran
         if ($rowCount == 0) {
             $insertPengeluaran = mysqli_query($conn, "INSERT INTO pengeluaran (namabarang, harga) VALUES ('$namabarang', '$hargamasuk')");
         }
@@ -364,8 +364,49 @@ function checkAndAddToExpen($conn)
 }
 
 
-// Panggil fungsi untuk memeriksa stok dan menambahkan barang ke tabel pesanan
+// Panggil fungsi untuk memeriksa stok dan menambahkan barang ke tabel pengeluaran
 checkAndAddToExpen($conn);
+
+//menambah pemasukan
+if (isset($_POST['addpemasukan'])) {
+    $namabarang = $_POST['namabarang'];
+    $harga = $_POST['harga'];
+
+    $addtotable = mysqli_query($conn, "insert into pemasukan (namabarang, harga) values('$namabarang', '$harga')");
+    if ($addtotable) {
+        header('location:pemasukan.php');
+    } else {
+        echo 'Gagal';
+        header('location:pemasukan.php');
+    }
+}
+
+// Fungsi untuk memeriksa barang keluar dan menambahkannya ke tabel pemasukan
+function checkAndAddToIncome($conn)
+{
+    $ambilsemuadatabarang = mysqli_query($conn, "SELECT s.idbarang, k.idkeluar, s.harga, k.qty, s.namabarang FROM keluar k JOIN stok s ON k.idbarang = s.idbarang");
+    while ($data = mysqli_fetch_array($ambilsemuadatabarang)) {
+        $idbarang = $data['idbarang'];
+        $idkeluar = $data['idkeluar'];
+        $namabarang = $data['namabarang'];
+        $harga = $data['harga'];
+        $qty = $data['qty'];
+        $jumlah_harga = $qty * $harga;
+
+        // Memeriksa apakah barang sudah ada dalam tabel pemasukan
+        $checkPemasukan = mysqli_query($conn, "SELECT * FROM pemasukan WHERE namabarang = '$namabarang' AND harga = '$jumlah_harga'");
+        $rowCount = mysqli_num_rows($checkPemasukan);
+
+        // Jika barang belum ada dalam tabel pemasukan, tambahkan data ke tabel pemasukan
+        if ($rowCount == 0) {
+            $insertPemasukan = mysqli_query($conn, "INSERT INTO pemasukan (namabarang, harga) VALUES ('$namabarang', '$jumlah_harga')");
+        }
+    }
+}
+
+
+// Panggil fungsi untuk memeriksa stok dan menambahkan barang ke tabel pengeluaran
+checkAndAddToIncome($conn);
 
 //update info barang
 if (isset($_POST['updatebarang'])) {
@@ -654,6 +695,34 @@ if (isset($_POST['hapuspengeluaran'])) {
     } else {
         echo 'Gagal';
         header('location:pengeluaran.php');
+    }
+}
+
+//update info pemasukan
+if (isset($_POST['updatepemasukan'])) {
+    $idp = $_POST['idp'];
+    $namabarang = $_POST['namabarang'];
+    $harga = $_POST['harga'];
+
+    $update = mysqli_query($conn, "update pemasukan set namabarang='$namabarang' , harga='$harga' where idpemasukan ='$idp'");
+    if ($update) {
+        header('location:pemasukan.php');
+    } else {
+        echo 'Gagal';
+        header('location:pemasukan.php');
+    }
+}
+
+//menghapus pemasukan
+if (isset($_POST['hapuspemasukan'])) {
+    $idp = $_POST['idp'];
+
+    $hapus = mysqli_query($conn, "delete from pemasukan where idpemasukan='$idp'");
+    if ($hapus) {
+        header('location:pemasukan.php');
+    } else {
+        echo 'Gagal';
+        header('location:pemasukan.php');
     }
 }
 

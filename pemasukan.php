@@ -13,7 +13,7 @@ require 'cek.php';
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Pengeluaran - GRAND Inventory</title>
+    <title>Pendapatan - GRAND Inventory</title>
     <link href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
@@ -28,13 +28,13 @@ require 'cek.php';
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Pengeluaran</h1>
+                    <h1 class="mt-4">Pendapatan</h1>
                     <div class="card mb-4">
                         <div class="card-header">
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-                                Tambah Data Pengeluaran
+                                Tambah Data Pendapatan
                             </button>
-                            <a href="exportpengeluaran.php" class="btn btn-success">Export Data</a>
+                            <a href="exportpemasukan.php" class="btn btn-success">Export Data</a>
                             <br>
                             <form method="post" class="mt-3">
                                 <div class="row">
@@ -57,8 +57,8 @@ require 'cek.php';
                                         <tr>
                                             <th>No</th>
                                             <th>Tanggal</th>
-                                            <th>Keperluan</th>
-                                            <th>Biaya</th>
+                                            <th>Hasil dari ...</th>
+                                            <th>Nominal</th>
                                             <th>Pilihan</th>
                                         </tr>
                                     </thead>
@@ -70,18 +70,18 @@ require 'cek.php';
                                             $selesai = $_POST['tgl_selesai'];
 
                                             if ($mulai != null || $selesai != null) {
-                                                $ambilsemuadatapengeluaran = mysqli_query($conn, "select * from pengeluaran and tanggal BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY)");
+                                                $ambilsemuadatapemasukan = mysqli_query($conn, "select * from pemasukan and tanggal BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY)");
                                             } else {
-                                                $ambilsemuadatapengeluaran = mysqli_query($conn, "select * from pengeluaran");
+                                                $ambilsemuadatapemasukan = mysqli_query($conn, "select * from pemasukan");
                                             }
                                         } else {
-                                            $ambilsemuadatapengeluaran = mysqli_query($conn, "select * from pengeluaran");
+                                            $ambilsemuadatapengemasukan = mysqli_query($conn, "select * from pemasukan");
                                         }
-                                        $ambilsemuadatapengeluaran = mysqli_query($conn, "select * from pengeluaran");
+                                        $ambilsemuadatapemasukan = mysqli_query($conn, "select * from pemasukan");
                                         $i = 1;
                                         $totalharga = 0;
-                                        while ($data = mysqli_fetch_array($ambilsemuadatapengeluaran)) {
-                                            $idp = $data['idpengeluaran'];
+                                        while ($data = mysqli_fetch_array($ambilsemuadatapemasukan)) {
+                                            $idp = $data['idpemasukan'];
                                             $tanggal = $data['tanggal'];
                                             $namabarang = $data['namabarang'];
                                             $harga = $data['harga'];
@@ -109,7 +109,7 @@ require 'cek.php';
 
                                                         <!-- Modal Header -->
                                                         <div class="modal-header">
-                                                            <h4 class="modal-title">Edit Data Pengeluaran</h4>
+                                                            <h4 class="modal-title">Edit Data Pendapatan</h4>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                         </div>
 
@@ -121,7 +121,7 @@ require 'cek.php';
                                                                 <input type="text" name="harga" value="<?= $harga; ?>" class="form-control" required>
                                                                 <br>
                                                                 <input type="hidden" name="idp" value="<?= $idp; ?>">
-                                                                <button type="submit" class="btn btn-primary" name="updatepengeluaran">Simpan</button>
+                                                                <button type="submit" class="btn btn-primary" name="updatepemasukan">Simpan</button>
                                                         </form>
                                                     </div>
 
@@ -136,7 +136,7 @@ require 'cek.php';
 
                                         <!-- Modal Header -->
                                         <div class="modal-header">
-                                            <h4 class="modal-title">Hapus Data Pengeluaran?</h4>
+                                            <h4 class="modal-title">Hapus Data Pendapatan?</h4>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
 
@@ -147,7 +147,7 @@ require 'cek.php';
                                                 <input type="hidden" name="idp" value="<?= $idp; ?>">
                                                 <br>
                                                 <br>
-                                                <button type="submit" class="btn btn-danger" name="hapuspengeluaran">Hapus</button>
+                                                <button type="submit" class="btn btn-danger" name="hapuspemasukan">Hapus</button>
                                         </form>
                                     </div>
 
@@ -162,7 +162,7 @@ require 'cek.php';
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="3" class="text-end"><strong>Total Pengeluaran:</strong></td>
+                            <td colspan="3" class="text-end"><strong>Total Pendapatan:</strong></td>
                             <td><strong><?= number_format($totalharga, 0, ',', '.'); ?></strong></td>
                             <td></td>
                         </tr>
@@ -196,18 +196,18 @@ require 'cek.php';
 
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Tambah Data Pengeluaran</h4>
+                <h4 class="modal-title">Tambah Data Pemasukan</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
             <!-- Modal body -->
             <form method="post">
                 <div class="modal-body">
-                    <input type="text" name="namabarang" placeholder="Keperluan" class="form-control" required>
+                    <input type="text" name="namabarang" placeholder="Sumber Pemasukan" class="form-control" required>
                     <br>
-                    <input type="text" name="harga" placeholder="Biaya" class="form-control" required>
+                    <input type="text" name="harga" placeholder="Nominal" class="form-control" required>
                     <br>
-                    <button type="submit" class="btn btn-primary" name="addpengeluaran">Tambah</button>
+                    <button type="submit" class="btn btn-primary" name="addpemasukan">Tambah</button>
             </form>
         </div>
 
