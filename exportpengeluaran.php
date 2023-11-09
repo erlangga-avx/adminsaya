@@ -54,14 +54,13 @@ require 'cek.php';
                         $selesai = $_POST['tgl_selesai'];
 
                         if ($mulai != null || $selesai != null) {
-                            $ambilsemuadatapengeluaran = mysqli_query($conn, "select * from pengeluaran and tanggal BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY)");
+                            $ambilsemuadatapengeluaran = mysqli_query($conn, "select * from pengeluaran where tanggal BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY)");
                         } else {
                             $ambilsemuadatapengeluaran = mysqli_query($conn, "select * from pengeluaran");
                         }
                     } else {
                         $ambilsemuadatapengeluaran = mysqli_query($conn, "select * from pengeluaran");
                     }
-                    $ambilsemuadatapengeluaran = mysqli_query($conn, "select * from pengeluaran");
                     $i = 1;
                     $totalharga = 0;
                     while ($data = mysqli_fetch_array($ambilsemuadatapengeluaran)) {
@@ -86,7 +85,7 @@ require 'cek.php';
     </tbody>
     <tfoot>
         <tr>
-            <td colspan="3" class="text-end"><strong>Total Harga:</strong></td>
+            <td colspan="3" class="text-end"><strong>Total Pengeluaran:</strong></td>
             <td><strong><?= number_format($totalharga, 0, ',', '.'); ?></strong></td>
         </tr>
     </tfoot>

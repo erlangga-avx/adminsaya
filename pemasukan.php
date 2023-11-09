@@ -70,14 +70,13 @@ require 'cek.php';
                                             $selesai = $_POST['tgl_selesai'];
 
                                             if ($mulai != null || $selesai != null) {
-                                                $ambilsemuadatapemasukan = mysqli_query($conn, "select * from pemasukan and tanggal BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY)");
+                                                $ambilsemuadatapemasukan = mysqli_query($conn, "select * from pemasukan where tanggal BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY)");
                                             } else {
                                                 $ambilsemuadatapemasukan = mysqli_query($conn, "select * from pemasukan");
                                             }
                                         } else {
-                                            $ambilsemuadatapengemasukan = mysqli_query($conn, "select * from pemasukan");
+                                            $ambilsemuadatapemasukan = mysqli_query($conn, "select * from pemasukan");
                                         }
-                                        $ambilsemuadatapemasukan = mysqli_query($conn, "select * from pemasukan");
                                         $i = 1;
                                         $totalharga = 0;
                                         while ($data = mysqli_fetch_array($ambilsemuadatapemasukan)) {

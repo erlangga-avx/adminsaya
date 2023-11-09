@@ -54,14 +54,13 @@ require 'cek.php';
                         $selesai = $_POST['tgl_selesai'];
 
                         if ($mulai != null || $selesai != null) {
-                            $ambilsemuadatapesanan = mysqli_query($conn, "select * from pesanan and tanggal BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY)");
+                            $ambilsemuadatapesanan = mysqli_query($conn, "select * from pesanan where tanggal BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY)");
                         } else {
                             $ambilsemuadatapesanan = mysqli_query($conn, "select * from pesanan");
                         }
                     } else {
                         $ambilsemuadatapesanan = mysqli_query($conn, "select * from pesanan");
                     }
-                    $ambilsemuadatapesanan = mysqli_query($conn, "select * from pesanan");
                     $i = 1;
                     while ($data = mysqli_fetch_array($ambilsemuadatapesanan)) {
                         $idp = $data['idpesanan'];
