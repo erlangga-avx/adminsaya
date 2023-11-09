@@ -87,14 +87,14 @@ require 'cek.php';
                                             $selesai = $_POST['tgl_selesai'];
 
                                             if ($mulai != null || $selesai != null) {
-                                                $ambilsemuadatastok = mysqli_query($conn, "select * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier join transaksimasuk tm on tm.idtransaksi = m.idtransaksi and tanggal BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY)");
+                                                $ambilsemuadatastok = mysqli_query($conn, "select * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier join transaksimasuk tm on tm.idtransaksi = m.idtransaksi where tanggal BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY)");
                                             } else {
                                                 $ambilsemuadatastok = mysqli_query($conn, "select * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier join transaksimasuk tm on tm.idtransaksi = m.idtransaksi");
                                             }
                                         } else {
                                             $ambilsemuadatastok = mysqli_query($conn, "select * from masuk m join stok s on s.idbarang = m.idbarang join supplier su on su.idsupplier = m.idsupplier join transaksimasuk tm on tm.idtransaksi = m.idtransaksi");
                                         }
-
+                                        $i = 1;
                                         while ($data = mysqli_fetch_array($ambilsemuadatastok)) {
                                             $idb = $data['idbarang'];
                                             $idm = $data['idmasuk'];
